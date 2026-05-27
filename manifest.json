@@ -1,11 +1,11 @@
 {
-  "name": "Zdravie+ - Gesundheitstracker",
+  "name": "Zdravie+",
   "short_name": "Zdravie+",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#1a1a1a",
-  "theme_color": "#1a1a1a",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
   "scope": "./",
   "icons": [
     {

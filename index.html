@@ -12,8 +12,8 @@
   <link rel="icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
   <style>
-    :root { --bg: #eeeeee; --header: #cccccc; --text: #000; --card: #fff; }
-    body.dark { --bg: #1a1a1a; --header: #2a2a2a; --text: #fff; --card: #333; }
+    :root { --bg: #f5f5f5; --header: #e8e8e8; --text: #000; --card: #fff; }
+    body.dark { --bg: #0d0d0d; --header: #1a1a1a; --text: #fff; --card: #222; }
     
     body { background-color: var(--bg); color: var(--text); font-family: Arial, sans-serif; margin: 0; padding: 0; text-align: center; transition: 0.3s; }
     header { background-color: var(--header); padding: 10px; display: flex; justify-content: space-between; align-items: center; }
@@ -323,10 +323,10 @@
 
     // Sledovanie prihlásenia
     onAuthStateChanged(window.auth, async (user) => {
-      // Skryť splash screen po 2 sekundách
+      // Skryť splash screen po 3 sekundách
       setTimeout(() => {
         window.hideSplash();
-      }, 2000);
+      }, 3000);
 
       if (user) {
         window.currentUser.user = user;
@@ -459,14 +459,14 @@
       let lowColor, highColor, normalColor, textColor;
       
       if (isDark) {
-        lowColor = '#4a4a00'; // Tmavá žltá
-        highColor = '#4a0000'; // Tmavá červená
-        normalColor = '#004a00'; // Tmavá zelená
-        textColor = '#fff';
+        lowColor = '#ffaa00'; // Jasná oranžová/žltá
+        highColor = '#ff3333'; // Jasná červená
+        normalColor = '#33cc33'; // Jasná zelená
+        textColor = '#000';
       } else {
-        lowColor = '#fff2cc'; // Svetlá žltá
-        highColor = '#ffcccc'; // Svetlá červená
-        normalColor = '#d9ead3'; // Svetlá zelená
+        lowColor = '#ffdd66'; // Svetlá jasná žltá
+        highColor = '#ff6666'; // Svetlá jasná červená
+        normalColor = '#66dd66'; // Svetlá jasná zelená
         textColor = '#000';
       }
 
