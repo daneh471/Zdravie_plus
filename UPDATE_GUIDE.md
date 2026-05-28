@@ -12,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v24: Striktný 390px kontajner pre 100% identický vzhľad"
+git commit -m "Update v25: 100% responzívna PWA s 420px kontajnerom a fixným menu"
 git push origin main --force
 ```
 
