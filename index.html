@@ -126,6 +126,7 @@
     <p><strong>SYS:</strong> Nízky: < 90, Normálny: 90–140, Vysoký: > 140</p>
     <p><strong>DIA:</strong> Nízky: < 60, Normálny: 60–90, Vysoký: > 90</p>
     <p><strong>PULZ:</strong> Nízky: < 60, Normálny: 60–100, Vysoký: > 100</p>
+    <p style="font-size: 10px; color: #888; margin-top: 20px;">Verzia aplikácie: v8</p>
     <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
   </div></div>
   <div id="deleteModal" class="modal"><div class="modal-content">
@@ -613,18 +614,25 @@
     };
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').then(reg => {
-        // Počúvaj správy od service workera
-        navigator.serviceWorker.addEventListener('message', event => {
-          if (event.data.type === 'UPDATE_AVAILABLE') {
-            window.showConfirm('Aktualizácia dostupná', 'Nová verzia aplikácie je dostupná. Chceš ju teraz stiahnuť?', (confirmed) => {
-              if (confirmed) {
-                window.refreshApp();
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+          // Kontrola aktualizácií pri každom načítaní
+          reg.update();
+
+          reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                window.showConfirm('Aktualizácia dostupná', 'Nová verzia aplikácie je pripravená. Chcete ju teraz aktivovať?', (confirmed) => {
+                  if (confirmed) {
+                    window.refreshApp();
+                  }
+                });
               }
-            });
+            };
           }
         });
-      }).catch(() => {});
+      });
     }
   </script>
 
