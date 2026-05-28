@@ -70,8 +70,8 @@
     header > div { display: flex; justify-content: flex-end; align-items: center; gap: 8px; flex: 1; }
     header button { background-color: transparent; border: none; font-size: 1.2rem; cursor: pointer; padding: 8px; color: var(--text); display: flex; align-items: center; min-width: 44px; min-height: 44px; justify-content: center; }
     h1 { margin: 1rem 0 1.5rem 0; font-size: 1.6rem; font-weight: 700; }
-    .dropdown-content { display: none; position: absolute; right: 0.6rem; top: calc(3.8rem + env(safe-area-inset-top)); background-color: var(--card); width: 13rem; box-shadow: 0px 8px 24px rgba(0,0,0,0.3); z-index: 1001; border-radius: 1rem; overflow: hidden; padding: 0.4rem; border: 1px solid rgba(128,128,128,0.1); }
-    .dropdown-content button { display: block; width: 100%; padding: 16px; border: none; background: none; text-align: left; font-size: 18px; cursor: pointer; color: var(--text); }
+    .dropdown-content { display: none; position: absolute; right: 0.6rem; top: calc(3.8rem + env(safe-area-inset-top)); background-color: var(--card); width: 12.5rem; box-shadow: 0px 8px 24px rgba(0,0,0,0.3); z-index: 1001; border-radius: 1rem; overflow: hidden; padding: 0.4rem; border: 1px solid rgba(128,128,128,0.1); }
+    .dropdown-content button { display: block; width: 100%; padding: 15px; border: none; background: none; text-align: left; font-size: 17px; cursor: pointer; color: var(--text); }
     .dropdown-content button:hover { background-color: rgba(0,0,0,0.1); }
 
     .form-container, #archiv { 
@@ -107,7 +107,7 @@
     th { background-color: var(--header); font-weight: 600; }
 
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); justify-content: center; align-items: center; padding: 15px; }
-    .modal-content { background-color: var(--card); padding: 20px; border-radius: 20px; max-width: 360px; width: 100%; max-height: 85vh; overflow-y: auto; text-align: left; font-size: 1rem; color: var(--text); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .modal-content { background-color: var(--card); padding: 18px; border-radius: 20px; max-width: 354px; width: 100%; max-height: 85vh; overflow-y: auto; text-align: left; font-size: 0.98rem; color: var(--text); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
     .modal-content input { width: 100%; margin: 10px 0; }
     .modal-content button { width: 100%; margin: 10px 0 0 0; }
     
@@ -194,7 +194,7 @@
     <p><strong>SYS:</strong> Nízky: < 90, Normálny: 90–140, Vysoký: > 140</p>
     <p><strong>DIA:</strong> Nízky: < 60, Normálny: 60–90, Vysoký: > 90</p>
     <p><strong>PULZ:</strong> Nízky: < 60, Normálny: 60–100, Vysoký: > 100</p>
-    <p style="font-size: 10px; color: #888; margin-top: 20px;">Verzia aplikácie: v27</p>
+    <p style="font-size: 10px; color: #888; margin-top: 20px;">Verzia aplikácie: v31</p>
     <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
   </div></div>
   </div>
@@ -711,6 +711,43 @@
           }
         });
       });
+    }
+
+    // Swipe-back gesto (návrat z archívu)
+    let touchstartX = 0;
+    let touchendX = 0;
+
+    document.addEventListener('touchstart', e => {
+      touchstartX = e.changedTouches[0].screenX;
+    }, false);
+
+    document.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      handleGesture();
+    }, false);
+
+    function handleGesture() {
+      if (touchendX > touchstartX + 100) {
+        // 1. Ak je otvorené manuálne pridávanie, zatvor ho
+        if (document.getElementById('manualModal').style.display === 'flex') {
+          window.zavrietModal();
+          return;
+        }
+        // 2. Ak sú otvorené informácie, zatvor ich
+        if (document.getElementById('infoModal').style.display === 'flex') {
+          window.zavrietInfo();
+          return;
+        }
+        // 3. Ak je otvorené potvrdzovacie okno vymazania, zatvor ho
+        if (document.getElementById('deleteModal').style.display === 'flex') {
+          window.zavrietDeleteModal();
+          return;
+        }
+        // 4. Ak sme v archíve a žiadne okno nie je otvorené, vráť sa na formulár
+        if (document.getElementById('archiv').style.display === 'block') {
+          window.skrytArchiv();
+        }
+      }
     }
 
     // Automatická kontrola pri každom návrate do aplikácie

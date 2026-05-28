@@ -2,7 +2,8 @@
 
 ## Zmeny v tejto verzii:
 - ✅ Mierne zmenšenie modálnych okien o 2% pre lepší vizuál
-- ✅ Implementované gesto Swipe-back (návrat z archívu potiahnutím doprava)
+- ✅ Inteligentné gesto Swipe-back (zatvára otvorené okná pred návratom z archívu)
+- ✅ Dropdown menu zmenšené o ďalšie 4% pre lepšiu stabilitu UI
 - ✅ Optimalizácia ovládania na mobilných zariadeniach
 
 ## POSTUP - Skopíruj do Git Bash:
@@ -11,7 +12,8 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v29: Swipe-back gesture and modal resizing"
+git commit -m "Update v30: Compact dropdown menu and version sync"
+git commit -m "Update v31: Improved swipe-back logic for modals"
 git push origin main --force
 ```
 
