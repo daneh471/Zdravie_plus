@@ -19,7 +19,7 @@ git push origin main --force
 ## ⏳ Čo sa stane:
 
 1. GitHub aktualizuje stránku (1-2 minúty)
-2. Service Worker detekuje zmenu (v8)
+2. Service Worker detekuje zmenu (v9)
 3. Na mobile sa zobrazí: **"Nová verzia aplikácie je dostupná"**
 4. Stlačením **OK** sa app automaticky reloaduje
 5. Nová verzia je načítaná! 🎉

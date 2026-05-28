@@ -87,6 +87,7 @@
     <button onclick="window.toggleDropdown()">☰ Menu</button>
     </div>
     <div id="dropdown" class="dropdown-content">
+      <button onclick="window.skontrolovatAktualizaciu(); window.toggleDropdown();">🔄 Skontrolovať aktualizáciu</button>
       <button onclick="window.zobrazArchiv(); window.toggleDropdown();">📄 Zobraziť archív</button>
       <button onclick="window.otvoritModal(); window.toggleDropdown();">➕ Pridať záznam manuálne</button>
       <button onclick="window.otvoritInfo(); window.toggleDropdown();">ℹ️ Zobraziť informácie</button>
@@ -126,7 +127,7 @@
     <p><strong>SYS:</strong> Nízky: < 90, Normálny: 90–140, Vysoký: > 140</p>
     <p><strong>DIA:</strong> Nízky: < 60, Normálny: 60–90, Vysoký: > 90</p>
     <p><strong>PULZ:</strong> Nízky: < 60, Normálny: 60–100, Vysoký: > 100</p>
-    <p style="font-size: 10px; color: #888; margin-top: 20px;">Verzia aplikácie: v8</p>
+    <p style="font-size: 10px; color: #888; margin-top: 20px;">Verzia aplikácie: v9</p>
     <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
   </div></div>
   <div id="deleteModal" class="modal"><div class="modal-content">
@@ -621,8 +622,10 @@
 
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').then(reg => {
+          swRegistration = reg;
           // Kontrola aktualizácií pri každom načítaní
           reg.update();
+          console.log('Service Worker zaregistrovaný.');
 
           reg.onupdatefound = () => {
             const installingWorker = reg.installing;
@@ -639,6 +642,22 @@
         });
       });
     }
+
+    // Manuálne vynútenie kontroly aktualizácie
+    window.skontrolovatAktualizaciu = function() {
+      if (swRegistration) {
+        swRegistration.update().then(() => {
+          window.showToast('Kontrola aktualizácie prebehla.');
+        });
+      }
+    };
+
+    // Automatická kontrola pri každom návrate do aplikácie
+    window.addEventListener('focus', () => {
+      if (swRegistration) {
+        swRegistration.update();
+      }
+    });
   </script>
 
   <div id="toast" style="display:none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 16px; z-index: 1000;">
