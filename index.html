@@ -614,6 +614,11 @@
     };
 
     if ('serviceWorker' in navigator) {
+      // Automatický refresh pri aktivácii nového SW
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+      });
+
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').then(reg => {
           // Kontrola aktualizácií pri každom načítaní

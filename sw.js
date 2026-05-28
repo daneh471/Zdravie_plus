@@ -20,13 +20,13 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(
-        keys.map(function (key) {
+        keys.map(function (key) { 
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim()) // Okamžité prevzatie kontroly
   );
   self.clients.matchAll().then(clients => {
     clients.forEach(client => {
