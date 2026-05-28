@@ -12,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v18: Ďalšie zmenšenie mierky rozhraní o 15-20%"
+git commit -m "Update v19: Automatická responzívna mierka pre Flip 7 aj S25"
 git push origin main --force
 ```
 
