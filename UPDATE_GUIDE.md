@@ -12,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v11: Nastavenie sýtej žltej farby pre nízke hodnoty"
+git commit -m "Update v12: Zmena na svetlo žltú farbu"
 git push origin main --force
 ```
 
