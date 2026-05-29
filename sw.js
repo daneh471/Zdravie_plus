@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zdravie-cache-v49';
+const CACHE_NAME = 'zdravie-cache-v50';
 const FILES_TO_CACHE = [
   './index.html',
   './favicon.png',

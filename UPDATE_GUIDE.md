@@ -1,9 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Použitá vibrantná oranžová (#FF8800) pre nízke hodnoty (vysoký kontrast)
-- ✅ Zlepšená čitateľnosť textu v bunkách s varovaním
-- ✅ Aktualizácia Service Workera na v49
+- ✅ Plne responzívny informačný modal bez skrolovania
+- ✅ Fluidná veľkosť písma pomocou CSS clamp pre všetky texty v modaloch
+- ✅ Kompaktný dizajn okrajov a medzier pre malé obrazovky
+- ✅ Aktualizácia Service Workera na v50
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -11,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v49: Vibrant orange for low values and UI polish"
+git commit -m "Update v50: Responsive no-scroll info modal with fluid font"
 git push origin main --force
 ```
 
