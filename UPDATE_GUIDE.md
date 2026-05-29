@@ -1,10 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Dropdown menu s adaptívnou šírkou (nerozťahuje sa zbytočne)
-- ✅ Fixnuté modálne okná pre najmenšie displeje (width: min(90vw, 24rem))
-- ✅ Zachovaný vizuálny štýl, farby a blur efekty
-- ✅ Aktualizácia Service Workera na v37
+- ✅ Striktný NO-SCROLL dizajn pre modálne okná
+- ✅ Automatické zmenšenie písma a paddingu na malých displejoch (< 670px výšky)
+- ✅ Použitie flex-shrink pre vertikálnu adaptabilitu obsahu
+- ✅ Aktualizácia Service Workera na v38
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -12,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v37: Enhanced responsiveness for dropdown and modals"
+git commit -m "Update v38: No-scroll modal design for small devices"
 git push origin main --force
 ```
 
