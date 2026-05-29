@@ -1,11 +1,11 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Responzívne škálovanie písma v archíve pomocou `clamp(10px, 2.8vw, 14px)`
-- ✅ Dynamický Grid layout: automatická šírka pre dátum a flexibilné stĺpce pre čísla
-- ✅ Uvoľnenie pixelov: zmenšenie bočných paddingov na mobiloch pre maximum miesta
-- ✅ Zámok proti orezaniu dátumu (`white-space: nowrap`)
-- ✅ Aktualizácia Service Workera na v44
+- ✅ Dokonalé vertikálne zarovnanie stĺpcov pomocou pevných percent (24% dátum, 11% čísla)
+- ✅ Špecifické zmenšenie písma pre dátum (0.75rem) na zabránenie pretekaniu
+- ✅ Jednotná štruktúra Gridu pre hlavičku aj riadky archívu
+- ✅ Garantovaná šírka 100% s box-sizingom pre všetky riadky
+- ✅ Aktualizácia Service Workera na v45
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +13,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v44: Fully responsive archive scaling and auto-grid"
+git commit -m "Update v45: Perfect column alignment with fixed percentages"
 git push origin main --force
 ```
 
