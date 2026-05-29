@@ -1,11 +1,11 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Automatické zoskupovanie záznamov podľa mesiaca a roku
-- ✅ Accordion layout: Rozbaľovacie priečinky pre jednotlivé mesiace
-- ✅ Najnovší mesiac je automaticky otvorený na vrchu zoznamu
-- ✅ Nová položka "📅 Mesačný archív" v menu
-- ✅ Aktualizácia Service Workera na v55
+- ✅ Nový dizajn hornej lišty s CSS Grid (1fr auto 1fr)
+- ✅ Pridané statické logo (favicon) na ľavú stranu lišty
+- ✅ Vycentrovaný názov "Zdravie+" so štýlovým oranžovým gradientom
+- ✅ Odstránený uvítací text a duplicitný názov pre čistejší vzhľad
+- ✅ Aktualizácia Service Workera na v56
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +13,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v55: Monthly archive with collapsible month groups"
+git commit -m "Update v56: Header redesign and title cleanup"
 git push origin main --force
 ```
 
