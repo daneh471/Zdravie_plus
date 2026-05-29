@@ -151,9 +151,9 @@
     .record-list { display: flex; flex-direction: column; gap: 0.2rem; width: 100%; padding-bottom: 2rem; margin-top: 0.5rem; }
     .archive-header { 
       display: grid; 
-      grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 1fr 0.8fr; 
+      grid-template-columns: auto repeat(5, minmax(0, 1fr)) auto; 
       font-weight: bold; 
-      font-size: 0.65rem; 
+      font-size: clamp(10px, 2.8vw, 14px); 
       text-transform: uppercase; 
       opacity: 0.6; 
       padding: 0 2px; 
@@ -163,16 +163,16 @@
     }
     .record-row { 
       display: grid; 
-      grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 1fr 0.8fr; 
+      grid-template-columns: auto repeat(5, minmax(0, 1fr)) auto; 
       align-items: center; 
       background-color: var(--card); 
       border-radius: 0.4rem; 
-      padding: 4px 2px; 
+      padding: 6px 2px; 
       box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
       width: 100%; 
       box-sizing: border-box;
       border: 1px solid rgba(128,128,128,0.1); 
-      font-size: 0.72rem; 
+      font-size: clamp(10px, 2.8vw, 14px); 
       text-align: center;
       gap: 1px;
     }
@@ -185,21 +185,13 @@
       text-align: left;
       padding-left: 2px;
       font-weight: 600;
+      white-space: nowrap;
     }
 
-    /* Mikro-responzivita pre extra malé mobily (v43) */
-    @media (max-width: 360px) {
-      .archive-header, .record-row {
-        grid-template-columns: 74px 1fr 1fr 1fr 1fr 1fr 0.6fr; /* Dátum má pevnú šírku, ostatné sa prispôsobia */
-        font-size: 10.5px; /* Zmenšené písmo */
-        gap: 2px; /* Zmenšené medzery */
-        padding-left: 0;
-        padding-right: 0;
-      }
-      .record-row > div:first-child {
-        white-space: nowrap; /* Zabezpečí, že dátum sa nezalomí */
-        padding-left: 1px; /* Minimálny ľavý padding */
-      }
+    /* Optimalizácia pre mobily - uvoľnenie priestoru (v44) */
+    @media (max-width: 480px) {
+      .app-wrapper { padding-left: 0.6rem; padding-right: 0.6rem; }
+      .record-row, .archive-header { gap: 2px; padding-left: 0; padding-right: 0; }
     }
 
     /* Vylepšené Modálne okná */
@@ -340,7 +332,7 @@
     <p><strong>SYS:</strong> Nízky: < 90, Normálny: 90–140, Vysoký: > 140</p>
     <p><strong>DIA:</strong> Nízky: < 60, Normálny: 60–90, Vysoký: > 90</p>
     <p><strong>PULZ:</strong> Nízky: < 60, Normálny: 60–100, Vysoký: > 100</p>
-    <p style="font-size: 0.65rem; color: #888; margin-top: 0.8rem;">Verzia aplikácie: v43</p>
+    <p style="font-size: 0.65rem; color: #888; margin-top: 0.8rem;">Verzia aplikácie: v44</p>
     <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
   </div></div>
   </div>
