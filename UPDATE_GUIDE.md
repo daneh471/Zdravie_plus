@@ -1,11 +1,11 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Odstránenie funkcie "Mesačný archív" a jej rozbaľovacích priečinkov
-- ✅ Návrat k jednému súvislému zoznamu záznamov v archíve (najnovšie hore)
-- ✅ Odstránenie položky "Mesačný archív" z dropdown menu
-- ✅ Pridanie `inputmode="none"` na vstupné polia v modale "Pridať manuálne" pre vynútenie vlastnej klávesnice
-- ✅ Aktualizácia Service Workera na v61
+- ✅ Kompletný audit a refaktoring JavaScript kódu
+- ✅ Implementovaná funkcia "Vrátiť späť" (Undo) po vymazaní záznamu
+- ✅ Pridaná validácia prázdnych polí pred uložením
+- ✅ Zjednotená logika spracovania desatinných miest (. aj ,)
+- ✅ Aktualizácia Service Workera na v63
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +13,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v61: Revert monthly archive, disable system keyboard"
+git commit -m "Update v63: JS Audit, Validation and Undo functionality"
 git push origin main --force
 ```
 
