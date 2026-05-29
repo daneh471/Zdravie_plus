@@ -1,11 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Nový dizajn hornej lišty s CSS Grid (1fr auto 1fr)
-- ✅ Pridané statické logo (favicon) na ľavú stranu lišty
-- ✅ Vycentrovaný názov "Zdravie+" so štýlovým oranžovým gradientom
-- ✅ Odstránený uvítací text a duplicitný názov pre čistejší vzhľad
-- ✅ Aktualizácia Service Workera na v56
+- ✅ Zväčšený favicon v hornej lište pomocou responzívneho `clamp(30px, 8vw, 38px)`
+- ✅ Optimalizované vertikálne zarovnanie všetkých prvkov v headeri
+- ✅ Odstránené fixné obmedzenia výšky loga
+- ✅ Aktualizácia Service Workera na v57
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v56: Header redesign and title cleanup"
+git commit -m "Update v57: Enlarged responsive favicon in header"
 git push origin main --force
 ```
 
