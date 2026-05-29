@@ -1,12 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Transformácia archívu na profesionálnu tabuľku (Real Table Layout)
-- ✅ Identický Grid pre hlavičku aj dáta (24% | 5x12% | 16%)
-- ✅ Zebra pruhovanie riadkov a spodné linky (borders) pre lepšiu čitateľnosť
-- ✅ Fixné písmo 11px a nulové zalamovanie dátumu
-- ✅ Absolútne vycentrovanie hodnôt a tlačidla vymazať
-- ✅ Aktualizácia Service Workera na v46
+- ✅ Skrátený formát dátumu v archíve (DD.MM.YY) pre lepšiu prehľadnosť
+- ✅ Zmena farby pre nízke hodnoty zo žltej na svetlooranžovú (#ffb366)
+- ✅ Optimalizácia logiky triedenia pre 2-ciferné roky
+- ✅ Aktualizácia Service Workera na v47
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -14,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v46: Professional table layout with zebra striping"
+git commit -m "Update v47: Short date format and light orange low values"
 git push origin main --force
 ```
 

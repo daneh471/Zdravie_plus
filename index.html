@@ -322,7 +322,7 @@
   <div id="manualModal" class="modal"><div class="modal-content">
     <h3>Manuálne pridanie záznamu</h3>
     <div class="modal-form-grid">
-      <input type="text" id="manualDatum" placeholder="Dátum (dd.mm.rrrr)">
+      <input type="text" id="manualDatum" placeholder="Dátum (dd.mm.rr)">
       <input type="tel" id="manualInr" placeholder="INR" pattern="[0-9./]*" inputmode="decimal">
       <input type="tel" id="manualTab" placeholder="TAB" pattern="[0-9./]*" inputmode="decimal">
       <input type="tel" id="manualSys" placeholder="SYS" pattern="[0-9./]*" inputmode="decimal">
@@ -339,7 +339,7 @@
     <p><strong>SYS:</strong> Nízky: < 90, Normálny: 90–140, Vysoký: > 140</p>
     <p><strong>DIA:</strong> Nízky: < 60, Normálny: 60–90, Vysoký: > 90</p>
     <p><strong>PULZ:</strong> Nízky: < 60, Normálny: 60–100, Vysoký: > 100</p>
-    <p style="font-size: 0.65rem; color: #888; margin-top: 0.8rem;">Verzia aplikácie: v46</p>
+    <p style="font-size: 0.65rem; color: #888; margin-top: 0.8rem;">Verzia aplikácie: v47</p>
     <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
   </div></div>
   </div>
@@ -671,12 +671,12 @@
       let lowColor, highColor, normalColor, textColor;
       
       if (isDark) {
-        lowColor = '#ffff99'; // Svetlá žltá
+        lowColor = '#ffb366'; // Svetlooranžová
         highColor = '#ff3333'; // Jasná červená
         normalColor = '#33cc33'; // Jasná zelená
         textColor = '#000';
       } else {
-        lowColor = '#ffff99'; // Svetlá žltá
+        lowColor = '#ffb366'; // Svetlooranžová
         highColor = '#ff6666'; // Svetlá jasná červená
         normalColor = '#66dd66'; // Svetlá jasná zelená
         textColor = '#000';
@@ -699,15 +699,19 @@
       `;
       
       const sorted = window.zaznamy.sort((a, b) => {
-        const [d1, m1, y1] = a.datum.split('.').map(Number);
-        const [d2, m2, y2] = b.datum.split('.').map(Number);
+        let [d1, m1, y1] = a.datum.split('.').map(Number);
+        let [d2, m2, y2] = b.datum.split('.').map(Number);
+        if (y1 < 100) y1 += 2000;
+        if (y2 < 100) y2 += 2000;
         return new Date(y2, m2 -1, d2) - new Date(y1, m1 -1, d1);
       });
 
       sorted.forEach((z) => {
+        // Skrátenie roku na 2 číslice pre lepší fit (napr. 25.05.2026 -> 25.05.26)
+        const datumShort = z.datum.length === 10 ? z.datum.substring(0, 6) + z.datum.slice(-2) : z.datum;
         container.innerHTML += `
           <div class="record-row">
-            <div>${z.datum}</div>
+            <div>${datumShort}</div>
             <div style="${window.getColorStyle(z.inr, 'inr')} border-radius:3px;">${z.inr || '-'}</div>
             <div>${z.tab || '-'}</div>
             <div style="${window.getColorStyle(z.sys, 'sys')} border-radius:3px;">${z.sys || '-'}</div>
@@ -824,7 +828,8 @@
 
     window.formatDatum = function() {
       const d = new Date();
-      return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+      const yy = String(d.getFullYear()).slice(-2);
+      return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${yy}`;
     };
 
     window.showToast = function(message) {
