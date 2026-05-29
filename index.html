@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="sk" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
@@ -69,25 +69,35 @@
       z-index: 1000;
       height: calc(3.8rem + env(safe-area-inset-top));
       background-color: var(--header); 
-      padding: env(safe-area-inset-top) 0.8rem 0 0.8rem; 
-      display: flex; 
-      justify-content: space-between; 
+      padding: env(safe-area-inset-top) 1rem 0 1rem; 
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center; 
       box-shadow: 0 0.125rem 0.3125rem rgba(0,0,0,0.1); 
+      box-sizing: border-box;
     }
-    header > div { display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; flex: 1; width: 100%; }
-    header button { background-color: transparent; border: none; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; color: var(--text); display: flex; align-items: center; min-width: 2.75rem; min-height: 2.75rem; justify-content: center; }
+    .header-logo { height: 1.8rem; width: auto; justify-self: start; pointer-events: none; }
+    .header-title { 
+      justify-self: center;
+      font-weight: 800; 
+      font-size: 1.3rem; 
+      background: linear-gradient(45deg, #FF8800, #ffb366); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      white-space: nowrap;
+    }
+    header button { background-color: transparent; border: none; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; color: var(--text); display: flex; align-items: center; min-width: 2.75rem; min-height: 2.75rem; justify-content: center; justify-self: end; }
     h1 { margin: 1rem 0 1.5rem 0; font-size: 1.6rem; font-weight: 700; }
     
     /* Upravené Dropdown Menu pre lepšiu mobilitu */
     .dropdown-content { 
       display: none; 
       position: absolute; 
-      right: 1rem; 
+      right: 0.5rem; 
       top: calc(3.8rem + env(safe-area-inset-top)); 
       background-color: var(--card); 
-      width: auto;
-      max-width: calc(100vw - 2rem); 
+      width: max-content;
+      max-width: 90vw; 
       box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.3); 
       z-index: 1001; 
       border-radius: 1rem; 
@@ -95,13 +105,14 @@
       max-height: calc(100dvh - 5rem);
       display: flex;
       flex-direction: column;
-      padding: 0.5rem; 
+      padding: 0.5rem;
+      box-sizing: border-box;
       border: 1px solid rgba(128,128,128,0.2); 
     }
     .dropdown-content button { 
       display: block; 
       width: 100%; 
-      padding: 1rem 1.2rem; 
+      padding: 0.625rem 0.9375rem; 
       border: none; 
       background: none; 
       text-align: left; 
@@ -113,7 +124,29 @@
       white-space: nowrap;
     }
     .dropdown-content button:last-child { border-bottom: none; }
-    .dropdown-content button:hover { background-color: rgba(0,0,0,0.1); }
+    .dropdown-content button:hover { background-color: rgba(255,255,255,0.1); }
+
+    /* Nová číselná klávesnica (Keypad) v51 */
+    .numeric-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.4rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      grid-column: span 2;
+    }
+    .numeric-keypad button {
+      padding: 0.8rem;
+      font-size: 1.2rem;
+      border-radius: 0.8rem;
+      background-color: var(--card);
+      color: var(--text);
+      border: 1px solid rgba(128,128,128,0.3);
+      cursor: pointer;
+      font-weight: 600;
+      min-height: 3rem;
+    }
+    .numeric-keypad button:active { background-color: rgba(128,128,128,0.2); }
 
     .form-container, .modal-form-grid { 
       margin: 0 auto; 
@@ -129,6 +162,7 @@
     }
 
     input { 
+
       min-width: 0; 
       padding: 0.8rem; 
       font-size: 1rem; 
@@ -146,9 +180,29 @@
     button.small { background-color: #666; color: white; border: none; padding: 0.5rem 0.8rem; font-size: 0.8rem; cursor: pointer; margin-top: 0.3rem; border-radius: 0.5rem; }
     button.small:hover { background-color: #555; } /* Keep px for hover effect */
     
-    /* Ultra-kompaktná tabuľka archívu v46 */
+    /* Mesačný archív a Accordion UI v55 */
     #archiv { display: block; width: 100%; overflow-x: hidden; padding: 0; box-sizing: border-box; }
-    .record-list { display: flex; flex-direction: column; width: 100%; padding-bottom: 2rem; margin-top: 0.5rem; border: 1px solid rgba(128,128,128,0.1); border-radius: 0.4rem; overflow: hidden; }
+    .archive-month-group { margin-bottom: 0.8rem; width: 100%; }
+    .archive-month-header { 
+      background-color: var(--header); 
+      padding: 12px 14px; 
+      border-radius: 0.8rem; 
+      cursor: pointer; 
+      font-weight: 700; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      border: 1px solid rgba(128,128,128,0.2);
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: background-color 0.2s;
+    }
+    .archive-month-header:active { background-color: rgba(128,128,128,0.2); }
+    .archive-month-content { display: none; padding-top: 0.3rem; }
+    .archive-month-group.open .archive-month-content { display: block; }
+    .archive-month-group.open .archive-month-header { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+
+    .record-list { display: flex; flex-direction: column; width: 100%; border: 1px solid rgba(128,128,128,0.1); border-bottom-left-radius: 0.8rem; border-bottom-right-radius: 0.8rem; overflow: hidden; }
     .archive-header { 
       display: grid; 
       grid-template-columns: 24% 12% 12% 12% 12% 12% 16%; 
@@ -293,15 +347,14 @@
     </div>
   </div>
   <header style="display:none;">
-    <div>
-      <span id="currentUserName" style="margin-right: 1.2rem;"></span>
+    <img src="favicon.png" class="header-logo" alt="Logo">
+    <span class="header-title">Zdravie+</span>
     <button onclick="window.toggleDropdown()">☰ Menu</button>
-    </div>
     <div id="dropdown" class="dropdown-content">
       <button onclick="window.zobrazArchiv(); window.toggleDropdown();">📄 Zobraziť archív</button>
+      <button onclick="window.zobrazArchiv(); window.toggleDropdown();">📅 Mesačný archív</button>
       <button onclick="window.otvoritModal(); window.toggleDropdown();">➕ Pridať záznam manuálne</button>
       <button onclick="window.otvoritInfo(); window.toggleDropdown();">ℹ️ Zobraziť informácie</button>
-      <button id="darkModeBtn" onclick="window.toggleDarkMode(); window.toggleDropdown();">🌙 Prepnúť režim</button>
       <button onclick="window.logout(); window.toggleDropdown();">🚪 Odhlásiť sa</button>
     </div>
   </header>
@@ -322,12 +375,28 @@
   <div id="manualModal" class="modal"><div class="modal-content">
     <h3>Manuálne pridanie záznamu</h3>
     <div class="modal-form-grid">
-      <input type="text" id="manualDatum" placeholder="Dátum (dd.mm.rr)">
-      <input type="tel" id="manualInr" placeholder="INR" pattern="[0-9./]*" inputmode="decimal">
-      <input type="tel" id="manualTab" placeholder="TAB" pattern="[0-9./]*" inputmode="decimal">
-      <input type="tel" id="manualSys" placeholder="SYS" pattern="[0-9./]*" inputmode="decimal">
-      <input type="tel" id="manualDia" placeholder="DIA" pattern="[0-9./]*" inputmode="decimal">
-      <input type="tel" id="manualPulse" placeholder="PULZ" pattern="[0-9./]*" inputmode="decimal">
+      <input type="text" id="manualDatum" placeholder="Dátum (dd.mm.rr)" onfocus="window.setFocused(this)">
+      <input type="tel" id="manualInr" placeholder="INR" pattern="[0-9./]*" inputmode="decimal" onfocus="window.setFocused(this)">
+      <input type="tel" id="manualTab" placeholder="TAB" pattern="[0-9./]*" inputmode="decimal" onfocus="window.setFocused(this)">
+      <input type="tel" id="manualSys" placeholder="SYS" pattern="[0-9./]*" inputmode="decimal" onfocus="window.setFocused(this)">
+      <input type="tel" id="manualDia" placeholder="DIA" pattern="[0-9./]*" inputmode="decimal" onfocus="window.setFocused(this)">
+      <input type="tel" id="manualPulse" placeholder="PULZ" pattern="[0-9./]*" inputmode="decimal" onfocus="window.setFocused(this)">
+      
+      <div class="numeric-keypad">
+        <button onclick="window.keypadInput('1')">1</button>
+        <button onclick="window.keypadInput('2')">2</button>
+        <button onclick="window.keypadInput('3')">3</button>
+        <button onclick="window.keypadInput('4')">4</button>
+        <button onclick="window.keypadInput('5')">5</button>
+        <button onclick="window.keypadInput('6')">6</button>
+        <button onclick="window.keypadInput('7')">7</button>
+        <button onclick="window.keypadInput('8')">8</button>
+        <button onclick="window.keypadInput('9')">9</button>
+        <button onclick="window.keypadInput('.')">.</button>
+        <button onclick="window.keypadInput('0')">0</button>
+        <button onclick="window.keypadInput('DEL')" style="color: #ff4444;">⌫</button>
+      </div>
+
       <button class="main" onclick="window.ulozitManual(); return false;">Uložiť záznam</button>
     </div>
     <button class="main" onclick="window.zavrietModal()">Zatvoriť</button>
@@ -339,7 +408,7 @@
     <p><strong>SYS:</strong> Nízky: < 90, Normálny: 90–140, Vysoký: > 140</p>
     <p><strong>DIA:</strong> Nízky: < 60, Normálny: 60–90, Vysoký: > 90</p>
     <p><strong>PULZ:</strong> Nízky: < 60, Normálny: 60–100, Vysoký: > 100</p>
-    <p style="font-size: 0.65rem; color: #888; margin-top: 0.8rem;">Verzia aplikácie: v50</p>
+    <p style="font-size: 0.65rem; color: #888; margin-top: 0.8rem;">Verzia aplikácie: v55</p>
     <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
   </div></div>
   </div>
@@ -547,14 +616,6 @@
         document.querySelector('header').style.display = 'flex';
         document.querySelector('h1').style.display = 'block';
         document.getElementById('formular').style.display = 'block';
-
-        const userQuery = window.query(window.collection(window.db, 'users'), window.where('uid', '==', user.uid));
-        const userSnap = await window.getDocs(userQuery);
-        if (!userSnap.empty) {
-          const userData = userSnap.docs[0].data();
-          document.getElementById('currentUserName').innerText = 'Vitaj, ' + userData.name + ' 😊';
-        }
-
         window.loadRecords();
       } else {
         window.currentUser.user = null;
@@ -639,6 +700,27 @@
       }
     };
 
+    // Logika pre vlastnú klávesnicu v51
+    let lastFocusedInput = null;
+    window.setFocused = function(el) {
+      lastFocusedInput = el;
+    };
+
+    window.keypadInput = function(val) {
+      if (!lastFocusedInput) return;
+      if (val === 'DEL') {
+        lastFocusedInput.value = lastFocusedInput.value.slice(0, -1);
+      } else {
+        // Automatická bodka pre dátum po dvoch a piatich znakoch
+        if (lastFocusedInput.id === 'manualDatum') {
+          if ((lastFocusedInput.value.length === 2 || lastFocusedInput.value.length === 5) && val !== '.') {
+            lastFocusedInput.value += '.';
+          }
+        }
+        lastFocusedInput.value += val;
+      }
+    };
+
     // Pomocná funkcia na premenu textu (aj zlomkov) na číslo
     window.parseValue = function(val) {
       if (!val) return null;
@@ -660,7 +742,6 @@
       const val = window.parseValue(valStr);
       if (val === null) return '';
 
-      const isDark = document.body.classList.contains('dark');
       let low, high;
       if (type === 'inr') { low = 2; high = 3; }
       else if (type === 'sys') { low = 90; high = 140; }
@@ -668,19 +749,10 @@
       else if (type === 'pulse') { low = 60; high = 100; }
       else return '';
 
-      let lowColor, highColor, normalColor, textColor;
-      
-      if (isDark) {
-        lowColor = '#FF8800'; // Vibrantná oranžová (v49)
-        highColor = '#ff3333'; // Jasná červená
-        normalColor = '#33cc33'; // Jasná zelená
-        textColor = '#000';
-      } else {
-        lowColor = '#FF8800'; // Vibrantná oranžová (v49)
-        highColor = '#ff6666'; // Svetlá jasná červená
-        normalColor = '#66dd66'; // Svetlá jasná zelená
-        textColor = '#000';
-      }
+      const lowColor = '#FF8800'; // Vibrantná oranžová
+      const highColor = '#ff3333'; // Jasná červená
+      const normalColor = '#33cc33'; // Jasná zelená
+      const textColor = '#000';
 
       if (val < low) return `background-color: ${lowColor}; color: ${textColor}; font-weight: bold;`;
       if (val > high) return `background-color: ${highColor}; color: ${textColor}; font-weight: bold;`;
@@ -746,26 +818,6 @@
     };
 
     // Zvyšok funkcií
-    window.toggleDarkMode = function() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('darkMode', isDark);
-      const btn = document.getElementById('darkModeBtn');
-      btn.innerText = isDark ? '☀️ Prepnúť režim' : '🌙 Prepnúť režim';
-      document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#0d0d0d' : '#f5f5f5');
-    };
-
-    // Načítaj dark mode nastavenie (DEFAULT = TRUE)
-    const darkModeSetting = localStorage.getItem('darkMode');
-    const themeMeta = document.querySelector('meta[name="theme-color"]');
-    if (darkModeSetting === null || darkModeSetting === 'true') {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('darkMode', 'true');
-      document.getElementById('darkModeBtn').innerText = '☀️ Prepnúť režim';
-      themeMeta.setAttribute('content', '#0d0d0d');
-    } else {
-      document.getElementById('darkModeBtn').innerText = '🌙 Prepnúť režim';
-      themeMeta.setAttribute('content', '#f5f5f5');
-    }
 
     // Splash screen - 2 sekundy
     window.hideSplash = function() {

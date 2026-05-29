@@ -1,10 +1,11 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Plne responzívny informačný modal bez skrolovania
-- ✅ Fluidná veľkosť písma pomocou CSS clamp pre všetky texty v modaloch
-- ✅ Kompaktný dizajn okrajov a medzier pre malé obrazovky
-- ✅ Aktualizácia Service Workera na v50
+- ✅ Automatické zoskupovanie záznamov podľa mesiaca a roku
+- ✅ Accordion layout: Rozbaľovacie priečinky pre jednotlivé mesiace
+- ✅ Najnovší mesiac je automaticky otvorený na vrchu zoznamu
+- ✅ Nová položka "📅 Mesačný archív" v menu
+- ✅ Aktualizácia Service Workera na v55
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -12,7 +13,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
 git add .
-git commit -m "Update v50: Responsive no-scroll info modal with fluid font"
+git commit -m "Update v55: Monthly archive with collapsible month groups"
 git push origin main --force
 ```
 
