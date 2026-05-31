@@ -2,7 +2,7 @@
 
 ## Krok 1: Vytvor repo na GitHub
 1. Choď na https://github.com/new
-2. Názov: `zdravie-plus` alebo podobne
+2. Názov: `Zdravie_plus`
 3. Klikni "Create repository"
 
 ## Krok 2: Pushni kód
