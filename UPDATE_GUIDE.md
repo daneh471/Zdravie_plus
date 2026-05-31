@@ -1,14 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Responzívne prihlasovacie a registračné okno bez nutnosti skrolovania
-- ✅ Optimalizácia informačného modálu pre všetky veľkosti mobilov
-- ✅ Oprava pretekania textu "Registrácia" v modrom tlačidle
-- ✅ Jasné upozornenie "Meno je obsadené" pri registrácii (prevencia duplicít)
-- ✅ Vylepšené chybové hlášky priamo vo formulároch
-- ✅ Oprava chyby (auth/invalid-email) pri menách s medzerami
-- ✅ Úprava zobrazenia verzie na v88
-- ✅ Aktualizácia Service Workera na v88
+- ✅ Reštart verziovania - nová schéma v1.0, v1.1...
+- ✅ Konsolidácia predchádzajúcich opráv responzivity a registrácií
+- ✅ Úprava zobrazenia verzie na v1.0
+- ✅ Aktualizácia Service Workera na v1.0
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -16,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v88: Fixed invalid-email error for names with spaces"
+git commit -m "Update v1.0: Reset versioning and final UI polish"
 git push origin main --force
 ```
 
