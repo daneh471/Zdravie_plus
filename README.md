@@ -1,6 +1,6 @@
 # Zdravie+
 
-`Zdravie+` is a lightweight offline-capable web app for tracking health metrics such as INR, medication tablets, blood pressure, and pulse.
+`Zdravie+` is a lightweight PWA for tracking health metrics such as INR, medication tablets, blood pressure, and pulse, with data synced via Firebase.
 
 ## Files
 
@@ -11,8 +11,8 @@
 
 ## Features
 
-- User name entry and welcome screen
-- Save daily measurements to localStorage
+- User registration and login via PIN (Firebase Auth)
+- Save daily measurements to Cloud Firestore (Real-time syncing)
 - Archive view with delete support
 - Manual record entry
 - Basic PWA installability and offline cache
@@ -28,5 +28,5 @@
 
 ## Notes
 
-- Records are stored in `localStorage` and persist between sessions in the same browser.
-- To reset the app, clear local site data or remove stored entries from the browser.
+- Records are stored in **Firebase Cloud Firestore** and are linked to your account.
+- Authentication is handled by **Firebase Auth** using an internal email generated from the username and PIN.

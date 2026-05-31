@@ -1,11 +1,11 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Kompletný audit a refaktoring JavaScript kódu
-- ✅ Implementovaná funkcia "Vrátiť späť" (Undo) po vymazaní záznamu
-- ✅ Pridaná validácia prázdnych polí pred uložením
-- ✅ Zjednotená logika spracovania desatinných miest (. aj ,)
-- ✅ Aktualizácia Service Workera na v72
+- ✅ Návrat k Firebase (Auth & Cloud Firestore)
+- ✅ Cloudová synchronizácia dát medzi zariadeniami
+- ✅ Oprava radenia záznamov v archíve
+- ✅ Rozšírené informácie o TAB, INR, SYS, DIA a PULZ
+- ✅ Aktualizácia Service Workera na v77
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +13,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v72: Optimized sync and version bump"
+git commit -m "Update v77: Updated info modal and health ranges"
 git push origin main --force
 ```
 

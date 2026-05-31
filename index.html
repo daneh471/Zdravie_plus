@@ -177,8 +177,13 @@
     </div></div>
 
     <div id="infoModal" class="modal"><div class="modal-content">
-      <h3>Informácie</h3>
-      <p><strong>INR:</strong> 2–3 | <strong>SYS:</strong> 90–140 | <strong>DIA:</strong> 60–90</p>
+      <h3>Informácie o hodnotách</h3>
+      <p><strong>TAB:</strong> Tabletka (počet tabletiek)</p>
+      <hr style="opacity:0.2; margin: 10px 0;">
+      <p><strong>INR:</strong> &lt;2 Nízky | 2–3 Normálny | &gt;3 Vysoký</p>
+      <p><strong>SYS:</strong> &lt;90 Nízky | 90–140 Normálny | &gt;140 Vysoký</p>
+      <p><strong>DIA:</strong> &lt;60 Nízky | 60–90 Normálny | &gt;90 Vysoký</p>
+      <p><strong>PULZ:</strong> &lt;60 Nízky | 60–100 Normálny | &gt;100 Vysoký</p>
       <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
     </div></div>
 
@@ -215,7 +220,10 @@
     window.registerUser = async function() {
       const name = document.getElementById('regName').value.trim();
       const pin = document.getElementById('regPin').value;
+      const confirmPin = document.getElementById('regPinConfirm').value;
+
       if (!name || pin.length < 4) return alert('Meno a PIN (min 4 číslice)!');
+      if (pin !== confirmPin) return alert('PIN sa nezhodujú!');
       try {
         const email = `${name}${Date.now()}@zdravie.local`;
         const res = await createUserWithEmailAndPassword(auth, email, pin);
@@ -245,6 +253,7 @@
         document.getElementById('formular').style.display = 'block';
         window.loadRecords();
       } else {
+        window.user = null; 
         document.getElementById('authScreen').style.display = 'flex';
         document.querySelector('header').style.display = 'none';
         document.getElementById('formular').style.display = 'none';
@@ -252,10 +261,13 @@
       }
     });
 
+    // Cache pre záznamy, aby sme ich neťahali z Firebase pri každom prepnutí okna
+    window.zaznamy = [];
     window.loadRecords = async function() {
       const q = query(collection(db, 'zaznamy'), where('userId', '==', window.user.uid));
       const snap = await getDocs(q);
       window.zaznamy = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (document.getElementById('archiv').style.display === 'block') window.zobrazArchiv();
     };
 
     window.pridatZaznam = async function() {
@@ -275,6 +287,7 @@
       window.loadRecords();
     };
 
+    // Ostatné helper funkcie ostávajú zachované
     window.getColorStyle = (valStr, type) => {
       const val = parseFloat(valStr?.replace(',','.'));
       if (isNaN(val)) return '';
@@ -282,6 +295,7 @@
       if (type === 'inr') { low = 2; high = 3; }
       else if (type === 'sys') { low = 90; high = 140; }
       else if (type === 'dia') { low = 60; high = 90; }
+      else if (type === 'pulse') { low = 60; high = 100; }
       else return '';
       if (val < low) return 'background:#f80;color:#000;font-weight:bold;';
       if (val > high) return 'background:#f33;color:#000;font-weight:bold;';
@@ -293,7 +307,11 @@
       document.getElementById('archiv').style.display = 'block';
       const list = document.getElementById('archivList');
       list.innerHTML = '<div class="archive-header"><div>Dátum</div><div>INR</div><div>Tab</div><div>Sys</div><div>Dia</div><div>Pulz</div><div></div></div>';
-      window.zaznamy.sort((a,b) => b.datum.localeCompare(a.datum)).forEach(r => {
+      window.zaznamy.sort((a,b) => {
+        const [da, ma, ya] = a.datum.split('.').map(Number);
+        const [db, mb, yb] = b.datum.split('.').map(Number);
+        return new Date(2000+yb, mb-1, db) - new Date(2000+ya, ma-1, da);
+      }).reverse().forEach(r => {
         list.innerHTML += `<div class="record-row">
           <div>${r.datum}</div>
           <div style="${window.getColorStyle(r.inr,'inr')}">${r.inr||'-'}</div>
@@ -307,9 +325,11 @@
     };
 
     window.vymazatZaznam = async (id) => { if (confirm('Vymazať?')) { await deleteDoc(doc(db, 'zaznamy', id)); window.loadRecords(); window.zobrazArchiv(); }};
+
     window.formatDatum = () => { const d = new Date(); return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`; };
     window.skrytArchiv = () => { document.getElementById('archiv').style.display = 'none'; document.getElementById('formular').style.display = 'block'; };
     window.logout = () => signOut(auth);
+
     window.toggleDropdown = () => { const d = document.getElementById('dropdown'); d.style.display = (d.style.display === 'flex') ? 'none' : 'flex'; };
     window.otvoritModal = () => document.getElementById('manualModal').style.display = 'flex';
     window.zavrietModal = () => document.getElementById('manualModal').style.display = 'none';
@@ -320,9 +340,11 @@
     let lastFocused;
     window.setFocused = (el) => lastFocused = el;
     window.keypadInput = (v) => { if (!lastFocused) return; if (v === 'DEL') lastFocused.value = lastFocused.value.slice(0,-1); else if (v === 'CLEAR') lastFocused.value = ''; else lastFocused.value += v; };
+    
     window.ulozitManual = async () => {
       const data = { userId: window.user.uid, datum: document.getElementById('manualDatum').value, inr: document.getElementById('manualInr').value, tab: document.getElementById('manualTab').value, sys: document.getElementById('manualSys').value, dia: document.getElementById('manualDia').value, pulse: document.getElementById('manualPulse').value };
-      await addDoc(collection(db, 'zaznamy'), data); window.zavrietModal(); window.loadRecords(); window.showToast('Uložené');
+      await addDoc(collection(db, 'zaznamy'), data);
+      window.zavrietModal(); window.loadRecords(); window.showToast('Uložené');
     };
 
     if ('serviceWorker' in navigator) {
@@ -345,7 +367,7 @@
     window.showUpdateUI = () => {
       const dialog = document.getElementById('customDialog');
       document.getElementById('dialogTitle').innerText = 'Aktualizácia';
-      document.getElementById('dialogMessage').innerText = 'Nová verzia (v72) je k dispozícii. Kliknite na OK pre načítanie.';
+      document.getElementById('dialogMessage').innerText = 'Nová verzia (v77) je k dispozícii. Kliknite na OK pre načítanie.';
       document.getElementById('dialogOkBtn').onclick = () => window.location.reload(true);
       dialog.style.display = 'flex';
     };
