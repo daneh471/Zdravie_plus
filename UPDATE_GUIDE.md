@@ -1,10 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Reštart verziovania - nová schéma v1.0, v1.1...
-- ✅ Konsolidácia predchádzajúcich opráv responzivity a registrácií
-- ✅ Úprava zobrazenia verzie na v1.0
-- ✅ Aktualizácia Service Workera na v1.0
+- ✅ Zakázanie našeptávania (autocomplete) v poliach pre pridávanie dát
+- ✅ Vyčistenie polí pre lepšiu používateľskú skúsenosť na mobiloch
+- ✅ Úprava zobrazenia verzie na v1.3
+- ✅ Aktualizácia Service Workera na v1.3
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -12,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v1.0: Reset versioning and final UI polish"
+git commit -m "Update v1.3: Disable autocomplete on entry fields"
 git push origin main --force
 ```
 

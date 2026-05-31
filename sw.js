@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zdravie-cache-v1.0';
+const CACHE_NAME = 'zdravie-cache-v1.3';
 const FILES_TO_CACHE = [
   './index.html',
   './favicon.png',
@@ -28,12 +28,6 @@ self.addEventListener('activate', function (e) {
       );
     }).then(() => self.clients.claim()) // Okamžité prevzatie kontroly
   );
-  self.clients.matchAll().then(clients => {
-    clients.forEach(client => {
-      client.postMessage({ type: 'UPDATE_AVAILABLE' });
-    });
-  });
-  return self.clients.claim();
 });
 
 // Network-first stratégia s detekciou updatu
