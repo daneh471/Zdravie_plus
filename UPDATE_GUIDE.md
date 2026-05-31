@@ -5,7 +5,7 @@
 - ✅ Implementovaná funkcia "Vrátiť späť" (Undo) po vymazaní záznamu
 - ✅ Pridaná validácia prázdnych polí pred uložením
 - ✅ Zjednotená logika spracovania desatinných miest (. aj ,)
-- ✅ Aktualizácia Service Workera na v63
+- ✅ Aktualizácia Service Workera na v64
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +13,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v63: JS Audit, Validation and Undo functionality"
+git commit -m "Update v64: JS Audit, Validation and Undo functionality"
 git push origin main --force
 ```
 

@@ -18,7 +18,7 @@ git push -u origin main
 2. Source: main branch
 3. Save
 
-Hotovo! App bude dostupná na: https://daneh471.github.io/zdravie-plus/
+Hotovo! App bude dostupná na: https://daneh471.github.io/Zdravie_plus/
 
 ## Updates na mobile
 - Keď pushneš novú verziu na GitHub
