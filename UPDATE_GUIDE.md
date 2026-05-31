@@ -4,8 +4,10 @@
 - ✅ Responzívne prihlasovacie a registračné okno bez nutnosti skrolovania
 - ✅ Optimalizácia informačného modálu pre všetky veľkosti mobilov
 - ✅ Oprava pretekania textu "Registrácia" v modrom tlačidle
-- ✅ Úprava zobrazenia verzie na v85
-- ✅ Aktualizácia Service Workera na v85
+- ✅ Jasné upozornenie "Meno je obsadené" pri registrácii (prevencia duplicít)
+- ✅ Vylepšené chybové hlášky priamo vo formulároch
+- ✅ Úprava zobrazenia verzie na v87
+- ✅ Aktualizácia Service Workera na v87
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +15,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v85: Fixed button text overflow in auth screen"
+git commit -m "Update v87: Improved duplicate name checking and UI feedback"
 git push origin main --force
 ```
 

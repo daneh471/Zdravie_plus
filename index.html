@@ -205,7 +205,7 @@
     </div></div>
 
     <div id="toast" style="display:none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 0.8rem 1.2rem; border-radius: 0.5rem; z-index: 1000;"></div>
-    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v85</div>
+    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v87</div>
   </div>
 
   <script type="module">
@@ -247,33 +247,51 @@
       dialog.style.display = 'flex';
     };
 
-    window.showLogin = () => { document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; };
-    window.showRegister = () => { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; };
+    window.showLogin = () => { document.getElementById('loginForm').style.display = 'block'; document.getElementById('registerForm').style.display = 'none'; document.getElementById('loginError').innerText = ''; };
+    window.showRegister = () => { document.getElementById('loginForm').style.display = 'none'; document.getElementById('registerForm').style.display = 'block'; document.getElementById('regError').innerText = ''; };
 
     window.registerUser = async function() {
       const name = document.getElementById('regName').value.trim();
       const pin = document.getElementById('regPin').value;
       const confirmPin = document.getElementById('regPinConfirm').value;
+      const errorEl = document.getElementById('regError');
+      errorEl.innerText = '';
 
       if (!name || pin.length < 4) return window.showAlert('Meno a PIN (min 4 číslice)!');
       if (pin !== confirmPin) return window.showAlert('PIN sa nezhodujú!');
       try {
+        // Kontrola, či meno už existuje v databáze
+        const q = query(collection(db, 'users'), where('name', '==', name));
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          errorEl.innerText = `Meno "${name}" je už obsadené.`;
+          return window.showAlert(`Meno "${name}" je už obsadené. Zvoľte si, prosím, iné.`);
+        }
         const email = `${name}${Date.now()}@zdravie.local`;
         const res = await createUserWithEmailAndPassword(auth, email, pin);
         await addDoc(collection(db, 'users'), { uid: res.user.uid, name: name, email: email });
         window.showAlert('Účet úspešne vytvorený!');
-      } catch (e) { alert(e.message); }
+      } catch (e) { errorEl.innerText = 'Chyba pri registrácii.'; window.showAlert(e.message); }
     };
 
     window.loginUser = async function() {
       const name = document.getElementById('loginName').value.trim();
       const pin = document.getElementById('loginPin').value;
+      const errorEl = document.getElementById('loginError');
+      errorEl.innerText = '';
+
       try {
         const q = query(collection(db, 'users'), where('name', '==', name));
         const snap = await getDocs(q);
-        if (snap.empty) return window.showAlert('Užívateľ s týmto menom neexistuje.');
+        if (snap.empty) {
+          errorEl.innerText = 'Užívateľ neexistuje.';
+          return window.showAlert('Užívateľ s týmto menom neexistuje.');
+        }
         await signInWithEmailAndPassword(auth, snap.docs[0].data().email, pin);
-      } catch (e) { window.showAlert('Nesprávny PIN kód.'); }
+      } catch (e) { 
+        errorEl.innerText = 'Nesprávny PIN kód.';
+        window.showAlert('Nesprávny PIN kód.'); 
+      }
     };
 
     onAuthStateChanged(auth, (user) => {
@@ -409,7 +427,7 @@
     window.showUpdateUI = () => {
       const dialog = document.getElementById('customDialog');
       document.getElementById('dialogTitle').innerText = 'Nová verzia';
-      document.getElementById('dialogMessage').innerText = 'Aktualizácia (v85) je pripravená. Kliknite na OK pre načítanie.';
+      document.getElementById('dialogMessage').innerText = 'Aktualizácia (v87) je pripravená. Kliknite na OK pre načítanie.';
       document.getElementById('dialogCancelBtn').style.display = 'none';
       document.getElementById('dialogOkBtn').onclick = () => window.location.reload(true);
       dialog.style.display = 'flex';
