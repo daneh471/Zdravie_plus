@@ -1,10 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Cache Buster zvýšený na v2.8 pre spoľahlivejšiu aktualizáciu
-- ✅ Oprava nekonzistentných verzií v prekladoch (SK/DE)
-- ✅ Úprava zobrazenia verzie na v2.8
-- ✅ Aktualizácia Service Workera na v2.8
+- ✅ Cache Buster zvýšený na v2.9 pre prekonanie starej v1.7
+- ✅ Oprava synchronizácie verzií v rozhraní
+- ✅ Úprava zobrazenia verzie na v2.9
+- ✅ Aktualizácia Service Workera na v2.9
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -12,7 +12,7 @@
 cd "c:\Users\doros\Desktop\zdravieplus"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v2.8: Comprehensive version bump and cache management"
+git commit -m "Update v2.9: Forced update to override stuck v1.7"
 git push origin main --force
 ```
 
