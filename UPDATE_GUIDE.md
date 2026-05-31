@@ -11,7 +11,7 @@
 
 ```bash
 cd "c:\Users\doros\Desktop\Nový priečinok"
-git remote set-url origin https://github.com/daneh471/Zdravie-test5.git
+git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
 git commit -m "Update v63: JS Audit, Validation and Undo functionality"
 git push origin main --force
@@ -25,4 +25,4 @@ git push origin main --force
 
 ## ✅ Hotovo!
 
-Aplikácia na: https://daneh471.github.io/Zdravie-test5/
+Aplikácia na: https://daneh471.github.io/Zdravie_plus/

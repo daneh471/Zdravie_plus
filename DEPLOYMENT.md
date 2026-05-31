@@ -8,7 +8,7 @@
 ## Krok 2: Pushni kód
 ```bash
 cd "c:\Users\doros\Desktop\Nový priečinok"
-git remote add origin https://github.com/daneh471/zdravie-plus.git
+git remote add origin https://github.com/daneh471/Zdravie_plus.git
 git branch -M main
 git push -u origin main
 ```
