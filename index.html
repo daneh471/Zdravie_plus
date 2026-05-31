@@ -205,7 +205,7 @@
     </div></div>
 
     <div id="toast" style="display:none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 0.8rem 1.2rem; border-radius: 0.5rem; z-index: 1000;"></div>
-    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v87</div>
+    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v88</div>
   </div>
 
   <script type="module">
@@ -267,7 +267,9 @@
           errorEl.innerText = `Meno "${name}" je už obsadené.`;
           return window.showAlert(`Meno "${name}" je už obsadené. Zvoľte si, prosím, iné.`);
         }
-        const email = `${name}${Date.now()}@zdravie.local`;
+        // Odstránime medzery z mena pre potreby vytvorenia validného e-mailu
+        const safeEmailPrefix = name.replace(/\s+/g, '').toLowerCase();
+        const email = `${safeEmailPrefix}${Date.now()}@zdravie.local`;
         const res = await createUserWithEmailAndPassword(auth, email, pin);
         await addDoc(collection(db, 'users'), { uid: res.user.uid, name: name, email: email });
         window.showAlert('Účet úspešne vytvorený!');
@@ -427,7 +429,7 @@
     window.showUpdateUI = () => {
       const dialog = document.getElementById('customDialog');
       document.getElementById('dialogTitle').innerText = 'Nová verzia';
-      document.getElementById('dialogMessage').innerText = 'Aktualizácia (v87) je pripravená. Kliknite na OK pre načítanie.';
+      document.getElementById('dialogMessage').innerText = 'Aktualizácia (v88) je pripravená. Kliknite na OK pre načítanie.';
       document.getElementById('dialogCancelBtn').style.display = 'none';
       document.getElementById('dialogOkBtn').onclick = () => window.location.reload(true);
       dialog.style.display = 'flex';

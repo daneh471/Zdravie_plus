@@ -6,8 +6,9 @@
 - ✅ Oprava pretekania textu "Registrácia" v modrom tlačidle
 - ✅ Jasné upozornenie "Meno je obsadené" pri registrácii (prevencia duplicít)
 - ✅ Vylepšené chybové hlášky priamo vo formulároch
-- ✅ Úprava zobrazenia verzie na v87
-- ✅ Aktualizácia Service Workera na v87
+- ✅ Oprava chyby (auth/invalid-email) pri menách s medzerami
+- ✅ Úprava zobrazenia verzie na v88
+- ✅ Aktualizácia Service Workera na v88
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -15,7 +16,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v87: Improved duplicate name checking and UI feedback"
+git commit -m "Update v88: Fixed invalid-email error for names with spaces"
 git push origin main --force
 ```
 
