@@ -1,11 +1,12 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Implementovaná podpora SKIP_WAITING správy pre Service Workera
-- ✅ Tlačidlo OK v aktualizačnom dialógu teraz vynucuje okamžitý swap verzií
-- ✅ Zlepšená detekcia čakajúceho Service Workera (reg.waiting)
-- ✅ Úprava zobrazenia verzie na v2.4
-- ✅ Aktualizácia Service Workera na v2.4
+- ✅ Oprava životného cyklu Service Workera (odstránenie skipWaiting pri inštalácii)
+- ✅ Správne riadenie aktualizácie cez používateľský dialóg
+- ✅ Synchronizácia verzií na v2.5
+- ✅ Stabilizácia PWA aktualizačnej logiky
+- ✅ Úprava zobrazenia verzie na v2.5
+- ✅ Aktualizácia Service Workera na v2.5
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +14,7 @@
 cd "c:\Users\doros\Desktop\zdravieplus"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v2.4: Forced PWA update logic via SKIP_WAITING"
+git commit -m "Update v2.5: Final fix for Service Worker update flow"
 git push origin main --force
 ```
 

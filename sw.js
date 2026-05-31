@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zdravie-cache-v2.4';
+const CACHE_NAME = 'zdravie-cache-v2.5';
 const FILES_TO_CACHE = [
   './index.html',
   './favicon.png',
@@ -12,7 +12,6 @@ self.addEventListener('install', function (e) {
       return cache.addAll(FILES_TO_CACHE);
     })
   );
-  self.skipWaiting();
 });
 
 // Aktivácia – čistíme starú cache a upozorníme klientov na update
