@@ -1,11 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Pridaná nová sekcia "Rady" (SK / DE) s tipmi na stravu pri tlaku
-- ✅ Optimalizácia scrollovania v modálnych oknách pre malé mobily
-- ✅ Automatické vymazanie polí v manuálnom zázname po uložení
-- ✅ Úprava zobrazenia verzie na v2.0
-- ✅ Aktualizácia Service Workera na v2.0
+- ✅ Implementovaný 'controllerchange' listener pre okamžitú aktualizáciu PWA
+- ✅ Vylepšená stabilita Service Workera (oprava fetch eventu)
+- ✅ Úprava zobrazenia verzie na v2.1
+- ✅ Aktualizácia Service Workera na v2.1
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +12,7 @@
 cd "c:\Users\doros\Desktop\zdravieplus"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v2.0: Correct versioning and path synchronization"
+git commit -m "Update v2.1: Robust PWA update logic"
 git push origin main --force
 ```
 

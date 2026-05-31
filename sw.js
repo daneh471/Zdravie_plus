@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zdravie-cache-v2.0';
+const CACHE_NAME = 'zdravie-cache-v2.1';
 const FILES_TO_CACHE = [
   './index.html',
   './favicon.png',
@@ -31,24 +31,18 @@ self.addEventListener('activate', function (e) {
 });
 
 // Network-first stratégia s detekciou updatu
-self.addEventListener('fetch', function (e) {
-  if (e.request.method !== 'GET') {
-    return;
-  }
+self.addEventListener('fetch', function(e) {
+  if (e.request.method !== 'GET' || e.request.url.includes('firestore.googleapis.com')) return;
 
   e.respondWith(
     fetch(e.request)
-      .then(function (response) {
-        // Uložíme novú odpoveď do cache
+      .then(function(response) {
         const clone = response.clone();
-        caches.open(CACHE_NAME).then(function (cache) {
+        caches.open(CACHE_NAME).then(function(cache) {
           cache.put(e.request, clone);
         });
         return response;
       })
-      .catch(function () {
-        // Ak sieť zlyhá, použijeme cache
-        return caches.match(e.request);
-      })
+      .catch(() => caches.match(e.request))
   );
 });
