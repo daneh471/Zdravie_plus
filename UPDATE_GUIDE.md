@@ -5,7 +5,7 @@
 - ✅ Implementovaná funkcia "Vrátiť späť" (Undo) po vymazaní záznamu
 - ✅ Pridaná validácia prázdnych polí pred uložením
 - ✅ Zjednotená logika spracovania desatinných miest (. aj ,)
-- ✅ Aktualizácia Service Workera na v69
+- ✅ Aktualizácia Service Workera na v70
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -13,7 +13,7 @@
 cd "c:\Users\doros\Desktop\Nový priečinok"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v69: Auto-update logic and version sync"
+git commit -m "Update v70: Forced PWA update logic"
 git push origin main --force
 ```
 

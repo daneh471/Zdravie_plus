@@ -326,131 +326,29 @@
     };
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
-      
-      // Počúvanie na správu o novej verzii zo Service Workera
+      navigator.serviceWorker.register('sw.js').then(reg => {
+        reg.onupdatefound = () => {
+          const installingWorker = reg.installing;
+          installingWorker.onstatechange = () => {
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              window.showUpdateUI();
+            }
+          };
+        };
+      });
+
       navigator.serviceWorker.addEventListener('message', (event) => {
-        if (event.data && event.data.type === 'UPDATE_AVAILABLE') {
-          const dialog = document.getElementById('customDialog');
-          document.getElementById('dialogTitle').innerText = 'Aktualizácia';
-          document.getElementById('dialogMessage').innerText = 'Nová verzia (v69) je pripravená. Kliknite na OK pre reštart aplikácie.';
-          document.getElementById('dialogOkBtn').onclick = () => window.location.reload();
-          dialog.style.display = 'flex';
-        }
+        if (event.data && event.data.type === 'UPDATE_AVAILABLE') window.showUpdateUI();
       });
     }
-  </script>
-</body>
-</html>
-      <div id="loginForm">
-        <input type="text" id="loginName" placeholder="Tvoje meno"><br><br>
-        <input type="password" id="loginPin" placeholder="PIN" maxlength="6"><br><br>
-        <button class="main" onclick="window.loginUser()">Prihlásiť sa</button>
-      </div>
-    </div>
 
-    <header style="display:none;">
-      <div></div>
-      <span class="header-title">Zdravie+</span>
-      <button onclick="window.toggleDropdown()">☰</button>
-      <div id="dropdown" class="dropdown-content">
-        <button onclick="window.zobrazArchiv()">📄 Archív</button>
-        <button onclick="window.logout()">🚪 Odhlásiť</button>
-      </div>
-    </header>
-
-    <div class="form-container" id="formular" style="display:none;">
-      <input type="tel" id="inr" placeholder="INR" inputmode="decimal" />
-      <input type="tel" id="tab" placeholder="TAB" inputmode="decimal" />
-      <input type="tel" id="sys" placeholder="SYS" inputmode="decimal" />
-      <input type="tel" id="dia" placeholder="DIA" inputmode="decimal" />
-      <input type="tel" id="pulse" placeholder="PULZ" inputmode="decimal" />
-      <button class="main" onclick="window.pridatZaznam()">Pridať záznam</button>
-    </div>
-
-    <div id="archiv" style="display:none; width: 100%;">
-      <h2>Archív</h2>
-      <button class="main" onclick="window.skrytArchiv()">Späť</button>
-      <div id="archivList" class="record-list"></div>
-    </div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getAuth, signOut, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, where, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDlzYqLEcy1OzZMcGOlidQRr8tNdZNXsSk",
-      authDomain: "zdravie-plus-5193f.firebaseapp.com",
-      projectId: "zdravie-plus-5193f",
-      storageBucket: "zdravie-plus-5193f.appspot.com",
-      messagingSenderId: "21608089094",
-      appId: "1:21608089094:web:53b5f9fc60d51ae96ba587"
+    window.showUpdateUI = () => {
+      const dialog = document.getElementById('customDialog');
+      document.getElementById('dialogTitle').innerText = 'Aktualizácia';
+      document.getElementById('dialogMessage').innerText = 'Nová verzia (v70) je k dispozícii. Kliknite na OK pre načítanie.';
+      document.getElementById('dialogOkBtn').onclick = () => window.location.reload(true);
+      dialog.style.display = 'flex';
     };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    window.loginUser = async function() {
-      const name = document.getElementById('loginName').value.trim();
-      const pin = document.getElementById('loginPin').value;
-      try {
-        const q = query(collection(db, 'users'), where('name', '==', name));
-        const snap = await getDocs(q);
-        if (snap.empty) return alert('Užívateľ nenájdený');
-        const email = snap.docs[0].data().email;
-        await signInWithEmailAndPassword(auth, email, pin);
-      } catch (e) { alert('Chyba prihlásenia'); }
-    };
-
-    onAuthStateChanged(auth, (user) => {
-      document.getElementById('splashScreen').style.display = 'none';
-      if (user) {
-        document.getElementById('authScreen').style.display = 'none';
-        document.querySelector('header').style.display = 'grid';
-        document.getElementById('formular').style.display = 'block';
-        window.user = user;
-      } else {
-        document.getElementById('authScreen').style.display = 'block';
-        document.querySelector('header').style.display = 'none';
-      }
-    });
-
-    window.pridatZaznam = async function() {
-      const data = {
-        userId: window.user.uid,
-        datum: new Date().toLocaleDateString('sk-SK'),
-        inr: document.getElementById('inr').value,
-        tab: document.getElementById('tab').value,
-        sys: document.getElementById('sys').value,
-        dia: document.getElementById('dia').value,
-        pulse: document.getElementById('pulse').value
-      };
-      await addDoc(collection(db, 'zaznamy'), data);
-      alert('Uložené');
-      ['inr','tab','sys','dia','pulse'].forEach(id => document.getElementById(id).value = '');
-    };
-
-    window.zobrazArchiv = async function() {
-      document.getElementById('formular').style.display = 'none';
-      document.getElementById('archiv').style.display = 'block';
-      const q = query(collection(db, 'zaznamy'), where('userId', '==', window.user.uid));
-      const snap = await getDocs(q);
-      const list = document.getElementById('archivList');
-      list.innerHTML = '';
-      snap.forEach(d => {
-        const r = d.data();
-        list.innerHTML += `<div class="record-row"><div>${r.datum}</div><div>${r.inr||'-'}</div><div>${r.tab||'-'}</div><div>${r.sys||'-'}</div><div>${r.dia||'-'}</div><div>${r.pulse||'-'}</div><div onclick="window.vymazat('${d.id}')">🗑️</div></div>`;
-      });
-    };
-
-    window.skrytArchiv = () => { document.getElementById('archiv').style.display = 'none'; document.getElementById('formular').style.display = 'block'; };
-    window.logout = () => signOut(auth);
-    window.toggleDropdown = () => { const d = document.getElementById('dropdown'); d.style.display = d.style.display === 'block' ? 'none' : 'block'; };
-
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
   </script>
 </body>
 </html>
