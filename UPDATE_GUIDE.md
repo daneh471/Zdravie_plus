@@ -1,10 +1,10 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
 ## Zmeny v tejto verzii:
-- ✅ Automatický mesačný archív (záznamy zoskupené podľa mesiaca)
-- ✅ Optimalizácia zobrazenia tabuliek (bez scrollovania do strán)
-- ✅ Úprava zobrazenia verzie na v3.2
-- ✅ Aktualizácia Service Workera na v3.2
+- ✅ Rozdelenie archívu: Aktuálny mesiac + tlačidlo pre staršie mesiace
+- ✅ Dynamické rozbaľovanie histórie
+- ✅ Úprava zobrazenia verzie na v3.3
+- ✅ Aktualizácia Service Workera na v3.3
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -12,7 +12,7 @@
 cd "c:\Users\doros\Desktop\Programovanie\zdravieplus"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v3.2: Monthly archive grouping and responsive tables"
+git commit -m "Update v3.3: Archive with current month and expandable history"
 git push origin main --force
 ```
 

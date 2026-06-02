@@ -235,7 +235,7 @@
     </div></div>
 
     <div id="toast" style="display:none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 0.8rem 1.2rem; border-radius: 0.5rem; z-index: 1000;"></div>
-    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v3.2</div>
+    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v3.3</div>
   </div>
 
   <script type="module">
@@ -264,7 +264,8 @@
         closeBtn: "Zatvoriť", titleArchive: "Archív záznamov", titleManual: "Manuálny záznam", titleInfo: "Informácie o hodnotách", titleSettings: "Nastavenia",
         menuLang: "Jazyk", selectLang: "Vybrať jazyk", infoTab: "Tabletka (počet tabletiek)", infoLow: "Nízky", infoNorm: "Normálny", infoHigh: "Vysoký",
         saved: "Uložené", msgOccupied: "Meno je už obsadené.", msgUserNotFound: "Užívateľ neexistuje.", msgWrongPin: "Nesprávny PIN kód.",
-        confirmDel: "Naozaj chcete vymazať tento záznam?", confirmLogout: "Ste si istý, že sa chcete odhlásiť?", updateReady: "Aktualizácia (v3.2) je pripravená.",
+        confirmDel: "Naozaj chcete vymazať tento záznam?", confirmLogout: "Ste si istý, že sa chcete odhlásiť?", updateReady: "Aktualizácia (v3.3) je pripravená.",
+        btnMonthlyArchive: "Mesačný archív",
         radyTitle: "Rady",
         radyText: `<strong>📉 Nízky tlak (Hypotenzia)</strong><br>Prejav: točenie hlavy, únava.<br><br>
         <strong>Čo vypiť:</strong><br>• Čistá voda / minerálka<br>• Káva, čierny/zelený čaj (kofeín)<br>• Rozmarínový čaj<br><br>
@@ -281,7 +282,8 @@
         closeBtn: "Schließen", titleArchive: "Eintragshistorie", titleManual: "Manueller Eintrag", titleInfo: "Informationen zu Werten", titleSettings: "Einstellungen",
         menuLang: "Sprache", selectLang: "Sprache wählen", infoTab: "Tablette (Anzahl der Tabletten)", infoLow: "Niedrig", infoNorm: "Normal", infoHigh: "Hoch",
         saved: "Gespeichert", msgOccupied: "Name bereits vergeben.", msgUserNotFound: "Benutzer existiert nicht.", msgWrongPin: "Falscher PIN-Code.",
-        confirmDel: "Diesen Eintrag wirklich löschen?", confirmLogout: "Möchten Sie sich wirklich abmelden?", updateReady: "Update (v3.2) ist bereit.",
+        confirmDel: "Diesen Eintrag wirklich löschen?", confirmLogout: "Möchten Sie sich wirklich abmelden?", updateReady: "Update (v3.3) ist bereit.",
+        btnMonthlyArchive: "Monatsarchiv",
         radyTitle: "Tipps",
         radyText: `<strong>📉 Niedriger Blutdruck</strong><br>Symptome: Schwindel, Müdigkeit.<br><br>
         <strong>Trinken:</strong><br>• Wasser / Mineralwasser<br>• Kaffee, schwarzer/grüner Tee<br>• Rosmarintee<br><br>
@@ -510,7 +512,14 @@
         de: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
       };
 
-      let currentMonthKey = null;
+      const now = new Date();
+      const currentM = String(now.getMonth() + 1).padStart(2, '0');
+      const currentY = String(now.getFullYear()).slice(-2);
+      const currentMonthKey = `${currentM}.${currentY}`;
+
+      let lastMonthKey = null;
+      let olderContentHtml = '';
+      let currentMonthHtml = '';
 
       window.zaznamy.sort((a,b) => {
         const [da, ma, ya] = a.datum.split('.').map(Number);
@@ -519,15 +528,16 @@
       }).forEach(r => {
         const [d, m, y] = r.datum.split('.');
         const monthKey = `${m}.${y}`;
-
-        if (monthKey !== currentMonthKey) {
-          currentMonthKey = monthKey;
+        
+        let rowHtml = '';
+        if (monthKey !== lastMonthKey) {
+          lastMonthKey = monthKey;
           const monthName = monthNames[window.currentLang][parseInt(m) - 1];
-          list.innerHTML += `<h3 style="margin: 1.2rem 0 0.5rem 0; text-align: left; padding: 0.5rem; background: var(--header); border-radius: 0.5rem; font-size: 1rem;">${monthName} 20${y}</h3>`;
-          list.innerHTML += '<div class="archive-header"><div>Dátum</div><div>INR</div><div>Tab</div><div>Sys</div><div>Dia</div><div>Pulz</div><div></div></div>';
+          rowHtml += `<h3 style="margin: 1.2rem 0 0.5rem 0; text-align: left; padding: 0.5rem; background: var(--header); border-radius: 0.5rem; font-size: 1rem;">${monthName} 20${y}</h3>`;
+          rowHtml += '<div class="archive-header"><div>Dátum</div><div>INR</div><div>Tab</div><div>Sys</div><div>Dia</div><div>Pulz</div><div></div></div>';
         }
 
-        list.innerHTML += `<div class="record-row">
+        rowHtml += `<div class="record-row">
           <div>${r.datum}</div>
           <div style="${window.getColorStyle(r.inr,'inr')}">${r.inr||'-'}</div>
           <div>${r.tab||'-'}</div>
@@ -536,7 +546,25 @@
           <div style="${window.getColorStyle(r.pulse,'pulse')}">${r.pulse||'-'}</div>
           <div onclick="window.vymazatZaznam('${r.id}')">🗑️</div>
         </div>`;
+
+        if (monthKey === currentMonthKey) {
+          currentMonthHtml += rowHtml;
+        } else {
+          olderContentHtml += rowHtml;
+        }
       });
+
+      list.innerHTML = currentMonthHtml;
+      
+      if (olderContentHtml) {
+        list.innerHTML += `<button class="main" style="margin-top: 2rem; background-color: #666;" onclick="window.toggleOlderRecords()">${translations[window.currentLang].btnMonthlyArchive}</button>`;
+        list.innerHTML += `<div id="olderRecords" style="display: none; width: 100%;">${olderContentHtml}</div>`;
+      }
+    };
+
+    window.toggleOlderRecords = function() {
+      const el = document.getElementById('olderRecords');
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
     };
 
     window.vymazatZaznam = (id) => {
@@ -597,7 +625,7 @@
       });
 
       // Používame query parameter na vynútenie stiahnutia nového sw.js prehliadačom
-      navigator.serviceWorker.register('sw.js?v=3.1').then(reg => {
+      navigator.serviceWorker.register('sw.js?v=3.3').then(reg => {
         reg.update();
 
         if (reg.waiting) {
