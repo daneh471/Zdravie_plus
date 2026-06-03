@@ -19,8 +19,9 @@ git push origin main --force
 ## ⏳ Čo s
 1. GitHub aktualizuje stránku (1-2 minúty)
 2. Service Worker detekuje zmenu (v3.5)
-4. Stlačením **OK** sa app automaticky reloaduje
-5. Nová verzia je načítaná! 🎉
+3. Stlačením **OK** v aplikácii sa vykoná aktualizácia
+4. **POZOR:** Ak sa názov na ploche nezmenil, vymaž starú ikonu a pridaj aplikáciu na plochu znova cez prehliadač.
+5. Nová verzia BP & INR je pripravená! 🎉
 
 ## ✅ Hotovo!
 

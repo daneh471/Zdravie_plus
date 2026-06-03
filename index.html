@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BP & INR" />
   <title>BP & INR</title>
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="manifest.json?v=3.5" />
   <link rel="icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
   <style>
@@ -264,7 +264,7 @@
         closeBtn: "Zatvoriť", titleArchive: "Archív záznamov", titleManual: "Manuálny záznam", titleInfo: "Informácie o hodnotách", titleSettings: "Nastavenia",
         menuLang: "Jazyk", selectLang: "Vybrať jazyk", infoTab: "Tabletka (počet tabletiek)", infoLow: "Nízky", infoNorm: "Normálny", infoHigh: "Vysoký",
         saved: "Uložené", msgOccupied: "Meno je už obsadené.", msgUserNotFound: "Užívateľ neexistuje.", msgWrongPin: "Nesprávny PIN kód.",
-        confirmDel: "Naozaj chcete vymazať tento záznam?", confirmLogout: "Ste si istý, že sa chcete odhlásiť?", updateReady: "Aktualizácia (v3.4) je pripravená.",
+        confirmDel: "Naozaj chcete vymazať tento záznam?", confirmLogout: "Ste si istý, že sa chcete odhlásiť?", updateReady: "Aktualizácia (v3.5) je pripravená.",
         btnMonthlyArchive: "Mesačný archív",
         radyTitle: "Rady",
         radyText: `<strong>📉 Nízky tlak (Hypotenzia)</strong><br>Prejav: točenie hlavy, únava.<br><br>
@@ -411,7 +411,7 @@
         }
         // Odstránime medzery z mena pre potreby vytvorenia validného e-mailu
         const safeEmailPrefix = name.replace(/\s+/g, '').toLowerCase();
-        const email = `${safeEmailPrefix}${Date.now()}@zdravie.local`;
+        const email = `${safeEmailPrefix}${Date.now()}@bpinr.local`;
         const res = await createUserWithEmailAndPassword(auth, email, pin);
         await addDoc(collection(db, 'users'), { uid: res.user.uid, name: name, email: email });
         window.showAlert('Účet úspešne vytvorený!');
