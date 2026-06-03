@@ -4,7 +4,7 @@
 - ✅ Vynútenie aktualizácie pre všetky zariadenia (Fix cache)
 - ✅ Archív: Aktuálny mesiac + tlačidlo pre staršie mesiace
 - ✅ Premenovanie aplikácie na BP & INR
-- ✅ Aktualizácia Service Workera na v3.5
+- ✅ Responzívna hlavička (Grid layout) a verzia v3.5
 
 ## POSTUP - Skopíruj do Git Bash:
 
@@ -16,7 +16,7 @@ git commit -m "Update v3.5: Rename app to BP & INR"
 git push origin main --force
 ```
 
-## ⏳ Čo s
+## ⏳ Čo sa stane potom:
 1. GitHub aktualizuje stránku (1-2 minúty)
 2. Service Worker detekuje zmenu (v3.5)
 3. Stlačením **OK** v aplikácii sa vykoná aktualizácia
