@@ -1,7 +1,7 @@
 {
   "name": "BP & INR",
   "short_name": "BP & INR",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#0d0d0d",

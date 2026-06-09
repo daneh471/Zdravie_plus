@@ -11,9 +11,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BP & INR" />
   <title>BP & INR</title>
-  <link rel="manifest" href="manifest.json?v=3.5" />
+  <link rel="manifest" href="manifest.json?v=1.38" />
   <link rel="icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     :root { --bg: #f5f5f5; --header: #e8e8e8; --text: #000; --card: #fff; }
     :root.dark { --bg: #0d0d0d; --header: #1a1a1a; --text: #fff; --card: #222; }
@@ -44,7 +45,7 @@
       max-width: 30rem;
       height: 100%;
       position: relative;
-      padding: calc(4.5rem + env(safe-area-inset-top)) 1rem calc(2rem + env(safe-area-inset-bottom)) 1rem;
+      padding: calc(3.5rem + env(safe-area-inset-top)) 1rem calc(2rem + env(safe-area-inset-bottom)) 1rem;
       text-align: center;
       background-color: transparent;
       display: flex;
@@ -83,7 +84,15 @@
     .numeric-keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem; width: 100%; margin-top: 0.5rem; grid-column: span 2; }
     .numeric-keypad button { padding: 0.6rem; font-size: 1.1rem; border-radius: 0.6rem; background-color: var(--card); color: var(--text); border: 1px solid rgba(128,128,128,0.3); cursor: pointer; font-weight: 600; min-height: 2.8rem; display: flex; align-items: center; justify-content: center; }
 
-    .form-container, .modal-form-grid { margin: 0 auto; width: 100%; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+    .form-container, .modal-form-grid { 
+      margin: 0 auto; 
+      width: 100%; 
+      padding: 0.5rem 0; 
+      display: grid; 
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 0.6rem; 
+      align-items: center;
+    }
     input { min-width: 0; padding: 0.75rem; font-size: 16px; background-color: var(--card); color: var(--text); border: 1px solid #ccc; border-radius: 0.8rem; appearance: none; width: 100%; box-sizing: border-box; }
     button.main { grid-column: span 2; background-color: #4CAF50; color: white; border: none; padding: 1rem; width: 100%; cursor: pointer; margin: 0.3rem 0; font-size: 1.1rem; border-radius: 0.8rem; font-weight: bold; box-shadow: 0 0.25rem 0.375rem rgba(0,0,0,0.1); min-height: 3.5rem; }
     button.secondary { background-color: #2196F3; color: white; border: none; padding: 0.6rem 0.4rem; flex: 1; min-width: 0; cursor: pointer; font-size: 0.9rem; border-radius: 0.75rem; min-height: 2.8rem; }
@@ -96,8 +105,21 @@
     .tab-buttons { display: flex; gap: 0.4rem; margin-bottom: 0.6rem; width: 100%; justify-content: center; }
 
     .record-list { display: flex; flex-direction: column; width: 100%; border: 1px solid rgba(128,128,128,0.1); border-radius: 0.8rem; overflow-x: hidden; margin-top: 0.5rem; padding-bottom: 2rem; }
-    .archive-header { display: grid; grid-template-columns: 24% 12% 12% 12% 12% 12% 16%; font-weight: bold; font-size: 11px; text-transform: uppercase; background-color: var(--header); border-bottom: 2px solid rgba(0,0,0,0.1); padding: 8px 2px; text-align: center; width: 100%; box-sizing: border-box; }
-    .record-row { display: grid; grid-template-columns: 24% 12% 12% 12% 12% 12% 16%; align-items: center; background-color: var(--card); padding: 8px 1px; border-bottom: 1px solid rgba(128,128,128,0.2); width: 100%; box-sizing: border-box; font-size: 10px; text-align: center; gap: 0; }
+    .archive-header { display: grid; grid-template-columns: 28% 11% 11% 12% 12% 12% 14%; font-weight: bold; font-size: 9px; text-transform: uppercase; background-color: var(--header); border-bottom: 2px solid rgba(0,0,0,0.1); padding: 8px 1px; text-align: center; width: 100%; box-sizing: border-box; gap: 1px; }
+    .record-row { display: grid; grid-template-columns: 28% 11% 11% 12% 12% 12% 14%; align-items: center; background-color: var(--card); padding: 10px 1px; border-bottom: 1px solid rgba(128,128,128,0.2); width: 100%; box-sizing: border-box; font-size: 10px; text-align: center; gap: 1px; }
+    
+    /* Štýly pre režim "Iba Tlak" */
+    body.bp-only #inr, body.bp-only #tab, body.bp-only #manualInr, body.bp-only #manualTab { display: none; }
+    body.bp-only .archive-header, body.bp-only .record-row { grid-template-columns: 35% 15% 15% 15% 20%; }
+    body.bp-only .col-inr, body.bp-only .col-tab { display: none; }
+
+    /* Tlačové štýly pre PDF export */
+    @media print {
+      body * { visibility: hidden; }
+      #monthDetailContent, #monthDetailContent * { visibility: visible; }
+      #monthDetailContent { position: absolute; left: 0; top: 0; width: 100%; }
+      .record-row div:last-child { display: none; } /* Skryť ikonu koša */
+    }
 
     .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 1rem; }
     .modal-content { background-color: var(--card); padding: 1rem; border-radius: 1.5rem; width: 100%; max-width: 380px; max-height: 98dvh; overflow: hidden; display: flex; flex-direction: column; text-align: left; box-sizing: border-box; }
@@ -107,6 +129,7 @@
     #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 999; }
     #splashScreen img { width: 10rem; height: 10rem; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.1); } }
+    #dialogMessage { white-space: pre-line; }
   </style>
 </head>
 <body>
@@ -149,8 +172,8 @@
         <button onclick="window.zobrazArchiv(); window.toggleDropdown();">📄 Archív</button>
         <button onclick="window.otvoritModal(); window.toggleDropdown();">➕ Manuálny záznam</button>
         <button onclick="window.otvoritInfo(); window.toggleDropdown();">ℹ️ Informácie</button>
-        <button onclick="window.otvoritRady(); window.toggleDropdown();" id="menu_rady">💡 Rady</button>
         <button onclick="window.otvoritNastavenia(); window.toggleDropdown();">⚙️ Nastavenia</button>
+        <button id="toggleBtn" onclick="window.toggleViewMode(); window.toggleDropdown();"></button>
         <button onclick="window.logout(); window.toggleDropdown();">🚪 Odhlásiť sa</button>
       </div>
     </header>
@@ -162,21 +185,37 @@
       <input type="tel" id="dia" placeholder="DIA" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" />
       <input type="tel" id="pulse" placeholder="PULZ" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" />
       <button class="main" onclick="window.pridatZaznam()">Pridať záznam</button>
-      <div style="grid-column: span 2; margin-top: 1rem; display: flex; justify-content: center; opacity: 0.3;">
-        <img src="favicon.png" style="width: 14rem; height: 14rem; object-fit: contain;" alt="BP & INR Logo">
+      <div style="grid-column: span 2; margin-top: 0.5rem; display: flex; justify-content: center; opacity: 0.2;">
+        <img src="favicon.png" style="width: min(12rem, 50vw); height: auto; object-fit: contain;" alt="BP & INR Logo">
       </div>
     </div>
 
     <div id="archiv" style="display:none; width: 100%;">
       <h2>Archív záznamov</h2>
+      <div id="userDisplay" style="margin-bottom: 0.8rem; font-weight: bold; opacity: 0.8; font-size: 0.9rem;"></div>
       <button class="main" onclick="window.skrytArchiv()">Späť na formulár</button>
       <div id="archivList" class="record-list"></div>
     </div>
 
+    <div id="monthlyArchiveListModal" class="modal"><div class="modal-content" style="max-height: 80dvh; overflow-y: auto;">
+      <h3 id="monthly_list_title">Mesačný archív</h3>
+      <div id="monthlyArchiveButtons" style="display: flex; flex-direction: column; gap: 0.5rem; width: 100%;"></div>
+      <button class="main" onclick="window.zavrietMesacnyArchivList()" style="margin-top: 1rem; background-color: #777;">Zatvoriť</button>
+    </div></div>
+
+    <div id="monthDetailModal" class="modal" style="background: var(--bg);"><div class="modal-content" style="max-width: 100%; width: 100%; height: 100%; border-radius: 0; padding: 1rem; overflow-y: auto;">
+      <h2 id="monthDetailTitle" style="margin-top: env(safe-area-inset-top);"></h2>
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <button class="main" id="btn_pdf" onclick="window.exportToPDF()" style="background-color: #f39c12; flex: 1;">PDF Export</button>
+        <button class="main" id="btn_close_month" onclick="window.zavrietMesacnyDetail()" style="background-color: #777; flex: 1;">Zatvoriť</button>
+      </div>
+      <div id="monthDetailContent" class="record-list"></div>
+    </div></div>
+
     <div id="manualModal" class="modal"><div class="modal-content">
       <h3>Manuálny záznam</h3>
       <div class="modal-form-grid">
-        <input type="text" id="manualDatum" placeholder="Dátum (dd.mm.rr)" onclick="window.setFocused(this)" readonly autocomplete="off">
+        <input type="text" id="manualDatum" placeholder="Dátum a čas (dd.mm.rr hh:mm)" onclick="window.setFocused(this)" readonly autocomplete="off">
         <input type="text" id="manualInr" placeholder="INR" onclick="window.setFocused(this)" readonly autocomplete="off">
         <input type="text" id="manualTab" placeholder="TAB" onclick="window.setFocused(this)" readonly autocomplete="off">
         <input type="text" id="manualSys" placeholder="SYS" onclick="window.setFocused(this)" readonly autocomplete="off">
@@ -186,6 +225,7 @@
           <button onclick="window.keypadInput('1')">1</button><button onclick="window.keypadInput('2')">2</button><button onclick="window.keypadInput('3')">3</button><button onclick="window.keypadInput('CLEAR')" style="color:#f44;">C</button>
           <button onclick="window.keypadInput('4')">4</button><button onclick="window.keypadInput('5')">5</button><button onclick="window.keypadInput('6')">6</button><button onclick="window.keypadInput('DEL')" style="color:#f80;">⌫</button>
           <button onclick="window.keypadInput('7')">7</button><button onclick="window.keypadInput('8')">8</button><button onclick="window.keypadInput('9')">9</button><button onclick="window.keypadInput('/')">/</button>
+          <button onclick="window.keypadInput(' ')">_</button><button onclick="window.keypadInput('0')">0</button><button onclick="window.keypadInput(':')">:</button><button onclick="window.keypadInput('.')">.</button>
           <button onclick="window.keypadInput('.')">.</button><button onclick="window.keypadInput('0')">0</button><button onclick="window.keypadInput(',')">,</button><button onclick="window.keypadInput('-')">-</button>
         </div>
         <button class="main" onclick="window.ulozitManual()">Uložiť</button>
@@ -196,6 +236,7 @@
     <div id="settingsModal" class="modal"><div class="modal-content">
       <h3 id="set_title">Nastavenia</h3>
       <button class="main" id="btn_lang_menu" onclick="window.otvoritJazyk()">Jazyk</button>
+      <button class="main" style="background-color: #607D8B;" onclick="window.spustitImport()">Importovať staré dáta</button>
       <button class="main" id="set_close" onclick="window.zavrietNastavenia()">Zatvoriť</button>
     </div></div>
 
@@ -218,13 +259,6 @@
       <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
     </div></div>
 
-    <div id="radyModal" class="modal"><div class="modal-content" style="max-height: 85dvh; overflow-y: auto; display: block;">
-      <h3 id="rady_title" style="text-align: center;">Rady</h3>
-      <div id="rady_content" style="font-size: 0.9rem; line-height: 1.4; text-align: left;">
-      </div>
-      <button class="main" id="rady_close" onclick="window.zavrietRady()" style="margin-top: 1rem;">Zatvoriť</button>
-    </div></div>
-
     <div id="customDialog" class="modal"><div class="modal-content">
       <h3 id="dialogTitle">BP & INR</h3>
       <p id="dialogMessage"></p>
@@ -235,7 +269,7 @@
     </div></div>
 
     <div id="toast" style="display:none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 0.8rem 1.2rem; border-radius: 0.5rem; z-index: 1000;"></div>
-    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v3.5</div>
+    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v1.38</div>
   </div>
 
   <script type="module">
@@ -256,49 +290,54 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
+    // Cache pre záznamy, aby sme ich neťahali z Firebase pri každom prepnutí okna
+    window.zaznamy = [];
+    window.loadRecords = async function() {
+      if (!window.user) return;
+      const q = query(collection(db, 'zaznamy'), where('userId', '==', window.user.uid));
+      const snap = await getDocs(q);
+      window.zaznamy = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      if (document.getElementById('archiv').style.display === 'block') window.zobrazArchiv();
+    };
+
     const translations = {
       sk: {
         login: "Prihlásiť sa", register: "Registrácia", titleLogin: "Prihlásenie", titleReg: "Nový účet", namePh: "Tvoje meno", pinPh: "PIN (4-6 číslic)", 
         pinConfPh: "Zopakuj PIN", createBtn: "Vytvoriť účet", menuArchive: "📄 Archív", menuManual: "➕ Manuálny záznam", menuInfo: "ℹ️ Informácie", 
-        menuRady: "💡 Rady", menuSettings: "⚙️ Nastavenia", menuLogout: "🚪 Odhlásiť sa", addBtn: "Pridať záznam", backBtn: "Späť na formulár", saveBtn: "Uložiť", 
+        menuSettings: "⚙️ Nastavenia", menuLogout: "🚪 Odhlásiť sa", addBtn: "Pridať záznam", backBtn: "Späť na formulár", saveBtn: "Uložiť", 
         closeBtn: "Zatvoriť", titleArchive: "Archív záznamov", titleManual: "Manuálny záznam", titleInfo: "Informácie o hodnotách", titleSettings: "Nastavenia",
-        menuLang: "Jazyk", selectLang: "Vybrať jazyk", infoTab: "Tabletka (počet tabletiek)", infoLow: "Nízky", infoNorm: "Normálny", infoHigh: "Vysoký",
+        menuLang: "Jazyk", selectLang: "Vybrať jazyk", menuToggleBp: "Prepnúť na: Iba Tlak", menuToggleFull: "Prepnúť na: INR + Tlak", userPrefix: "Používateľ",
+        infoTab: "Tabletka (počet tabletiek)", infoLow: "Nízky", infoNorm: "Normálny", infoHigh: "Vysoký", btnExportPdf: "Exportovať PDF",
         saved: "Uložené", msgOccupied: "Meno je už obsadené.", msgUserNotFound: "Užívateľ neexistuje.", msgWrongPin: "Nesprávny PIN kód.",
-        confirmDel: "Naozaj chcete vymazať tento záznam?", confirmLogout: "Ste si istý, že sa chcete odhlásiť?", updateReady: "Aktualizácia (v3.5) je pripravená.",
+        confirmDel: "Naozaj chcete vymazať tento záznam?", confirmLogout: "Ste si istý, že sa chcete odhlásiť?", 
+        updateReady: "Nová verzia (v1.38) je pripravená:",
+        updateChanges: "• Definitívna synchronizácia verzií a Git repozitára\n• Zvýšená bezpečnosť pri prepínaní režimov\n• Oprava chýb v načítavaní menu",
         btnMonthlyArchive: "Mesačný archív",
-        radyTitle: "Rady",
-        radyText: `<strong>📉 Nízky tlak (Hypotenzia)</strong><br>Prejav: točenie hlavy, únava.<br><br>
-        <strong>Čo vypiť:</strong><br>• Čistá voda / minerálka<br>• Káva, čierny/zelený čaj (kofeín)<br>• Rozmarínový čaj<br><br>
-        <strong>Čo zjesť:</strong><br>• Niečo slané (syr, oriešky)<br>• Sladké drievko (pendrek)<br>• Vitamín B12 (vajíčka, mäso)<br><br>
-        <strong>Rýchla pomoc:</strong> Vypite pohár vody, dajte si niečo slané a vyložte nohy hore.<br><hr>
-        <strong>📈 Vysoký tlak (Hypertenzia)</strong><br>Prejav: tlak v hlave, napätie.<br><br>
-        <strong>Čo vypiť:</strong><br>• Ibištekový čaj<br>• Cviklová / granátová šťava<br>• Voda (nízkosodíková)<br><br>
-        <strong>Čo zjesť:</strong><br>• Draslík (Banány, avokádo, zemiaky)<br>• Cesnak (surový)<br>• Tmavá čokoláda (70%+)<br>• Bobuľové ovocie`
+        confirmModeChange: "Ste si istý, že chcete prepnúť režim?"
       },
       de: {
         login: "Anmelden", register: "Registrierung", titleLogin: "Login", titleReg: "Neues Konto", namePh: "Dein Name", pinPh: "PIN (4-6 Stellen)", 
         pinConfPh: "PIN wiederholen", createBtn: "Konto erstellen", menuArchive: "📄 Archiv", menuManual: "➕ Manueller Eintrag", menuInfo: "ℹ️ Informationen", 
-        menuRady: "💡 Tipps", menuSettings: "⚙️ Einstellungen", menuLogout: "🚪 Abmelden", addBtn: "Eintrag hinzufügen", backBtn: "Zurück zum Formular", saveBtn: "Speichern", 
+        menuSettings: "⚙️ Einstellungen", menuLogout: "🚪 Abmelden", addBtn: "Eintrag hinzufügen", backBtn: "Zurück zum Formular", saveBtn: "Speichern", 
         closeBtn: "Schließen", titleArchive: "Eintragshistorie", titleManual: "Manueller Eintrag", titleInfo: "Informationen zu Werten", titleSettings: "Einstellungen",
-        menuLang: "Sprache", selectLang: "Sprache wählen", infoTab: "Tablette (Anzahl der Tabletten)", infoLow: "Niedrig", infoNorm: "Normal", infoHigh: "Hoch",
+        menuLang: "Sprache", selectLang: "Sprache wählen", menuToggleBp: "Nur Blutdruck", menuToggleFull: "INR + Blutdruck", userPrefix: "Benutzer",
+        infoTab: "Tablette (Anzahl der Tabletten)", infoLow: "Niedrig", infoNorm: "Normal", infoHigh: "Hoch", btnExportPdf: "PDF Exportieren",
         saved: "Gespeichert", msgOccupied: "Name bereits vergeben.", msgUserNotFound: "Benutzer existiert nicht.", msgWrongPin: "Falscher PIN-Code.",
-        confirmDel: "Diesen Eintrag wirklich löschen?", confirmLogout: "Möchten Sie sich wirklich abmelden?", updateReady: "Update (v3.5) ist bereit.",
+        confirmDel: "Diesen Eintrag wirklich löschen?", confirmLogout: "Möchten Sie sich wirklich abmelden?", 
+        updateReady: "Neue Version (v1.38) ist bereit:",
+        updateChanges: "• Definitive Synchronisation der Versionen und des Git-Repositorys\n• Erhöhte Sicherheit beim Moduswechsel\n• Fehlerbehebung beim Laden des Menüs",
         btnMonthlyArchive: "Monatsarchiv",
-        radyTitle: "Tipps",
-        radyText: `<strong>📉 Niedriger Blutdruck</strong><br>Symptome: Schwindel, Müdigkeit.<br><br>
-        <strong>Trinken:</strong><br>• Wasser / Mineralwasser<br>• Kaffee, schwarzer/grüner Tee<br>• Rosmarintee<br><br>
-        <strong>Essen:</strong><br>• Salziges (Käse, Nüsse)<br>• Lakritz<br>• Vitamin B12 (Eier, Fleisch)<br><br>
-        <strong>Schnelle Hilfe:</strong> Ein Glas Wasser trinken, etwas Salziges essen und Beine hochlagern.<br><hr>
-        <strong>📈 Hoher Blutdruck</strong><br>Symptome: Kopfdruck, Anspannung.<br><br>
-        <strong>Trinken:</strong><br>• Hibiskustee<br>• Rote Bete / Granatapfelsaft<br>• Wasser (natriumarm)<br><br>
-        <strong>Essen:</strong><br>• Kalium (Bananen, Avocado, Kartoffeln)<br>• Knoblauch (roh)<br>• Dunkle Schokolade (70%+)<br>• Beerenfrüchte`
+        confirmModeChange: "Sind Sie sicher, dass Sie den Modus wechseln möchten?"
       }
     };
 
+    window.isBpOnly = localStorage.getItem('zdravie_bp_only') === 'true';
     window.currentLang = localStorage.getItem('zdravie_lang') || 'sk';
-
+    
+    if (window.isBpOnly) document.body.classList.add('bp-only');
+    
     window.updateUI = () => {
-      const t = translations[window.currentLang];
+      const t = translations[window.currentLang] || translations['sk'];
       document.querySelectorAll('.tab-buttons .secondary')[0].innerText = t.login;
       document.querySelectorAll('.tab-buttons .secondary')[1].innerText = t.register;
       document.querySelector('#loginForm h3').innerText = t.titleLogin;
@@ -312,19 +351,21 @@
       document.querySelectorAll('#registerForm .main')[0].innerText = t.createBtn;
       
       const menuBtns = document.querySelectorAll('#dropdown button');
-      menuBtns[0].innerText = t.menuArchive;
-      menuBtns[1].innerText = t.menuManual;
-      menuBtns[2].innerText = t.menuInfo;
-      document.getElementById('menu_rady').innerText = t.menuRady;
-      menuBtns[4].innerText = t.menuSettings;
-      menuBtns[5].innerText = t.menuLogout;
+      if (menuBtns && menuBtns.length > 5) {
+        if (menuBtns[0]) menuBtns[0].innerText = t.menuArchive;
+        if (menuBtns[1]) menuBtns[1].innerText = t.menuManual;
+        if (menuBtns[2]) menuBtns[2].innerText = t.menuInfo;
+        if (menuBtns[3]) menuBtns[3].innerText = t.menuSettings;
+        if (menuBtns[5]) menuBtns[5].innerText = t.menuLogout;
+      }
+      if (document.getElementById('toggleBtn')) document.getElementById('toggleBtn').innerText = window.isBpOnly ? t.menuToggleFull : t.menuToggleBp;
 
       document.querySelector('#formular .main').innerText = t.addBtn;
       document.querySelector('#archiv h2').innerText = t.titleArchive;
       document.querySelector('#archiv .main').innerText = t.backBtn;
       
       document.querySelector('#manualModal h3').innerText = t.titleManual;
-      document.getElementById('manualDatum').placeholder = "Dátum (dd.mm.rr)";
+      document.getElementById('manualDatum').placeholder = "Dátum a čas (dd.mm.rr hh:mm)";
       document.querySelector('#manualModal .main').innerText = t.saveBtn;
       document.querySelectorAll('#manualModal .main')[1].innerText = t.closeBtn;
 
@@ -338,10 +379,10 @@
       document.querySelector('#infoModal .main').innerText = t.closeBtn;
       document.getElementById('info_tab_desc').innerText = t.infoTab;
 
-      document.getElementById('rady_title').innerText = t.radyTitle;
-      document.getElementById('rady_content').innerHTML = t.radyText;
-      document.getElementById('rady_close').innerText = t.closeBtn;
-      
+      document.getElementById('userDisplay').innerText = window.userName ? `${t.userPrefix}: ${window.userName}` : '';
+      document.getElementById('btn_pdf').innerText = t.btnExportPdf;
+      document.getElementById('btn_close_month').innerText = t.closeBtn;
+
       document.querySelectorAll('.t-low').forEach(el => el.innerText = t.infoLow);
       document.querySelectorAll('.t-norm').forEach(el => el.innerText = t.infoNorm);
       document.querySelectorAll('.t-high').forEach(el => el.innerText = t.infoHigh);
@@ -360,17 +401,25 @@
       window.zavrietJazyk();
     };
 
+    window.toggleViewMode = () => {
+      window.showConfirm(translations[window.currentLang].confirmModeChange, () => {
+        window.isBpOnly = !window.isBpOnly;
+        localStorage.setItem('zdravie_bp_only', window.isBpOnly);
+        document.body.classList.toggle('bp-only', window.isBpOnly);
+        window.updateUI();
+        if (document.getElementById('archiv').style.display === 'block') window.zobrazArchiv();
+      });
+    };
+
     window.otvoritNastavenia = () => document.getElementById('settingsModal').style.display = 'flex';
     window.zavrietNastavenia = () => document.getElementById('settingsModal').style.display = 'none';
     window.otvoritJazyk = () => { document.getElementById('settingsModal').style.display = 'none'; document.getElementById('languageModal').style.display = 'flex'; };
     window.zavrietJazyk = () => { document.getElementById('languageModal').style.display = 'none'; document.getElementById('settingsModal').style.display = 'flex'; };
 
-    window.otvoritRady = () => document.getElementById('radyModal').style.display = 'flex';
-    window.zavrietRady = () => document.getElementById('radyModal').style.display = 'none';
-
     // Vlastné funkcie pre dialógy namiesto systémových
     window.showAlert = (msg) => {
       const dialog = document.getElementById('customDialog');
+      document.getElementById('dialogTitle').innerText = 'BP & INR';
       document.getElementById('dialogMessage').innerText = msg;
       document.getElementById('dialogCancelBtn').style.display = 'none';
       document.getElementById('dialogOkBtn').onclick = () => dialog.style.display = 'none';
@@ -379,6 +428,7 @@
 
     window.showConfirm = (msg, onOk) => {
       const dialog = document.getElementById('customDialog');
+      document.getElementById('dialogTitle').innerText = 'BP & INR';
       document.getElementById('dialogMessage').innerText = msg;
       document.getElementById('dialogCancelBtn').style.display = 'block';
       document.getElementById('dialogCancelBtn').onclick = () => dialog.style.display = 'none';
@@ -443,6 +493,13 @@
       setTimeout(() => document.getElementById('splashScreen').style.display = 'none', 500);
       if (user) {
         window.user = user;
+        // Fetch name from Firestore
+        getDocs(query(collection(db, 'users'), where('uid', '==', user.uid))).then(snap => {
+          if (!snap.empty) {
+            window.userName = snap.docs[0].data().name;
+            window.updateUI();
+          }
+        });
         document.getElementById('authScreen').style.display = 'none';
         document.querySelector('header').style.display = 'grid';
         document.getElementById('formular').style.display = 'block';
@@ -450,6 +507,7 @@
         window.updateUI();
       } else {
         window.user = null; 
+        window.userName = null;
         document.getElementById('authScreen').style.display = 'flex';
         document.querySelector('header').style.display = 'none';
         document.getElementById('formular').style.display = 'none';
@@ -460,15 +518,6 @@
 
     window.updateUI(); // Prvotná inicializácia
 
-    // Cache pre záznamy, aby sme ich neťahali z Firebase pri každom prepnutí okna
-    window.zaznamy = [];
-    window.loadRecords = async function() {
-      const q = query(collection(db, 'zaznamy'), where('userId', '==', window.user.uid));
-      const snap = await getDocs(q);
-      window.zaznamy = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      if (document.getElementById('archiv').style.display === 'block') window.zobrazArchiv();
-    };
-
     window.pridatZaznam = async function() {
       const data = {
         userId: window.user.uid,
@@ -477,13 +526,68 @@
         tab: document.getElementById('tab').value,
         sys: document.getElementById('sys').value,
         dia: document.getElementById('dia').value,
-        pulse: document.getElementById('pulse').value
+        pulse: document.getElementById('pulse').value,
+        mode: window.isBpOnly ? 'bp' : 'full'
       };
-      if (!Object.values(data).some(v => v && v !== data.userId && v !== data.datum)) return;
+      if (![data.inr, data.tab, data.sys, data.dia, data.pulse].some(v => v.trim() !== '')) return;
       await addDoc(collection(db, 'zaznamy'), data);
       ['inr','tab','sys','dia','pulse'].forEach(id => document.getElementById(id).value = '');
-      window.showToast(translations[window.currentLang].saved);
+      window.showToast(translations[window.currentLang].saved || 'Uložené');
       window.loadRecords();
+    };
+
+    window.spustitImport = async function() {
+      const rawData = prompt("Sem vložte textové záznamy zo starej aplikácie (každý na nový riadok):");
+      if (!rawData) return;
+      
+      try {
+        window.showToast("Importujem...");
+        const lines = rawData.split('\n');
+        let count = 0;
+
+        for (let line of lines) {
+          line = line.trim();
+          if (!line || !line.includes(' — ')) continue;
+
+          const parts = line.split(' — ');
+          const datePart = parts[0].trim();
+          const valuesPart = parts[1].trim();
+
+          // Inteligentné formátovanie dátumu: 31.05.2026 -> 31.05.26 12:00
+          let formattedDate = datePart;
+          const dateBits = datePart.split('.');
+          if (dateBits.length === 3) {
+            let yy = dateBits[2];
+            if (yy.length === 4) yy = yy.slice(-2);
+            formattedDate = `${dateBits[0].padStart(2, '0')}.${dateBits[1].padStart(2, '0')}.${yy} 12:00`;
+          }
+
+          const record = {
+            userId: window.user.uid,
+            datum: formattedDate,
+            inr: '', tab: '', sys: '', dia: '', pulse: '',
+            mode: 'bp'
+          };
+
+          valuesPart.split('|').forEach(p => {
+            const [key, val] = p.split(':').map(s => s.trim());
+            if (!key || !val) return;
+            const k = key.toLowerCase();
+            if (k === 'inr') { record.inr = val; record.mode = 'full'; }
+            else if (k === 'tab') { record.tab = val; record.mode = 'full'; }
+            else if (k === 'sys') record.sys = val;
+            else if (k === 'dia') record.dia = val;
+            else if (k === 'pulz' || k === 'pulse') record.pulse = val;
+          });
+
+          await addDoc(collection(db, 'zaznamy'), record);
+          count++;
+        }
+        window.showAlert(`Import úspešne dokončený! Pridaných ${count} záznamov.`);
+        window.loadRecords();
+      } catch (e) {
+        window.showAlert("Chyba pri importe: " + e.message);
+      }
     };
 
     // Ostatné helper funkcie ostávajú zachované
@@ -517,32 +621,48 @@
       const currentY = String(now.getFullYear()).slice(-2);
       const currentMonthKey = `${currentM}.${currentY}`;
 
-      let lastMonthKey = null;
-      let olderContentHtml = '';
+      window.groupedOlder = {}; 
       let currentMonthHtml = '';
 
-      window.zaznamy.sort((a,b) => {
-        const [da, ma, ya] = a.datum.split('.').map(Number);
-        const [db, mb, yb] = b.datum.split('.').map(Number);
-        return new Date(2000+yb, mb-1, db) - new Date(2000+ya, ma-1, da);
+      window.zaznamy.filter(r => {
+        // Filtrovanie: ak záznam nemá mode (staré záznamy), určíme ho podľa prítomnosti INR
+        const recordMode = r.mode || (r.inr || r.tab ? 'full' : 'bp');
+        return recordMode === (window.isBpOnly ? 'bp' : 'full');
+      }).sort((a, b) => {
+        const parse = (s) => {
+          if (!s || typeof s !== 'string') return 0;
+          const parts = s.split(' ');
+          const d = parts[0];
+          const t = parts[1] || '00:00';
+          const [dd, mm, yy] = d.split('.').map(Number);
+          const [hh, mi] = t.split(':').map(Number);
+          return new Date(2000 + yy, mm - 1, dd, hh, mi).getTime();
+        };
+        return parse(b.datum) - parse(a.datum);
       }).forEach(r => {
-        const [d, m, y] = r.datum.split('.');
+        const [d, m, y] = r.datum.split(' ')[0].split('.');
         const monthKey = `${m}.${y}`;
         
-        let rowHtml = '';
-        if (monthKey !== lastMonthKey) {
-          lastMonthKey = monthKey;
-          const monthName = monthNames[window.currentLang][parseInt(m) - 1];
-          rowHtml += `<h3 style="margin: 1.2rem 0 0.5rem 0; text-align: left; padding: 0.5rem; background: var(--header); border-radius: 0.5rem; font-size: 1rem;">${monthName} 20${y}</h3>`;
-          rowHtml += '<div class="archive-header"><div>Dátum</div><div>INR</div><div>Tab</div><div>Sys</div><div>Dia</div><div>Pulz</div><div></div></div>';
+        if (monthKey !== currentMonthKey) {
+          if (!window.groupedOlder[monthKey]) {
+             const monthName = monthNames[window.currentLang][parseInt(m) - 1];
+             window.groupedOlder[monthKey] = { title: `${monthName} 20${y}`, html: '' };
+             window.groupedOlder[monthKey].html += '<div class="archive-header"><div>Dátum/Čas</div><div class="col-inr">INR</div><div class="col-tab">Tab</div><div>Sys</div><div>Dia</div><div>Pulz</div><div></div></div>';
+          }
         }
 
-        rowHtml += `<div class="record-row">
+        if (monthKey === currentMonthKey && !currentMonthHtml.includes('archive-header')) {
+          const monthName = monthNames[window.currentLang][parseInt(m) - 1];
+          currentMonthHtml += `<h3 style="margin: 1.2rem 0 0.5rem 0; text-align: left; padding: 0.5rem; background: var(--header); border-radius: 0.5rem; font-size: 1rem;">${monthName} 20${y}</h3>`;
+          currentMonthHtml += '<div class="archive-header"><div>Dátum/Čas</div><div class="col-inr">INR</div><div class="col-tab">Tab</div><div>Sys</div><div>Dia</div><div>Pulz</div><div></div></div>';
+        }
+
+        const rowHtml = `<div class="record-row">
           <div>${r.datum}</div>
-          <div style="${window.getColorStyle(r.inr,'inr')}">${r.inr||'-'}</div>
-          <div>${r.tab||'-'}</div>
-          <div style="${window.getColorStyle(r.sys,'sys')}">${r.sys||'-'}</div>
-          <div style="${window.getColorStyle(r.dia,'dia')}">${r.dia||'-'}</div>
+          <div class="col-inr" style="${window.getColorStyle(r.inr,'inr')}">${r.inr||'-'}</div>
+          <div class="col-tab">${r.tab||'-'}</div>
+          <div class="col-sys" style="${window.getColorStyle(r.sys,'sys')}">${r.sys||'-'}</div>
+          <div class="col-dia" style="${window.getColorStyle(r.dia,'dia')}">${r.dia||'-'}</div>
           <div style="${window.getColorStyle(r.pulse,'pulse')}">${r.pulse||'-'}</div>
           <div onclick="window.vymazatZaznam('${r.id}')">🗑️</div>
         </div>`;
@@ -550,21 +670,95 @@
         if (monthKey === currentMonthKey) {
           currentMonthHtml += rowHtml;
         } else {
-          olderContentHtml += rowHtml;
+          window.groupedOlder[monthKey].html += rowHtml;
         }
       });
 
       list.innerHTML = currentMonthHtml;
-      
-      if (olderContentHtml) {
-        list.innerHTML += `<button class="main" style="margin-top: 2rem; background-color: #666;" onclick="window.toggleOlderRecords()">${translations[window.currentLang].btnMonthlyArchive}</button>`;
-        list.innerHTML += `<div id="olderRecords" style="display: none; width: 100%;">${olderContentHtml}</div>`;
+
+      if (Object.keys(window.groupedOlder).length > 0) {
+        list.innerHTML += `<button class="main" style="margin-top: 1.5rem; background-color: #444;" onclick="window.otvoritMesacnyArchivList()">${translations[window.currentLang].btnMonthlyArchive}</button>`;
       }
     };
 
-    window.toggleOlderRecords = function() {
-      const el = document.getElementById('olderRecords');
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    window.otvoritMesacnyArchivList = () => {
+      const container = document.getElementById('monthlyArchiveButtons');
+      container.innerHTML = '';
+      const olderKeys = Object.keys(window.groupedOlder).sort((a,b) => {
+        const [ma, ya] = a.split('.').map(Number);
+        const [mb, yb] = b.split('.').map(Number);
+        return (yb*12+mb) - (ya*12+ma);
+      });
+      olderKeys.forEach(key => {
+        container.innerHTML += `<button class="main" style="background-color: #555;" onclick="window.otvoritMesacnyDetail('${key}')">${window.groupedOlder[key].title}</button>`;
+      });
+      document.getElementById('monthlyArchiveListModal').style.display = 'flex';
+    };
+
+    window.zavrietMesacnyArchivList = () => document.getElementById('monthlyArchiveListModal').style.display = 'none';
+
+    window.otvoritMesacnyDetail = (key) => {
+      const data = window.groupedOlder[key];
+      document.getElementById('monthDetailTitle').innerText = data.title;
+      document.getElementById('monthDetailContent').innerHTML = data.html;
+      document.getElementById('monthDetailModal').style.display = 'flex';
+      window.zavrietMesacnyArchivList();
+    };
+
+    window.zavrietMesacnyDetail = () => document.getElementById('monthDetailModal').style.display = 'none';
+
+    window.exportToPDF = () => {
+      const title = document.getElementById('monthDetailTitle').innerText;
+      const userName = window.userName || '';
+      
+      // Vytvorenie dočasného kontajnera pre PDF
+      const pdfWrapper = document.createElement('div');
+      pdfWrapper.style.padding = '20px';
+      pdfWrapper.style.backgroundColor = '#ffffff';
+      pdfWrapper.style.color = '#000000';
+      pdfWrapper.style.fontFamily = 'Arial, sans-serif';
+
+      // Hlavička: Mesiac a Rok (Stred)
+      const h1 = document.createElement('h2');
+      h1.innerText = title;
+      h1.style.textAlign = 'center';
+      h1.style.marginBottom = '5px';
+      pdfWrapper.appendChild(h1);
+
+      // Podhlavička: Záznamy: Meno (Vľavo, malé)
+      const sub = document.createElement('div');
+      sub.innerText = `Záznamy: ${userName}`;
+      sub.style.fontSize = '12px';
+      sub.style.textAlign = 'left';
+      sub.style.marginBottom = '15px';
+      sub.style.borderBottom = '1px solid #eee';
+      sub.style.paddingBottom = '5px';
+      pdfWrapper.appendChild(sub);
+
+      // Klonovanie tabuľky
+      const tableClone = document.getElementById('monthDetailContent').cloneNode(true);
+      tableClone.style.border = '1px solid #eee';
+      
+      // Vyčistenie klonu (odstránenie ikon koša a úprava stĺpcov)
+      tableClone.querySelectorAll('.record-row, .archive-header').forEach(row => {
+        row.style.backgroundColor = row.classList.contains('archive-header') ? '#f0f0f0' : '#ffffff';
+        row.style.color = '#000000';
+        const cells = Array.from(row.children);
+        if (cells.length > 0) cells[cells.length - 1].remove(); // Odstrániť ikonu 🗑️
+        row.style.gridTemplateColumns = window.isBpOnly ? '40% 20% 20% 20%' : '30% 14% 14% 14% 14% 14%';
+      });
+
+      pdfWrapper.appendChild(tableClone);
+
+      const opt = {
+        margin: [10, 5, 10, 5],
+        filename: `Zaznamy_${title.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(pdfWrapper).save();
     };
 
     window.vymazatZaznam = (id) => {
@@ -575,7 +769,12 @@
       });
     };
 
-    window.formatDatum = () => { const d = new Date(); return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`; };
+    window.formatDatum = () => { 
+      const d = new Date(); 
+      const date = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`;
+      const time = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      return `${date} ${time}`;
+    };
     window.skrytArchiv = () => { document.getElementById('archiv').style.display = 'none'; document.getElementById('formular').style.display = 'block'; };
     
     window.logout = () => {
@@ -595,21 +794,25 @@
     
     window.ulozitManual = async () => {
       const dateStr = document.getElementById('manualDatum').value;
-      const datePattern = /^(\d{2})\.(\d{2})\.(\d{2})$/;
+      const datePattern = /^(\d{2})\.(\d{2})\.(\d{2}) (\d{2}):(\d{2})$/;
       const match = dateStr.match(datePattern);
 
       if (!match) {
-        return window.showAlert('Dátum musí byť v tvare dd.mm.rr (napr. 25.12.26)');
+        return window.showAlert('Dátum a čas musí byť v tvare dd.mm.rr hh:mm (napr. 25.12.24 14:30)');
       }
 
       const day = parseInt(match[1]);
       const month = parseInt(match[2]);
+      const hour = parseInt(match[4]);
+      const min = parseInt(match[5]);
 
-      if (day < 1 || day > 31 || month < 1 || month > 12) {
-        return window.showAlert('Neplatný deň (01-31) alebo mesiac (01-12)!');
+      if (day < 1 || day > 31 || month < 1 || month > 12 || hour > 23 || min > 59) {
+        return window.showAlert('Neplatné údaje v dátume alebo čase!');
       }
 
-      const data = { userId: window.user.uid, datum: dateStr, inr: document.getElementById('manualInr').value, tab: document.getElementById('manualTab').value, sys: document.getElementById('manualSys').value, dia: document.getElementById('manualDia').value, pulse: document.getElementById('manualPulse').value };
+      const data = { userId: window.user.uid, datum: dateStr, inr: document.getElementById('manualInr').value, tab: document.getElementById('manualTab').value, sys: document.getElementById('manualSys').value, dia: document.getElementById('manualDia').value, pulse: document.getElementById('manualPulse').value, mode: window.isBpOnly ? 'bp' : 'full' };
+      if (![data.inr, data.tab, data.sys, data.dia, data.pulse].some(v => v.trim() !== '')) return;
+
       await addDoc(collection(db, 'zaznamy'), data);
       ['manualDatum','manualInr','manualTab','manualSys','manualDia','manualPulse'].forEach(id => document.getElementById(id).value = '');
       window.zavrietModal(); window.loadRecords(); window.showToast(translations[window.currentLang].saved);
@@ -624,9 +827,16 @@
         }
       });
 
-      // Používame query parameter na vynútenie stiahnutia nového sw.js prehliadačom
-      navigator.serviceWorker.register('sw.js?v=3.5').then(reg => {
+      // Registrácia Service Workera bez query parametra pre lepšiu stabilitu updatov
+      navigator.serviceWorker.register('sw.js').then(reg => {
         reg.update();
+
+        // Vynútiť kontrolu aktualizácie pri každom otvorení aplikácie (pre PWA)
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            reg.update();
+          }
+        });
 
         if (reg.waiting) {
           window.showUpdateUI(reg);
@@ -645,8 +855,9 @@
 
     window.showUpdateUI = (reg) => {
       const dialog = document.getElementById('customDialog');
+      const t = translations[window.currentLang];
       document.getElementById('dialogTitle').innerText = 'Nová verzia';
-      document.getElementById('dialogMessage').innerText = translations[window.currentLang].updateReady;
+      document.getElementById('dialogMessage').innerText = t.updateReady + '\n' + t.updateChanges;
       document.getElementById('dialogCancelBtn').style.display = 'none';
       document.getElementById('dialogOkBtn').onclick = () => {
         if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });

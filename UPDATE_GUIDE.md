@@ -1,24 +1,23 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
-## Zmeny v tejto verzii:
-- ✅ Vynútenie aktualizácie pre všetky zariadenia (Fix cache)
-- ✅ Archív: Aktuálny mesiac + tlačidlo pre staršie mesiace
-- ✅ Premenovanie aplikácie na BP & INR
-- ✅ Fix: Presné centrovanie a úprava veľkosti písma v hlavičke (v3.5)
+## Zmeny v tejto verzii (v1.38):
+- ✅ Fix: Definitívne vyriešenie konfliktov v Gite
+- ✅ Nové: Bezpečnostné potvrdenie pri zmene režimu
+- ✅ Nové: Import dát zo starej aplikácie
 
 ## POSTUP - Skopíruj do Git Bash:
 
 ```bash
-cd "c:\Users\doros\Desktop\Programovanie\zdravieplus"
+cd "c:\Users\doros\Desktop\Programovanie\Web a App_V1_01\Bpinr_app_v1_01"
 git remote set-url origin https://github.com/daneh471/Zdravie_plus.git
 git add .
-git commit -m "Update v3.5: Rename app to BP & INR"
-git push origin main --force
+git commit -m "Update v1.38: Complete sync"
+git push -u origin main --force
 ```
 
 ## ⏳ Čo sa stane potom:
 1. GitHub aktualizuje stránku (1-2 minúty)
-2. Service Worker detekuje zmenu (v3.5)
+2. Service Worker detekuje zmenu (v1.18)
 3. Stlačením **OK** v aplikácii sa vykoná aktualizácia
 4. **POZOR:** Ak sa názov na ploche nezmenil, vymaž starú ikonu a pridaj aplikáciu na plochu znova cez prehliadač.
 5. Nová verzia BP & INR je pripravená! 🎉

@@ -1,8 +1,8 @@
-const CACHE_NAME = 'bp-inr-cache-v3.5';
+const CACHE_NAME = 'bp-inr-cache-v1.38';
 const FILES_TO_CACHE = [
-  './index.html',
-  './favicon.png',
-  './manifest.json'
+  'index.html',
+  'favicon.png',
+  'manifest.json'
 ];
 
 // Inštalácia service workera – ukladáme potrebné súbory
@@ -27,6 +27,7 @@ self.addEventListener('activate', function (e) {
       );
     }).then(() => self.clients.claim()) // Okamžité prevzatie kontroly
   );
+  
 });
 
 // Počúvame na správu o preskočení čakania (vynútený update)
@@ -38,13 +39,18 @@ self.addEventListener('message', function (e) {
 
 // Network-first stratégia s detekciou updatu
 self.addEventListener('fetch', function(e) {
-  if (e.request.method !== 'GET' || 
+  if (e.request.method !== 'GET' ||
+      !e.request.url.startsWith('http') ||
       e.request.url.includes('firestore.googleapis.com') ||
       e.request.url.includes('google.com')) return;
 
   e.respondWith(
-    fetch(e.request, { cache: 'no-store' }) // Vynútime čerstvé dáta zo servera
+    fetch(e.request)
       .then(function(response) {
+        // Uložiť do cache iba platné odpovede z nášho pôvodu
+        if (!response || response.status !== 200 || response.type !== 'basic') {
+          return response;
+        }
         const clone = response.clone();
         caches.open(CACHE_NAME).then(function(cache) {
           cache.put(e.request, clone);
