@@ -1,5 +1,5 @@
-// BP & INR Service Worker - Build: 2024-05-23_v1.38
-const CACHE_NAME = 'bp-inr-v1.38-final';
+// BP & INR Service Worker - Build: 2024-05-23_v1.39
+const CACHE_NAME = 'bp-inr-v1.39-force-update';
 const FILES_TO_CACHE = [
   'index.html',
   'favicon.png',
@@ -43,7 +43,8 @@ self.addEventListener('fetch', function(e) {
   if (e.request.method !== 'GET' ||
       !e.request.url.startsWith('http') ||
       e.request.url.includes('firestore.googleapis.com') ||
-      e.request.url.includes('google.com')) return;
+      e.request.url.includes('google.com') ||
+      e.request.url.includes('sw.js')) return;
 
   e.respondWith(
     fetch(e.request)

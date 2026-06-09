@@ -1,9 +1,9 @@
 # 🚀 AKTUALIZÁCIA APLIKÁCIE NA GITHUB
 
-## Zmeny v tejto verzii (v1.38):
-- ✅ Fix: Definitívne vyriešenie konfliktov v Gite
-- ✅ Nové: Bezpečnostné potvrdenie pri zmene režimu
-- ✅ Nové: Import dát zo starej aplikácie
+## Zmeny v tejto verzii (v1.39):
+- ✅ FIX: Vynútené premazanie starej cache
+- ✅ FIX: Oprava query parametrov pre Service Worker
+- ✅ Nové: Zlepšená odozva pri aktualizácii
 
 ## POSTUP - Skopíruj do Git Bash:
 
