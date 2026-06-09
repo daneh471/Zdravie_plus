@@ -1,3 +1,4 @@
+// BP & INR Service Worker - Version 1.38
 const CACHE_NAME = 'bp-inr-cache-v1.38';
 const FILES_TO_CACHE = [
   'index.html',
@@ -53,7 +54,7 @@ self.addEventListener('fetch', function(e) {
         }
         const clone = response.clone();
         caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(e.request, clone);
+          cache.put(e.request, clone).catch(err => console.warn('Cache put failed:', err));
         });
         return response;
       })
