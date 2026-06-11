@@ -135,12 +135,12 @@
     @media (max-width: 480px) {
       html, body { font-size: 14px; }
       .app-wrapper { padding-left: 0.8rem; padding-right: 0.8rem; }
-      input { padding: 0.75rem; font-size: 16px !important; } /* Prevencia Safari zoomu */
-      button.main { min-height: 3.2rem; padding: 0.8rem; font-size: 1rem; }
-      .modal-content { padding: 1.2rem; }
+      input { padding: 0.6rem; font-size: 16px !important; } /* Kompaktnejšie polia na mobiloch */
+      button.main { min-height: 2.8rem; padding: 0.6rem; font-size: 1rem; }
+      .modal-content { padding: 1rem; }
       
-      /* Presun polí pod seba už na bežných mobiloch, aby sa predišlo prekrývaniu a stláčaniu */
-      .form-container, .modal-form-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+      /* Presun polí pod seba, ale obmedzíme šírku, aby nevyzerali obrovsky */
+      .form-container, .modal-form-grid { grid-template-columns: 1fr; gap: 0.4rem; max-width: 320px; }
       button.main, #manualDatum, #pulse, #manualPulse { grid-column: span 1; }
     }
 
@@ -149,8 +149,9 @@
       html, body { font-size: 13px; } 
       .app-wrapper { padding-left: 0.5rem; padding-right: 0.5rem; padding-top: calc(3rem + env(safe-area-inset-top)); }
       .modal { padding: 0.5rem; }
-      .modal-content { padding: 1rem; border-radius: 1.2rem; }
-      button.main { min-height: 2.8rem; margin: 0.2rem 0; }
+      .modal-content { padding: 0.8rem; border-radius: 1.2rem; }
+      input { padding: 0.5rem; } /* Ešte tenšie polia na najmenších zariadeniach */
+      button.main { min-height: 2.5rem; padding: 0.5rem; margin: 0.2rem 0; }
       .header-title { font-size: 0.95rem; }
       /* Užšia mriežka pre header, aby Menu tlačidlo nestláčalo nadpis */
       header { grid-template-columns: 60px 1fr 75px; padding: 0 5px; height: 40px; }
