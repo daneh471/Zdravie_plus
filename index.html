@@ -1157,8 +1157,32 @@
     };
 
     // Medication card specific functions
+    window.pridatLiek = (tab = '', mg = '', kedy = '') => {
+      const container = document.getElementById('medListContainer');
+      const row = document.createElement('div');
+      row.className = 'med-row';
+      row.style.cssText = 'display: grid; grid-template-columns: 3fr 2fr 2fr 35px; gap: 4px; align-items: center;';
+      row.innerHTML = `
+        <input type="text" class="med-tab" placeholder="Liek" value="${tab.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 16px !important; border-radius: 0.4rem; text-align: left;">
+        <input type="text" class="med-mg" placeholder="Mg" value="${mg.replace(/"/g, '&quot;')}" style="padding: 0.5rem 0.2rem; font-size: 16px !important; border-radius: 0.4rem; text-align: center;">
+        <input type="text" class="med-kedy" placeholder="Kedy" value="${kedy.replace(/"/g, '&quot;')}" style="padding: 0.5rem 0.2rem; font-size: 16px !important; border-radius: 0.4rem; text-align: center;">
+        <button onclick="this.parentElement.remove()" style="background: #ff1744; color: white; border: none; border-radius: 0.4rem; padding: 0.5rem 0; height: 100%; cursor: pointer; font-weight: bold;">X</button>
+      `;
+      container.appendChild(row);
+    };
+
     window.otvoritEditKartu = () => {
-      document.getElementById('profileKartaSolo').value = localStorage.getItem('userProfile_karta') || '';
+      const container = document.getElementById('medListContainer');
+      container.innerHTML = '';
+      const rawKarta = localStorage.getItem('userProfile_karta') || '';
+      const lines = rawKarta.split('\n').filter(l => l.trim() !== '');
+      
+      if (lines.length === 0) window.pridatLiek();
+      else lines.forEach(line => {
+        if (line.includes(' | ')) { const p = line.split(' | '); window.pridatLiek(p[0]||'', p[1]||'', p[2]||''); }
+        else window.pridatLiek(line.trim(), '', '');
+      });
+      
       document.getElementById('viewProfileModal').style.display = 'none';
       document.getElementById('editMedicationModal').style.display = 'flex';
     };
@@ -1170,9 +1194,13 @@
 
     window.ulozitKartu = () => {
       if (window.user) localStorage.setItem('userProfile_uid', window.user.uid);
-      const rawText = document.getElementById('profileKartaSolo').value;
-      const formattedText = rawText.replace(/\n/g, ',').split(',').map(item => item.trim()).filter(Boolean).join('\n');
-      localStorage.setItem('userProfile_karta', formattedText);
+      const rows = document.querySelectorAll('#medListContainer .med-row');
+      const finalLines = [];
+      rows.forEach(row => {
+        const tab = row.querySelector('.med-tab').value.trim(); const mg = row.querySelector('.med-mg').value.trim(); const kedy = row.querySelector('.med-kedy').value.trim();
+        if (tab || mg || kedy) finalLines.push(`${tab} | ${mg} | ${kedy}`);
+      });
+      localStorage.setItem('userProfile_karta', finalLines.join('\n'));
       window.showToast(translations[window.currentLang].saved || 'Uložené');
       window.zavrietEditKartu();
     };
