@@ -170,6 +170,15 @@
       #infoModal button.main { min-height: 2.5rem; padding: 0.4rem; margin-top: 0.5rem; font-size: 0.95rem; }
     }
 
+    /* Špecifická úprava pre mobily so šírkou do 375px (zmenšené písmo a okraje) */
+    @media (max-width: 375px) {
+      html, body { font-size: 12.5px; }
+      .app-wrapper { padding-left: 0.3rem; padding-right: 0.3rem; }
+      .modal { padding: 0.3rem; }
+      .modal-content { padding: 0.8rem; }
+      .form-container, .modal-form-grid { gap: 0.4rem; }
+    }
+
     /* Extrémne malé displeje (staršie modely do 340px) */
     @media (max-width: 340px) {
       html, body { font-size: 12px; }
