@@ -131,29 +131,38 @@
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.1); } }
     #dialogMessage { white-space: pre-line; }
 
-    /* Podpora pre veľmi úzke mobilné obrazovky */
-    @media (max-width: 400px) {
-      html, body { font-size: 14px; } /* Mierne zmenšenie písma "oddiali" všetky prvky a vytvorí viac miesta */
-      .app-wrapper { padding-left: 0.5rem; padding-right: 0.5rem; }
-      .modal { padding: 0.6rem; }
+    /* Responzivita pre štandardné a menšie mobily */
+    @media (max-width: 480px) {
+      html, body { font-size: 14px; }
+      .app-wrapper { padding-left: 0.8rem; padding-right: 0.8rem; }
+      input { padding: 0.75rem; font-size: 16px !important; } /* Prevencia Safari zoomu */
+      button.main { min-height: 3.2rem; padding: 0.8rem; font-size: 1rem; }
+      .modal-content { padding: 1.2rem; }
+    }
+
+    /* Podpora pre veľmi úzke ALEBO nízke mobilné obrazovky (Galaxy S, iPhone SE a iné) */
+    @media (max-width: 390px), (max-height: 750px) {
+      html, body { font-size: 13px; } 
+      .app-wrapper { padding-left: 0.5rem; padding-right: 0.5rem; padding-top: calc(3rem + env(safe-area-inset-top)); }
+      .modal { padding: 0.5rem; }
       .modal-content { padding: 1rem; border-radius: 1.2rem; }
       .form-container, .modal-form-grid { grid-template-columns: 1fr; }
-      button.main, #manualDatum, #pulse, #manualPulse { grid-column: span 1; }
+      button.main, #manualDatum, #pulse, #manualPulse { grid-column: span 1; min-height: 2.8rem; margin: 0.2rem 0; }
       .header-title { font-size: 1rem; }
-      header { grid-template-columns: 70px 1fr 70px; padding: 0 5px; }
+      header { grid-template-columns: 70px 1fr 70px; padding: 0 5px; height: 40px; }
       .auth-form h2 { font-size: 1.4rem; }
       .auth-form { width: 100%; }
-      input { padding: 0.7rem; font-size: 16px !important; } /* 16px zabráni nežiaducemu auto-zoomu na iPhonoch */
       .dropdown-content { right: 0.25rem; max-width: 95vw; }
 
-      /* Špeciálne zmenšenie Informačného modálu, aby nevytekal na malých mobiloch */
-      #infoModal .modal-content { padding: 0.8rem; gap: 0; }
-      #infoModal h3 { font-size: 1.1rem; margin: 0 0 0.3rem 0; }
-      #infoModal p { font-size: 0.75rem; margin: 0.15rem 0; line-height: 1.2; }
-      #infoModal small { font-size: 0.65rem; }
-      #infoModal hr { margin: 0.3rem 0; }
-      #infoModal .modal-content > div { font-size: 0.7rem !important; line-height: 1.2 !important; }
-      #infoModal button.main { min-height: 2.8rem; padding: 0.6rem; margin-top: 0.5rem; font-size: 0.95rem; }
+      /* Špeciálne zmenšenie Informačného modálu pre okamžitú viditeľnosť bez scrollovania */
+      #infoModal .modal-content { padding: 0.8rem; gap: 0; max-height: 95dvh; justify-content: flex-start; }
+      #infoModal h3 { font-size: 1.1rem; margin: 0 0 0.2rem 0; text-align: center; }
+      #infoModal p { font-size: 0.85rem; margin: 0.15rem 0; line-height: 1.15; }
+      #infoModal small { font-size: 0.7rem; display: inline-block; margin-top: 0.1rem; line-height: 1; }
+      #infoModal hr { margin: 0.3rem 0; opacity: 0.15; }
+      #infoModal #info_legend_title { font-size: 0.85rem; margin-bottom: 0.2rem; }
+      #infoModal .modal-content > div { font-size: 0.75rem !important; line-height: 1.2 !important; margin-bottom: 0.2rem; }
+      #infoModal button.main { min-height: 2.5rem; padding: 0.4rem; margin-top: 0.5rem; font-size: 0.95rem; }
     }
   </style>
 </head>
