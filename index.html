@@ -112,6 +112,8 @@
     body.bp-only #inr, body.bp-only #tab, body.bp-only #manualInr, body.bp-only #manualTab { display: none; }
     body.bp-only .archive-header, body.bp-only .record-row { grid-template-columns: 35% 15% 15% 15% 20%; }
     body.bp-only .col-inr, body.bp-only .col-tab { display: none; }
+    body.bp-only #leg_item_purple, body.bp-only #leg_item_yellow { display: none; }
+    body.bp-only #info_tab_row, body.bp-only #info_inr_row { display: none; }
 
     /* Tlačové štýly pre PDF export */
     @media print {
@@ -251,16 +253,16 @@
 
     <div id="infoModal" class="modal"><div class="modal-content">
       <h3 id="info_title">Informácie o hodnotách</h3>
-      <p><strong>TAB:</strong> <span id="info_tab_desc">Tabletka (počet tabletiek)</span></p>
-      <p><strong>INR:</strong> &lt;2 <span class="t-low">Nízky</span> | 2–3 <span class="t-norm">Normálny</span> | &gt;3 <span class="t-high">Vysoký</span><br><small id="info_inr_note" style="opacity: 0.8; font-style: italic;">(Štandardné rozmedzie. Individuálne cieľové hodnoty stanovuje ošetrujúci lekár.)</small></p>
+      <p id="info_tab_row"><strong>TAB:</strong> <span id="info_tab_desc">Tabletka (počet tabletiek)</span></p>
+      <p id="info_inr_row"><strong>INR:</strong> &lt;2 <span class="t-low">Nízky</span> | 2–3 <span class="t-norm">Normálny</span> | &gt;3 <span class="t-high">Vysoký</span><br><small id="info_inr_note" style="opacity: 0.8; font-style: italic;">(Štandardné rozmedzie. Individuálne cieľové hodnoty stanovuje ošetrujúci lekár.)</small></p>
       <p><strong>SYS:</strong> &lt;90 <span class="t-low">Nízky</span> | 90–140 <span class="t-norm">Normálny</span> | &gt;140 <span class="t-high">Vysoký</span></p>
       <p><strong>DIA:</strong> &lt;60 <span class="t-low">Nízky</span> | 60–90 <span class="t-norm">Normálny</span> | &gt;90 <span class="t-high">Vysoký</span></p>
       <p><strong>PULZ:</strong> &lt;60 <span class="t-low">Nízky</span> | 60–100 <span class="t-norm">Normálny</span> | &gt;100 <span class="t-high">Vysoký</span></p>
       <hr style="opacity: 0.1; margin: 0.5rem 0;">
       <p><strong><span id="info_legend_title">Vysvetlenie farieb:</span></strong></p>
       <div style="font-size: 0.8rem; line-height: 1.4;">
-        <div><span style="color:#9c27b0;">■</span> <span id="leg_purple">Fialová – neutrálne (cieľové hodnoty stanovuje lekár)</span></div>
-        <div><span style="color:#ffeb3b;">■</span> <span id="leg_yellow">Žltá – neutrálne (hodnoty stanovuje lekár)</span></div>
+        <div id="leg_item_purple"><span style="color:#9c27b0;">■</span> <span id="leg_purple">Fialová – neutrálne (cieľové hodnoty stanovuje lekár)</span></div>
+        <div id="leg_item_yellow"><span style="color:#ffeb3b;">■</span> <span id="leg_yellow">Žltá – neutrálne (hodnoty stanovuje lekár)</span></div>
         <div><span style="color:#00e676;">■</span> <span id="leg_green">Zelená – hodnoty sú v poriadku</span></div>
         <div><span style="color:#ff1744;">■</span> <span id="leg_red">Červená – vysoké hodnoty</span></div>
         <div><span style="color:#2196F3;">■</span> <span id="leg_blue">Modrá – nízke hodnoty</span></div>
@@ -604,9 +606,10 @@
 
         for (let line of lines) {
           line = line.trim();
-          if (!line || !line.includes(' — ')) continue;
+          // Rozdelenie riadku pomocou regulárneho výrazu, ktorý akceptuje krátku (-) aj dlhú (—) pomlčku
+          const parts = line.split(/\s+[-—]\s+/);
+          if (parts.length < 2) continue;
 
-          const parts = line.split(' — ');
           const datePart = parts[0].trim();
           const valuesPart = parts[1].trim();
 
@@ -811,6 +814,12 @@
       tableClone.querySelectorAll('.record-row, .archive-header').forEach(row => {
         row.style.backgroundColor = row.classList.contains('archive-header') ? '#f0f0f0' : '#ffffff';
         row.style.color = '#000000';
+
+        // Ak sme v režime Iba Tlak, odstránime stĺpce INR a TAB z PDF exportu
+        if (window.isBpOnly) {
+          row.querySelectorAll('.col-inr, .col-tab').forEach(el => el.remove());
+        }
+
         const cells = Array.from(row.children);
         if (cells.length > 0) cells[cells.length - 1].remove(); // Odstrániť ikonu 🗑️
         row.style.gridTemplateColumns = window.isBpOnly ? '40% 20% 20% 20%' : '30% 14% 14% 14% 14% 14%';
@@ -833,7 +842,10 @@
       legHeader.innerText = t.legendTitle;
       legendDiv.appendChild(legHeader);
 
-      const colors = [{c:'#9c27b0', l:t.legPurple}, {c:'#ffeb3b', l:t.legYellow}, {c:'#00e676', l:t.legGreen}, {c:'#ff1744', l:t.legRed}, {c:'#2196F3', l:t.legBlue}];
+      let colors = [{c:'#9c27b0', l:t.legPurple}, {c:'#ffeb3b', l:t.legYellow}, {c:'#00e676', l:t.legGreen}, {c:'#ff1744', l:t.legRed}, {c:'#2196F3', l:t.legBlue}];
+      if (window.isBpOnly) {
+        colors = colors.filter(c => c.c !== '#9c27b0' && c.c !== '#ffeb3b');
+      }
       colors.forEach(item => {
         const row = document.createElement('div');
         row.innerHTML = `<span style="color:${item.c}; font-size: 12px; vertical-align: middle;">■</span> ${item.l}`;
