@@ -1170,7 +1170,9 @@
 
     window.ulozitKartu = () => {
       if (window.user) localStorage.setItem('userProfile_uid', window.user.uid);
-      localStorage.setItem('userProfile_karta', document.getElementById('profileKartaSolo').value.trim());
+      const rawText = document.getElementById('profileKartaSolo').value;
+      const formattedText = rawText.replace(/\n/g, ',').split(',').map(item => item.trim()).filter(Boolean).join('\n');
+      localStorage.setItem('userProfile_karta', formattedText);
       window.showToast(translations[window.currentLang].saved || 'Uložené');
       window.zavrietEditKartu();
     };
