@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BP & INR" />
   <title>BP & INR</title>
-  <link rel="manifest" href="manifest.json?v=1.48" />
+  <link rel="manifest" href="manifest.json?v=1.44" />
   <link rel="icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -64,19 +64,18 @@
       max-width: 30rem;
       z-index: 1000;
       background-color: var(--header); 
-      min-height: 3rem;
-      padding: 0.5rem 1rem;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
+      padding: 0 10px; 
+      height: 45px;
+      display: grid;
+      grid-template-columns: 80px 1fr 80px;
       align-items: center; 
       box-shadow: 0 0.125rem 0.3125rem rgba(0,0,0,0.1); 
       box-sizing: border-box;
     }
-    .header-logo-container { height: 100%; display: flex; align-items: center; justify-content: flex-start; overflow: hidden; flex: 0 0 auto; }
-    .header-logo { height: 70%; max-height: 2rem; width: auto; object-fit: contain; pointer-events: none; }
-    .header-title { flex-grow: 1; text-align: center; font-weight: 800; font-size: 1.1rem; background: linear-gradient(45deg, #FF8800, #ffb366); -webkit-background-clip: text; -webkit-text-fill-color: transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 0.1rem; position: relative; top: -0.2rem; }
-    header button { background-color: transparent; border: none; font-size: 1rem; cursor: pointer; padding: 0.4rem 0.6rem; color: var(--text); display: flex; align-items: center; white-space: nowrap; flex: 0 0 auto; }
+    .header-logo-container { height: 100%; display: flex; align-items: center; justify-content: flex-start; overflow: hidden; }
+    .header-logo { height: 70%; max-height: 32px; width: auto; object-fit: contain; pointer-events: none; }
+    .header-title { justify-self: center; text-align: center; font-weight: 800; font-size: 1.1rem; background: linear-gradient(45deg, #FF8800, #ffb366); -webkit-background-clip: text; -webkit-text-fill-color: transparent; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 2px; position: relative; top: -3px; }
+    header button { background-color: transparent; border: none; font-size: 1rem; cursor: pointer; padding: 5px; color: var(--text); display: flex; align-items: center; justify-self: flex-end; white-space: nowrap; }
     
   .dropdown-content { display: none; position: absolute; right: 0.5rem; top: calc(3.8rem + env(safe-area-inset-top)); background-color: var(--card); width: max-content; max-width: 90vw; box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.3); z-index: 1001; border-radius: 1rem; overflow: hidden; max-height: calc(100dvh - 5rem); flex-direction: column; padding: 0.5rem; box-sizing: border-box; border: 1px solid rgba(128,128,128,0.2); }
     .dropdown-content button { display: block; width: 100%; padding: 0.625rem 0.9375rem; border: none; background: none; text-align: left; font-size: 1rem; cursor: pointer; color: var(--text); flex-shrink: 1; border-bottom: 1px solid rgba(128,128,128,0.1); white-space: nowrap; }
@@ -86,20 +85,14 @@
       margin: 0 auto; 
       width: 100%; 
       padding: 0.5rem 0; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 0.8rem; 
+      display: grid; 
+      grid-template-columns: repeat(2, 1fr); 
+      gap: 0.6rem; 
       align-items: center;
-      justify-content: center;
     }
-    input { min-width: 0; padding: 0.75rem; font-size: 1rem; background-color: var(--card); color: var(--text); border: 1px solid #ccc; border-radius: 0.8rem; appearance: none; width: 100%; box-sizing: border-box; }
-    .form-container input, .modal-form-grid input { width: 100%; }
-    button.main { background-color: #4CAF50; color: white; border: none; padding: 1rem; width: 100%; cursor: pointer; margin: 0.3rem 0; font-size: 1.1rem; border-radius: 0.8rem; font-weight: bold; box-shadow: 0 0.25rem 0.375rem rgba(0,0,0,0.1); min-height: 3.5rem; }
-    @media (min-width: 481px) {
-      .form-container, .modal-form-grid { flex-direction: row; flex-wrap: wrap; }
-      .form-container input, .modal-form-grid input { flex: 1 1 calc(50% - 0.4rem); }
-      #manualDatum, #pulse, #manualPulse, button.main { flex: 1 1 100%; }
-    }
+    #manualDatum, #pulse, #manualPulse { grid-column: span 2; }
+    input { min-width: 0; padding: 0.75rem; font-size: 16px; background-color: var(--card); color: var(--text); border: 1px solid #ccc; border-radius: 0.8rem; appearance: none; width: 100%; box-sizing: border-box; }
+    button.main { grid-column: span 2; background-color: #4CAF50; color: white; border: none; padding: 1rem; width: 100%; cursor: pointer; margin: 0.3rem 0; font-size: 1.1rem; border-radius: 0.8rem; font-weight: bold; box-shadow: 0 0.25rem 0.375rem rgba(0,0,0,0.1); min-height: 3.5rem; }
     button.secondary { background-color: #2196F3; color: white; border: none; padding: 0.6rem 0.4rem; flex: 1; min-width: 0; cursor: pointer; font-size: 0.9rem; border-radius: 0.75rem; min-height: 2.8rem; }
 
     #authScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 1002; overflow: hidden; }
@@ -107,18 +100,15 @@
     .auth-form h2 { margin: -1.5rem 0 0.8rem 0; font-size: 1.6rem; }
     .auth-form h3 { margin: 0 0 0.3rem 0; font-size: 1.1rem; }
     .auth-form input { margin-bottom: 0.4rem; }
-    .tab-buttons { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; width: 100%; justify-content: center; }
+    .tab-buttons { display: flex; gap: 0.4rem; margin-bottom: 0.6rem; width: 100%; justify-content: center; }
 
     .record-list { display: flex; flex-direction: column; width: 100%; border: 1px solid rgba(128,128,128,0.1); border-radius: 0.8rem; overflow-x: auto; margin-top: 0.5rem; padding-bottom: 2rem; }
-    .archive-header, .record-row { display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; width: 100%; padding: 0.6rem 0.2rem; font-size: 0.75rem; text-align: center; box-sizing: border-box; gap: 0.2rem; }
-    .archive-header { font-weight: bold; text-transform: uppercase; background-color: var(--header); border-bottom: 2px solid rgba(0,0,0,0.1); }
-    .record-row { background-color: var(--card); border-bottom: 1px solid rgba(128,128,128,0.2); }
-    .archive-header > div, .record-row > div { flex: 1 1 0%; word-break: break-word; }
-    .archive-header > div:first-child, .record-row > div:first-child { flex: 2 1 0%; }
-    .archive-header > div:last-child, .record-row > div:last-child { flex: 0.8 1 0%; cursor: pointer; }
+    .archive-header { display: grid; grid-template-columns: 28% 11% 11% 12% 12% 12% 14%; font-weight: bold; font-size: 9px; text-transform: uppercase; background-color: var(--header); border-bottom: 2px solid rgba(0,0,0,0.1); padding: 8px 1px; text-align: center; width: 100%; min-width: 340px; box-sizing: border-box; gap: 1px; }
+    .record-row { display: grid; grid-template-columns: 28% 11% 11% 12% 12% 12% 14%; align-items: center; background-color: var(--card); padding: 10px 1px; border-bottom: 1px solid rgba(128,128,128,0.2); width: 100%; min-width: 340px; box-sizing: border-box; font-size: 10px; text-align: center; gap: 1px; }
     
     /* Štýly pre režim "Iba Tlak" */
     body.bp-only #inr, body.bp-only #tab, body.bp-only #manualInr, body.bp-only #manualTab { display: none; }
+    body.bp-only .archive-header, body.bp-only .record-row { grid-template-columns: 35% 15% 15% 15% 20%; }
     body.bp-only .col-inr, body.bp-only .col-tab { display: none; }
     body.bp-only #leg_item_purple, body.bp-only #leg_item_yellow { display: none; }
     body.bp-only #info_tab_row, body.bp-only #info_inr_row { display: none; }
@@ -131,15 +121,10 @@
       .record-row div:last-child { display: none; } /* Skryť ikonu koša */
     }
 
-    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(0.25rem); justify-content: center; align-items: center; padding: 1rem; }
-    .modal-content { background-color: var(--card); padding: 1.5rem; border-radius: 1.5rem; width: 90%; max-width: 24rem; max-height: 90dvh; overflow-y: auto; display: flex; flex-direction: column; align-items: center; text-align: center; box-sizing: border-box; }
-    #infoModal .modal-content { justify-content: flex-start; gap: 0; align-items: stretch; text-align: left; }
-    #infoModal h3 { width: 100%; text-align: center; margin-bottom: 0.8rem; }
-    #infoModal p { margin: 0.3rem 0; font-size: 0.95rem; line-height: 1.4; width: 100%; word-break: break-word; }
-    #infoModal small { font-size: 0.8rem; display: block; margin-top: 0.2rem; line-height: 1.2; opacity: 0.8; font-style: italic; }
-    #infoModal hr { width: 100%; opacity: 0.1; margin: 0.8rem 0; border: none; border-top: 1px solid var(--text); }
-    #infoModal .legend-container { width: 100%; font-size: 0.85rem; line-height: 1.5; }
-    #infoModal .legend-container > div { display: flex; align-items: flex-start; gap: 0.4rem; margin-bottom: 0.3rem; }
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; padding: 1rem; }
+    .modal-content { background-color: var(--card); padding: 1rem; border-radius: 1.5rem; width: 100%; max-width: 380px; max-height: 90dvh; overflow-y: auto; display: flex; flex-direction: column; text-align: left; box-sizing: border-box; }
+    #infoModal .modal-content { justify-content: center; gap: 0.2rem; }
+    #infoModal p { margin: 0.3rem 0; font-size: 0.9rem; line-height: 1.3; }
 
     #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a1a1a; display: flex; align-items: center; justify-content: center; flex-direction: column; z-index: 999; }
     #splashScreen img { width: 10rem; height: 10rem; animation: pulse 1.5s infinite; }
@@ -153,9 +138,6 @@
       input { padding: 0.75rem; font-size: 16px !important; } /* Prevencia Safari zoomu */
       button.main { min-height: 3.2rem; padding: 0.8rem; font-size: 1rem; }
       .modal-content { padding: 1.2rem; }
-      
-      /* Presun polí pod seba už na bežných mobiloch, aby sa predišlo prekrývaniu a stláčaniu */
-      .form-container, .modal-form-grid { gap: 0.5rem; }
     }
 
     /* Podpora pre veľmi úzke ALEBO nízke mobilné obrazovky (Galaxy S, iPhone SE a iné) */
@@ -164,51 +146,23 @@
       .app-wrapper { padding-left: 0.5rem; padding-right: 0.5rem; padding-top: calc(3rem + env(safe-area-inset-top)); }
       .modal { padding: 0.5rem; }
       .modal-content { padding: 1rem; border-radius: 1.2rem; }
-      button.main { min-height: 2.8rem; margin: 0.2rem 0; }
-      .header-title { font-size: 0.95rem; }
-      /* Menší header na nízkych obrazovkách */
-      header { padding: 0.3rem 0.5rem; min-height: 2.5rem; }
-      header button { font-size: 0.85rem; padding: 0.2rem 0.4rem; }
+      .form-container, .modal-form-grid { grid-template-columns: 1fr; }
+      button.main, #manualDatum, #pulse, #manualPulse { grid-column: span 1; min-height: 2.8rem; margin: 0.2rem 0; }
+      .header-title { font-size: 1rem; }
+      header { grid-template-columns: 70px 1fr 70px; padding: 0 5px; height: 40px; }
       .auth-form h2 { font-size: 1.4rem; }
       .auth-form { width: 100%; }
       .dropdown-content { right: 0.25rem; max-width: 95vw; }
 
       /* Špeciálne zmenšenie Informačného modálu pre okamžitú viditeľnosť bez scrollovania */
-      #infoModal .modal-content { padding: 0.8rem; gap: 0; max-height: 95dvh; }
-      #infoModal h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
-      #infoModal p { font-size: 0.85rem; margin: 0.2rem 0; line-height: 1.2; }
-      #infoModal small { font-size: 0.75rem; margin-top: 0.1rem; }
-      #infoModal hr { margin: 0.4rem 0; }
+      #infoModal .modal-content { padding: 0.8rem; gap: 0; max-height: 95dvh; justify-content: flex-start; }
+      #infoModal h3 { font-size: 1.1rem; margin: 0 0 0.2rem 0; text-align: center; }
+      #infoModal p { font-size: 0.85rem; margin: 0.15rem 0; line-height: 1.15; }
+      #infoModal small { font-size: 0.7rem; display: inline-block; margin-top: 0.1rem; line-height: 1; }
+      #infoModal hr { margin: 0.3rem 0; opacity: 0.15; }
       #infoModal #info_legend_title { font-size: 0.85rem; margin-bottom: 0.2rem; }
-      #infoModal .legend-container { font-size: 0.8rem; line-height: 1.2; }
-      #infoModal .legend-container > div { margin-bottom: 0.2rem; }
+      #infoModal .modal-content > div { font-size: 0.75rem !important; line-height: 1.2 !important; margin-bottom: 0.2rem; }
       #infoModal button.main { min-height: 2.5rem; padding: 0.4rem; margin-top: 0.5rem; font-size: 0.95rem; }
-    }
-
-    /* Špecifická úprava pre mobily so šírkou do 375px (zmenšené písmo a okraje) */
-    @media (max-width: 375px) {
-      html, body { font-size: 12.5px; }
-      .app-wrapper { padding-left: 0.3rem; padding-right: 0.3rem; }
-      .modal { padding: 0.3rem; }
-      .modal-content { padding: 0.8rem; }
-      .form-container, .modal-form-grid { gap: 0.4rem; }
-
-      /* Ešte výraznejšie zmenšenie Informačného modálu pre malé mobily */
-      #infoModal .modal-content { padding: 0.6rem; }
-      #infoModal h3 { font-size: 1rem; margin-bottom: 0.2rem; }
-      #infoModal p { font-size: 0.75rem; margin: 0.15rem 0; line-height: 1.15; }
-      #infoModal small { font-size: 0.65rem; }
-      #infoModal hr { margin: 0.3rem 0; }
-      #infoModal #info_legend_title { font-size: 0.75rem; }
-      #infoModal .legend-container { font-size: 0.7rem; line-height: 1.15; }
-      #infoModal button.main { min-height: 2rem; padding: 0.2rem; margin-top: 0.4rem; font-size: 0.85rem; }
-    }
-
-    /* Extrémne malé displeje (staršie modely do 340px) */
-    @media (max-width: 340px) {
-      html, body { font-size: 12px; }
-      header button { font-size: 0.75rem; }
-      .dropdown-content button { font-size: 0.9rem; padding: 0.5rem; }
     }
   </style>
 </head>
@@ -281,25 +235,12 @@
         <p style="margin: 0;"><strong><span id="viewProfilePriezviskoLabel">Priezvisko:</span></strong> <span id="viewProfilePriezvisko"></span></p>
         <p style="margin: 0;"><strong><span id="viewProfileVahaLabel">Váha:</span></strong> <span id="viewProfileVaha"></span></p>
         <p style="margin: 0;"><strong><span id="viewProfileVyskaLabel">Výška:</span></strong> <span id="viewProfileVyska"></span></p>
+        <p style="margin: 0.4rem 0 0 0;"><strong><span id="viewProfileKartaLabel">Karta liekov:</span></strong><br><span id="viewProfileKarta" ondblclick="window.otvoritEditKartu()" title="Dvojklik pre úpravu" style="white-space: pre-wrap; font-size: 0.9rem; opacity: 0.9; display: block; margin-top: 2px; padding: 5px; border: 1px dashed transparent; border-radius: 5px; transition: 0.2s;"></span></p>
       </div>
-      <button class="main" id="view_med_btn" onclick="window.otvoritViewKartu()" style="background-color: #3498db; margin-top: 0.5rem;">Zobraziť kartu liekov</button>
-      <button class="main" id="view_weight_history_btn" onclick="window.otvoritWeightHistory()" style="background-color: #9c27b0;">História váhy</button>
       <button class="main" id="profile_edit_btn" onclick="window.otvoritEditProfil()">Upraviť profil</button>
+      <button class="main" id="edit_med_btn" onclick="window.otvoritEditKartu()" style="background-color: #f39c12;">Upraviť kartu liekov</button>
       <button class="main" id="view_profile_close" onclick="window.zavrietViewProfil()" style="background-color: #777;">Zatvoriť</button>
       <p style="font-size: 0.7rem; opacity: 0.6; text-align: center; margin-top: 1rem; margin-bottom: 0;">Tieto dáta sú lokálne uložené, nedajú sa vrátiť späť.</p>
-    </div></div>
-
-    <div id="viewMedicationModal" class="modal"><div class="modal-content" style="width: 95%; max-width: 30rem;">
-      <h3 id="view_med_title_modal">Karta liekov</h3>
-      <div id="viewProfileKarta" ondblclick="window.otvoritEditKartuZView()" title="Dvojklik pre úpravu" style="width: 100%; text-align: left; max-height: 60vh; overflow-y: auto; margin-bottom: 1rem; font-size: 0.95rem; padding: 0.5rem; border: 1px dashed rgba(128,128,128,0.3); border-radius: 0.5rem;"></div>
-      <button class="main" id="view_med_edit_btn" onclick="window.otvoritEditKartuZView()" style="background-color: #f39c12; margin-bottom: 0.5rem;">Upraviť kartu liekov</button>
-      <button class="main" onclick="window.zavrietViewKartu()" style="background-color: #777;">Zatvoriť</button>
-    </div></div>
-
-    <div id="weightHistoryModal" class="modal"><div class="modal-content">
-      <h3 id="weight_history_title">História váhy</h3>
-      <div id="weightHistoryList" class="record-list" style="max-height: 60vh; overflow-y: auto; padding-right: 0.2rem; border: none;"></div>
-      <button class="main" onclick="window.zavrietWeightHistory()" style="background-color: #777; margin-top: 1rem;">Zatvoriť</button>
     </div></div>
 
     <div id="editProfileModal" class="modal"><div class="modal-content">
@@ -314,16 +255,13 @@
       <button class="main" id="edit_profile_close" onclick="window.zavrietEditProfil()" style="background-color: #777;">Zatvoriť</button>
     </div></div>
 
-    <div id="editMedicationModal" class="modal"><div class="modal-content" style="width: 95%; max-width: 30rem; max-height: 85vh; display: flex; flex-direction: column;">
-      <h3 id="edit_med_title" style="flex-shrink: 0;">Upraviť kartu liekov</h3>
-      <div class="modal-form-grid" style="display: flex; flex-direction: column; gap: 0.4rem; text-align: left; flex: 1; overflow: hidden;">
-        <div id="medListContainer" style="display: flex; flex-direction: column; gap: 0.4rem; overflow-y: auto; padding-right: 0.2rem; flex: 1;"></div>
-        <button class="secondary" onclick="window.pridatLiek('', '', '')" style="margin-top: 0.2rem; font-weight: bold; flex-shrink: 0;">+ Pridať ďalší liek</button>
+    <div id="editMedicationModal" class="modal"><div class="modal-content">
+      <h3 id="edit_med_title">Upraviť kartu liekov</h3>
+      <div class="modal-form-grid" style="grid-template-columns: 1fr; gap: 0.4rem;">
+        <textarea id="profileKartaSolo" placeholder="Zoznam liekov a dávkovanie..." style="width: 100%; min-height: 200px; padding: 0.75rem; border-radius: 0.8rem; background: var(--card); color: var(--text); border: 1px solid #ccc; font-family: inherit; font-size: 16px;"></textarea>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1rem; flex-shrink: 0;">
-        <button class="main" id="edit_med_save" onclick="window.ulozitKartu()">Uložiť kartu</button>
-        <button class="main" id="edit_med_close" onclick="window.zavrietEditKartu()" style="background-color: #777;">Zatvoriť</button>
-      </div>
+      <button class="main" id="edit_med_save" onclick="window.ulozitKartu()">Uložiť kartu</button>
+      <button class="main" id="edit_med_close" onclick="window.zavrietEditKartu()" style="background-color: #777;">Zatvoriť</button>
     </div></div>
 
     <div id="archiv" style="display:none; width: 100%;">
@@ -379,22 +317,22 @@
     </div></div>
 
     <div id="infoModal" class="modal"><div class="modal-content">
-      <h3 id="info_title">Informácie</h3>
+      <h3 id="info_title">Informácie o hodnotách</h3>
       <p id="info_tab_row"><strong>TAB:</strong> <span id="info_tab_desc">Tabletka (počet tabletiek)</span></p>
-      <p id="info_inr_row"><strong>INR:</strong> &lt;2 <span class="t-low">Nízky</span> | 2–3 <span class="t-norm">Normálny</span> | &gt;3 <span class="t-high">Vysoký</span><br><small id="info_inr_note">(Štandardné rozmedzie. Individuálne cieľové hodnoty stanovuje ošetrujúci lekár.)</small></p>
+      <p id="info_inr_row"><strong>INR:</strong> &lt;2 <span class="t-low">Nízky</span> | 2–3 <span class="t-norm">Normálny</span> | &gt;3 <span class="t-high">Vysoký</span><br><small id="info_inr_note" style="opacity: 0.8; font-style: italic;">(Štandardné rozmedzie. Individuálne cieľové hodnoty stanovuje ošetrujúci lekár.)</small></p>
       <p><strong>SYS:</strong> &lt;90 <span class="t-low">Nízky</span> | 90–140 <span class="t-norm">Normálny</span> | &gt;140 <span class="t-high">Vysoký</span></p>
       <p><strong>DIA:</strong> &lt;60 <span class="t-low">Nízky</span> | 60–90 <span class="t-norm">Normálny</span> | &gt;90 <span class="t-high">Vysoký</span></p>
       <p><strong>PULZ:</strong> &lt;60 <span class="t-low">Nízky</span> | 60–100 <span class="t-norm">Normálny</span> | &gt;100 <span class="t-high">Vysoký</span></p>
-      <hr>
+      <hr style="opacity: 0.1; margin: 0.5rem 0;">
       <p><strong><span id="info_legend_title">Vysvetlenie farieb:</span></strong></p>
-      <div class="legend-container">
-        <div id="leg_item_purple"><span style="color:#9c27b0; font-size: 1.2em;">■</span> <span id="leg_purple">Fialová – neutrálne (cieľové hodnoty stanovuje lekár)</span></div>
-        <div id="leg_item_yellow"><span style="color:#ffeb3b; font-size: 1.2em;">■</span> <span id="leg_yellow">Žltá – neutrálne (hodnoty stanovuje lekár)</span></div>
-        <div><span style="color:#00e676; font-size: 1.2em;">■</span> <span id="leg_green">Zelená – hodnoty sú v poriadku</span></div>
-        <div><span style="color:#ff1744; font-size: 1.2em;">■</span> <span id="leg_red">Červená – vysoké hodnoty</span></div>
-        <div><span style="color:#2196F3; font-size: 1.2em;">■</span> <span id="leg_blue">Modrá – nízke hodnoty</span></div>
+      <div style="font-size: 0.8rem; line-height: 1.4;">
+        <div id="leg_item_purple"><span style="color:#9c27b0;">■</span> <span id="leg_purple">Fialová – neutrálne (cieľové hodnoty stanovuje lekár)</span></div>
+        <div id="leg_item_yellow"><span style="color:#ffeb3b;">■</span> <span id="leg_yellow">Žltá – neutrálne (hodnoty stanovuje lekár)</span></div>
+        <div><span style="color:#00e676;">■</span> <span id="leg_green">Zelená – hodnoty sú v poriadku</span></div>
+        <div><span style="color:#ff1744;">■</span> <span id="leg_red">Červená – vysoké hodnoty</span></div>
+        <div><span style="color:#2196F3;">■</span> <span id="leg_blue">Modrá – nízke hodnoty</span></div>
       </div>
-      <button class="main" onclick="window.zavrietInfo()" style="margin-top: 1rem;">Zatvoriť</button>
+      <button class="main" onclick="window.zavrietInfo()">Zatvoriť</button>
     </div></div>
 
     <div id="customDialog" class="modal"><div class="modal-content">
@@ -409,7 +347,7 @@
  
 
     <div id="toast" style="display:none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 0.8rem 1.2rem; border-radius: 0.5rem; z-index: 1000;"></div>
-    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v1.48</div>
+    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v1.44</div>
   </div>
 
   <script type="module">
@@ -445,7 +383,7 @@
         login: "Prihlásiť sa", register: "Registrácia", titleLogin: "Prihlásenie", titleReg: "Nový účet", namePh: "Tvoje meno", pinPh: "PIN (6 číslic)", 
         pinConfPh: "Zopakuj PIN", createBtn: "Vytvoriť účet", menuArchive: "📄 Archív", menuManual: "➕ Manuálny záznam", menuInfo: "ℹ️ Informácie", 
         menuSettings: "⚙️ Nastavenia", menuLogout: "🚪 Odhlásiť sa", addBtn: "Pridať záznam", backBtn: "Späť na formulár", saveBtn: "Uložiť", 
-        closeBtn: "Zatvoriť", titleArchive: "Archív záznamov", titleManual: "Manuálny záznam", titleInfo: "Informácie", titleSettings: "Nastavenia",
+        closeBtn: "Zatvoriť", titleArchive: "Archív záznamov", titleManual: "Manuálny záznam", titleInfo: "Informácie o hodnotách", titleSettings: "Nastavenia",
         menuLang: "Jazyk", selectLang: "Vybrať jazyk", menuToggleBp: "Prepnúť na: Iba Tlak", menuToggleFull: "Prepnúť na: INR + Tlak", userPrefix: "Používateľ",
         infoTab: "Tabletka (počet tabletiek)", infoLow: "Nízky", infoNorm: "Normálny", infoHigh: "Vysoký", btnExportPdf: "Exportovať PDF",
         saved: "Uložené", msgOccupied: "Meno je už obsadené.", msgUserNotFound: "Užívateľ neexistuje.", msgWrongPin: "Nesprávny PIN kód.",
@@ -472,20 +410,16 @@
         legGreen: "Zelená – hodnoty sú v poriadku",
         legRed: "Červená – vysoké hodnoty",
         legBlue: "Modrá – nízke hodnoty",
-        updateReady: "Nová verzia (v1.48) je pripravená:",
-        updateChanges: "• Zväčšenie šírky modálu Karty liekov pre lepšiu prehľadnosť",
+        updateReady: "Nová verzia (v1.44) je pripravená:",
+        updateChanges: "• Oprava zobrazenia roku v archíve (20undefined)\n• Zlepšené zoskupovanie budúcich mesiacov\n• Oprava duplicitnej verzie v pätičke",
         btnMonthlyArchive: "Mesačný archív",
-        confirmModeChange: "Ste si istý, že chcete prepnúť režim?",
-        viewMedBtn: "Karta liekov",
-        titleViewMed: "Karta liekov",
-        btnWeightHistory: "História váhy",
-        titleWeightHistory: "História váhy"
+        confirmModeChange: "Ste si istý, že chcete prepnúť režim?"
       },
       de: {
         login: "Anmelden", register: "Registrierung", titleLogin: "Login", titleReg: "Neues Konto", namePh: "Dein Name", pinPh: "PIN (6 Stellen)",
         pinConfPh: "PIN wiederholen", createBtn: "Konto erstellen", menuArchive: "📄 Archiv", menuManual: "➕ Manueller Eintrag", menuInfo: "ℹ️ Informationen", 
         menuSettings: "⚙️ Einstellungen", menuLogout: "🚪 Abmelden", addBtn: "Eintrag hinzufügen", backBtn: "Zurück zum Formular", saveBtn: "Speichern", 
-        closeBtn: "Schließen", titleArchive: "Eintragshistorie", titleManual: "Manueller Eintrag", titleInfo: "Informationen", titleSettings: "Einstellungen",
+        closeBtn: "Schließen", titleArchive: "Eintragshistorie", titleManual: "Manueller Eintrag", titleInfo: "Informationen zu Werten", titleSettings: "Einstellungen",
         menuLang: "Sprache", selectLang: "Sprache wählen", menuToggleBp: "Nur Blutdruck", menuToggleFull: "INR + Blutdruck", userPrefix: "Benutzer",
         infoTab: "Tablette (Anzahl der Tabletten)", infoLow: "Niedrig", infoNorm: "Normal", infoHigh: "Hoch", btnExportPdf: "PDF Exportieren",
         saved: "Gespeichert", msgOccupied: "Name bereits vergeben.", msgUserNotFound: "Benutzer existiert nicht.", msgWrongPin: "Falscher PIN-Code.",
@@ -512,22 +446,18 @@
         legRed: "Rot – hohe Werte",
         legBlue: "Blau – niedrige Werte",
         confirmDel: "Diesen Eintrag wirklich löschen?", confirmLogout: "Möchten Sie sich wirklich abmelden?",
-        updateReady: "Neue Version (v1.48) ist bereit:",
-        updateChanges: "• Breiteres Modal für die Medikamentenkarte für bessere Übersicht",
+        updateReady: "Neue Version (v1.41) ist bereit:",
+        updateChanges: "• Korrektur der Jahresanzeige im Archiv\n• Verbesserte Gruppierung für zukünftige Monate\n• Bereinigung der Fußzeile",
         btnMonthlyArchive: "Monatsarchiv",
-        confirmModeChange: "Sind Sie sicher, dass Sie den Modus wechseln möchten?",
-        viewMedBtn: "Medikamentenkarte",
-        titleViewMed: "Medikamentenkarte",
-        btnWeightHistory: "Gewichtsverlauf",
-        titleWeightHistory: "Gewichtsverlauf"
+        confirmModeChange: "Sind Sie sicher, dass Sie den Modus wechseln möchten?"
       }
     };
 
     // Aktualizácia prekladu pre novú verziu
-    translations.sk.updateReady = "Nová verzia (v1.48) je pripravená:";
-    translations.sk.updateChanges = "• Zväčšenie šírky modálu Karty liekov pre lepšiu prehľadnosť";
-    translations.de.updateReady = "Neue Version (v1.48) ist bereit:";
-    translations.de.updateChanges = "• Breiteres Modal für die Medikamentenkarte für bessere Übersicht";
+    translations.sk.updateReady = "Nová verzia (v1.40) je pripravená:";
+    translations.sk.updateChanges = "• Oprava opakovaného zobrazenia notifikácie o aktualizácii\n• Vylepšená stabilita Service Workera";
+    translations.de.updateReady = "Neue Version (v1.40) ist bereit:";
+    translations.de.updateChanges = "• Behebung der wiederholten Anzeige von Update-Benachrichtigungen\n• Verbesserte Service Worker-Stabilität";
 
     const UPDATE_ACKNOWLEDGED_KEY = 'bp_inr_update_acknowledged';
 
@@ -568,14 +498,10 @@
       document.getElementById('viewProfilePriezviskoLabel').innerText = t.surnamePhProfile + ':';
       document.getElementById('viewProfileVahaLabel').innerText = t.weightPhProfile.replace(' (kg)', '') + ':'; // Remove (kg) for label
       document.getElementById('viewProfileVyskaLabel').innerText = t.heightPhProfile.replace(' (cm)', '') + ':'; // Remove (cm) for label
+      document.getElementById('viewProfileKartaLabel').innerText = t.medicationCardPh + ':';
       document.getElementById('profile_edit_btn').innerText = t.editBtnProfile;
-      if (document.getElementById('edit_med_btn')) document.getElementById('edit_med_btn').innerText = t.editMedBtn;
+      document.getElementById('edit_med_btn').innerText = t.editMedBtn;
       document.getElementById('view_profile_close').innerText = t.closeBtn;
-      if (document.getElementById('view_med_btn')) document.getElementById('view_med_btn').innerText = t.viewMedBtn;
-      if (document.getElementById('view_med_title_modal')) document.getElementById('view_med_title_modal').innerText = t.titleViewMed;
-      if (document.getElementById('view_med_edit_btn')) document.getElementById('view_med_edit_btn').innerText = t.editMedBtn;
-      if (document.getElementById('view_weight_history_btn')) document.getElementById('view_weight_history_btn').innerText = t.btnWeightHistory;
-      if (document.getElementById('weight_history_title')) document.getElementById('weight_history_title').innerText = t.titleWeightHistory;
 
       // Edit Profile Modal
       document.querySelector('#editProfileModal h3').innerText = t.titleEditProfile;
@@ -588,7 +514,7 @@
 
       // Edit Med Modal
       document.getElementById('edit_med_title').innerText = t.titleEditMed;
-      if (document.getElementById('profileKartaSolo')) document.getElementById('profileKartaSolo').placeholder = t.medicationCardPh;
+      document.getElementById('profileKartaSolo').placeholder = t.medicationCardPh;
       document.getElementById('edit_med_save').innerText = t.saveBtn;
       document.getElementById('edit_med_close').innerText = t.closeBtn;
 
@@ -772,7 +698,7 @@
           }
         });
         document.getElementById('authScreen').style.display = 'none';
-        document.querySelector('header').style.display = 'flex';
+        document.querySelector('header').style.display = 'grid';
         document.getElementById('formular').style.display = 'block';
         window.loadRecords();
         window.updateUI();
@@ -1042,35 +968,7 @@
       const tInfo = translations[window.currentLang];
       const pMeno = localStorage.getItem('userProfile_meno') || '';
       const pPriezvisko = localStorage.getItem('userProfile_priezvisko') || '';
-      
-      let pVaha = localStorage.getItem('userProfile_vaha') ? localStorage.getItem('userProfile_vaha') + ' kg' : '-';
-      try {
-        const historyKey = `weight_history_${window.user ? window.user.uid : 'local'}`;
-        let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-        if (history.length > 0) {
-          // Nájsť absolútne posledný záznam podľa dátumu v histórii
-          history.sort((a,b) => {
-            const parse = s => { 
-              if (!s || typeof s !== 'string') return 0; 
-              const parts = s.split(' '); 
-              const d = parts[0] || ""; 
-              const t = parts[1] || '00:00'; 
-              const [dd, mm, yy] = d.split('.').map(Number); 
-              const [hh, mi] = t.split(':').map(Number); 
-              if (!dd || !mm) return 0; 
-              const year = yy < 100 ? 2000 + yy : yy; 
-              return new Date(year, mm - 1, dd, hh, mi).getTime(); 
-            };
-            return parse(b.datum) - parse(a.datum);
-          });
-          const latestRec = history[0];
-          const diff = parseFloat(latestRec.rozdiel) || 0;
-          const arrow = diff > 0 ? '↗' : (diff < 0 ? '↘' : '');
-          const diffStr = diff > 0 ? `+${diff}` : `${diff}`;
-          pVaha = diff !== 0 ? `${latestRec.vaha} kg (${arrow} ${diffStr} kg)` : `${latestRec.vaha} kg`;
-        }
-      } catch (err) {}
-
+      const pVaha = localStorage.getItem('userProfile_vaha') ? localStorage.getItem('userProfile_vaha') + ' kg' : '-';
       const pVyska = localStorage.getItem('userProfile_vyska') ? localStorage.getItem('userProfile_vyska') + ' cm' : '-';
       let fullName = `${pMeno} ${pPriezvisko}`.trim();
       if (!fullName) fullName = userName || '-';
@@ -1100,6 +998,7 @@
 
         const cells = Array.from(row.children);
         if (cells.length > 0) cells[cells.length - 1].remove(); // Odstrániť ikonu 🗑️
+        row.style.gridTemplateColumns = window.isBpOnly ? '40% 20% 20% 20%' : '30% 14% 14% 14% 14% 14%';
       });
 
       pdfWrapper.appendChild(tableClone);
@@ -1211,23 +1110,7 @@
       document.getElementById('viewProfilePriezvisko').innerText = localStorage.getItem('userProfile_priezvisko') || '-';
       document.getElementById('viewProfileVaha').innerText = (localStorage.getItem('userProfile_vaha') ? localStorage.getItem('userProfile_vaha') + ' kg' : '-');
       document.getElementById('viewProfileVyska').innerText = (localStorage.getItem('userProfile_vyska') ? localStorage.getItem('userProfile_vyska') + ' cm' : '-');
-      
-      const kartaRaw = localStorage.getItem('userProfile_karta') || '-';
-      if (kartaRaw !== '-' && kartaRaw.includes(' | ')) {
-        const sanitize = (str) => { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; };
-        let kartaHtml = '<table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; margin-top: 0.3rem;">';
-        kartaHtml += '<tr style="border-bottom: 1px solid rgba(128,128,128,0.2);"><th style="padding: 0.15rem 0;">Tabletka</th><th style="padding: 0.15rem 0; text-align: center;">Mg</th><th style="padding: 0.15rem 0; text-align: center;">Kedy</th></tr>';
-        kartaRaw.split('\n').forEach(line => {
-          const parts = line.split(' | ');
-          if (parts.length >= 3) kartaHtml += `<tr style="border-bottom: 1px solid rgba(128,128,128,0.1);"><td style="padding: 0.25rem 0;">${sanitize(parts[0])}</td><td style="padding: 0.25rem 0; text-align: center;">${sanitize(parts[1])}</td><td style="padding: 0.25rem 0; text-align: center;">${sanitize(parts[2])}</td></tr>`;
-          else if (line.trim() !== '') kartaHtml += `<tr><td colspan="3" style="padding: 0.25rem 0;">${sanitize(line)}</td></tr>`;
-        });
-        kartaHtml += '</table>';
-        document.getElementById('viewProfileKarta').innerHTML = kartaHtml;
-      } else {
-        document.getElementById('viewProfileKarta').innerText = kartaRaw;
-      }
-
+      document.getElementById('viewProfileKarta').innerText = localStorage.getItem('userProfile_karta') || '-';
       document.getElementById('viewProfileModal').style.display = 'flex';
     };
 
@@ -1242,64 +1125,8 @@
     };
 
     // Medication card specific functions
-    window.pridatLiek = (tab = '', mg = '', kedy = '') => {
-      const container = document.getElementById('medListContainer');
-      const row = document.createElement('div');
-      row.className = 'med-row';
-      row.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; background: rgba(128,128,128,0.05); padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(128,128,128,0.2); width: 100%; box-sizing: border-box;';
-      
-      let val = mg, unit = 'mg';
-      const match = mg.match(/^([\d.,]+)\s*(mg|g|ml|ks)$/i);
-      if (match) { val = match[1]; unit = match[2].toLowerCase(); }
-      
-      const kedyOptions = [
-        "Ráno", "Obed", "Večer", "Noc", 
-        "Ráno, Obed", "Ráno, Večer", "Ráno, Noc", 
-        "Obed, Večer", "Večer, Noc", 
-        "Ráno, Obed, Večer", "Ráno, Obed, Večer, Noc", 
-        "Každých 8 hodín", "Každých 12 hodín", "Raz týždenne",
-        "Podľa potreby"
-      ];
-      let kedyHtml = '<option value="">Kedy?</option>';
-      let foundKedy = false;
-      kedyOptions.forEach(opt => {
-        const selected = (kedy.toLowerCase() === opt.toLowerCase()) ? 'selected' : '';
-        if (selected) foundKedy = true;
-        kedyHtml += `<option value="${opt}" ${selected}>${opt}</option>`;
-      });
-      if (kedy && !foundKedy) {
-        kedyHtml += `<option value="${kedy.replace(/"/g, '&quot;')}" selected>${kedy}</option>`;
-      }
-
-      row.innerHTML = `
-        <div style="grid-column: 1 / -1;">
-          <input type="text" class="med-tab" placeholder="Názov lieku" value="${tab.replace(/"/g, '&quot;')}" style="width: 100%; min-width: 0; padding: 0.4rem; font-size: 16px !important; border-radius: 0.4rem; border: 1px solid #ccc; background: var(--card); color: var(--text); box-sizing: border-box;">
-        </div>
-        <div style="display: flex; min-width: 0; border: 1px solid #ccc; border-radius: 0.4rem; overflow: hidden; background: var(--card); box-sizing: border-box;">
-          <input type="tel" class="med-mg-val" placeholder="Dávka" value="${val.replace(/"/g, '&quot;')}" inputmode="decimal" style="flex: 1 1 50%; width: 100%; min-width: 0; border: none; border-radius: 0; padding: 0.4rem; font-size: 16px !important; color: var(--text); background: transparent; box-sizing: border-box; text-align: center;">
-          <select class="med-mg-unit" style="flex: 1 1 50%; width: 100%; min-width: 0; border: none; border-left: 1px solid #ccc; background: transparent; padding: 0.4rem 0.1rem; color: var(--text); font-size: 16px !important; outline: none; -webkit-appearance: none; box-sizing: border-box; text-align: center; text-align-last: center;">
-            <option value="mg" ${unit==='mg'?'selected':''}>mg</option><option value="g" ${unit==='g'?'selected':''}>g</option><option value="ml" ${unit==='ml'?'selected':''}>ml</option><option value="ks" ${unit==='ks'?'selected':''}>ks</option>
-          </select>
-        </div>
-        <select class="med-kedy" style="width: 100%; min-width: 0; padding: 0.4rem; border: 1px solid #ccc; border-radius: 0.4rem; background: var(--card); color: var(--text); font-size: 16px !important; outline: none; -webkit-appearance: none; box-sizing: border-box;">
-          ${kedyHtml}
-        </select>
-      `;
-      container.appendChild(row);
-    };
-
     window.otvoritEditKartu = () => {
-      const container = document.getElementById('medListContainer');
-      container.innerHTML = '';
-      const rawKarta = localStorage.getItem('userProfile_karta') || '';
-      const lines = rawKarta.split('\n').filter(l => l.trim() !== '');
-      
-      if (lines.length === 0) window.pridatLiek();
-      else lines.forEach(line => {
-        if (line.includes(' | ')) { const p = line.split(' | '); window.pridatLiek(p[0]||'', p[1]||'', p[2]||''); }
-        else window.pridatLiek(line.trim(), '', '');
-      });
-      
+      document.getElementById('profileKartaSolo').value = localStorage.getItem('userProfile_karta') || '';
       document.getElementById('viewProfileModal').style.display = 'none';
       document.getElementById('editMedicationModal').style.display = 'flex';
     };
@@ -1311,18 +1138,7 @@
 
     window.ulozitKartu = () => {
       if (window.user) localStorage.setItem('userProfile_uid', window.user.uid);
-      const rows = document.querySelectorAll('#medListContainer .med-row');
-      const finalLines = [];
-      rows.forEach(row => {
-        const tab = row.querySelector('.med-tab').value.trim(); 
-        const mgVal = row.querySelector('.med-mg-val').value.trim();
-        const mgUnit = row.querySelector('.med-mg-unit').value;
-        const mg = mgVal ? `${mgVal} ${mgUnit}` : '';
-        const kedy = row.querySelector('.med-kedy').value.trim();
-        
-        if (tab || mg || kedy) finalLines.push(`${tab} | ${mg} | ${kedy}`);
-      });
-      localStorage.setItem('userProfile_karta', finalLines.join('\n'));
+      localStorage.setItem('userProfile_karta', document.getElementById('profileKartaSolo').value.trim());
       window.showToast(translations[window.currentLang].saved || 'Uložené');
       window.zavrietEditKartu();
     };
@@ -1330,118 +1146,18 @@
     window.zavrietViewProfil = () => document.getElementById('viewProfileModal').style.display = 'none';
     window.zavrietEditProfil = () => document.getElementById('editProfileModal').style.display = 'none';
 
-    window.otvoritViewKartu = () => {
-      document.getElementById('viewProfileModal').style.display = 'none';
-      document.getElementById('viewMedicationModal').style.display = 'flex';
-    };
-
-    window.zavrietViewKartu = () => {
-      document.getElementById('viewMedicationModal').style.display = 'none';
-      document.getElementById('viewProfileModal').style.display = 'flex';
-    };
-
-    window.otvoritEditKartuZView = () => {
-      document.getElementById('viewMedicationModal').style.display = 'none';
-      window.otvoritEditKartu();
-    };
-
     // Saves the profile data from the edit modal
-    window.ulozitProfil = async () => {
+    window.ulozitProfil = () => {
       const t = translations[window.currentLang];
       if (window.user) localStorage.setItem('userProfile_uid', window.user.uid);
-      
-      const staravahaStr = localStorage.getItem('userProfile_vaha');
-      const staraVaha = staravahaStr ? parseFloat(staravahaStr.replace(',','.')) : null;
-      
-      const novaVahaStr = document.getElementById('profileVaha').value.trim();
-      const novaVaha = novaVahaStr ? parseFloat(novaVahaStr.replace(',','.')) : null;
-
       localStorage.setItem('userProfile_meno', document.getElementById('profileMeno').value.trim());
       localStorage.setItem('userProfile_priezvisko', document.getElementById('profilePriezvisko').value.trim());
-      localStorage.setItem('userProfile_vaha', novaVahaStr);
+      localStorage.setItem('userProfile_vaha', document.getElementById('profileVaha').value.trim());
       localStorage.setItem('userProfile_vyska', document.getElementById('profileVyska').value.trim());
-      
-      // Automatický zápis do histórie váhy (Lokálne)
-      if (novaVaha !== null && staraVaha !== novaVaha) {
-        try {
-          const rozdiel = staraVaha !== null ? (novaVaha - staraVaha).toFixed(1) : 0;
-          const historyKey = `weight_history_${window.user ? window.user.uid : 'local'}`;
-          let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-          history.push({
-            id: Date.now().toString(),
-            datum: window.formatDatum(),
-            vaha: novaVaha,
-            rozdiel: rozdiel
-          });
-          localStorage.setItem(historyKey, JSON.stringify(history));
-        } catch (err) {
-          console.error("Chyba pri ukladaní do lokálnej histórie váhy:", err);
-        }
-      }
-
       window.showToast(t.saved || 'Uložené');
       window.zavrietEditProfil(); // Close edit modal
       window.otvoritProfil(); // Re-open view modal with updated data
     };
-    
-    window.otvoritWeightHistory = async () => {
-      document.getElementById('viewProfileModal').style.display = 'none';
-      document.getElementById('weightHistoryModal').style.display = 'flex';
-      const list = document.getElementById('weightHistoryList');
-      list.innerHTML = '<p style="text-align: center; opacity: 0.6; font-size: 0.9rem;">Načítavam...</p>';
-      
-      try {
-        const historyKey = `weight_history_${window.user ? window.user.uid : 'local'}`;
-        let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-        
-        // Zoradiť podľa času od najnovšieho
-        history.sort((a,b) => {
-          const parse = s => { 
-            if (!s || typeof s !== 'string') return 0; 
-            const parts = s.split(' '); 
-            const d = parts[0] || ""; 
-            const t = parts[1] || '00:00'; 
-            const [dd, mm, yy] = d.split('.').map(Number); 
-            const [hh, mi] = t.split(':').map(Number); 
-            if (!dd || !mm) return 0; 
-            const year = yy < 100 ? 2000 + yy : yy; 
-            return new Date(year, mm - 1, dd, hh, mi).getTime(); 
-          };
-          return parse(b.datum) - parse(a.datum);
-        });
-
-        if (history.length === 0) { list.innerHTML = '<p style="text-align: center; opacity: 0.6; font-size: 0.9rem;">Zatiaľ žiadne záznamy.</p>'; return; }
-        
-        let html = '';
-        history.forEach(r => {
-          const diff = parseFloat(r.rozdiel) || 0;
-          const diffStr = diff > 0 ? `+${diff} kg` : (diff < 0 ? `${diff} kg` : `0 kg`);
-          const arrow = diff > 0 ? '↗' : (diff < 0 ? '↘' : '→');
-          const color = diff > 0 ? 'color: #ff1744;' : (diff < 0 ? 'color: #00e676;' : 'opacity: 0.6;');
-          
-          html += `<div class="record-row" style="display: flex; justify-content: space-between; padding: 0.8rem 0.4rem; border-bottom: 1px solid rgba(128,128,128,0.1);">
-            <div style="flex: 2; text-align: left; font-size: 0.85rem; opacity: 0.8;">${r.datum || '-'}</div>
-            <div style="flex: 1; font-weight: bold; font-size: 0.95rem;">${r.vaha} kg</div>
-            <div style="flex: 1.5; text-align: right; font-weight: bold; font-size: 0.9rem; ${color}">${arrow} ${diffStr}</div>
-            <div style="flex: 0.5; text-align: right; cursor: pointer; font-size: 0.9rem; padding-left: 0.5rem;" onclick="window.showConfirm('${translations[window.currentLang].confirmDel}', () => window.vymazatVahu('${r.id}'))">🗑️</div>
-          </div>`;
-        });
-        list.innerHTML = html;
-      } catch (err) {
-        console.error("Chyba histórie váhy:", err);
-        list.innerHTML = `<p style="text-align: center; color: #ff1744; font-size: 0.9rem; padding: 1rem;">Nepodarilo sa načítať lokálne dáta.</p>`;
-      }
-    };
-
-    window.vymazatVahu = (id) => {
-      const historyKey = `weight_history_${window.user ? window.user.uid : 'local'}`;
-      let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-      history = history.filter(item => item.id !== id);
-      localStorage.setItem(historyKey, JSON.stringify(history));
-      window.otvoritWeightHistory();
-    };
-
-    window.zavrietWeightHistory = () => { document.getElementById('weightHistoryModal').style.display = 'none'; document.getElementById('viewProfileModal').style.display = 'flex'; };
 
     if ('serviceWorker' in navigator) {
       // Ak bola aktualizácia už potvrdená a stránka sa preładowala,
@@ -1510,3 +1226,4 @@
   </script>
 </body>
 </html>
+
