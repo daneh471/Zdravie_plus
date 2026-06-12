@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BP & INR" />
   <title>BP & INR</title>
-  <link rel="manifest" href="manifest.json?v=1.46" />
+  <link rel="manifest" href="manifest.json?v=1.47" />
   <link rel="icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -409,7 +409,7 @@
  
 
     <div id="toast" style="display:none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 0.8rem 1.2rem; border-radius: 0.5rem; z-index: 1000;"></div>
-    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v1.46</div>
+    <div style="position: fixed; bottom: 0.3rem; left: 0.5rem; font-size: 0.65rem; opacity: 0.4; pointer-events: none; z-index: 999;">v1.47</div>
   </div>
 
   <script type="module">
@@ -472,8 +472,8 @@
         legGreen: "Zelená – hodnoty sú v poriadku",
         legRed: "Červená – vysoké hodnoty",
         legBlue: "Modrá – nízke hodnoty",
-        updateReady: "Nová verzia (v1.46) je pripravená:",
-        updateChanges: "• Zväčšené okno pre kartu liekov pre lepšiu prehľadnosť",
+        updateReady: "Nová verzia (v1.47) je pripravená:",
+        updateChanges: "• Optimalizované zobrazenie úpravy liekov pre malé obrazovky",
         btnMonthlyArchive: "Mesačný archív",
         confirmModeChange: "Ste si istý, že chcete prepnúť režim?",
         viewMedBtn: "Karta liekov",
@@ -512,8 +512,8 @@
         legRed: "Rot – hohe Werte",
         legBlue: "Blau – niedrige Werte",
         confirmDel: "Diesen Eintrag wirklich löschen?", confirmLogout: "Möchten Sie sich wirklich abmelden?",
-        updateReady: "Neue Version (v1.46) ist bereit:",
-        updateChanges: "• Größeres Fenster für die Medikamentenkarte für bessere Übersichtlichkeit",
+        updateReady: "Neue Version (v1.47) ist bereit:",
+        updateChanges: "• Optimierte Anzeige der Medikamentenbearbeitung für kleine Bildschirme",
         btnMonthlyArchive: "Monatsarchiv",
         confirmModeChange: "Sind Sie sicher, dass Sie den Modus wechseln möchten?",
         viewMedBtn: "Medikamentenkarte",
@@ -524,10 +524,10 @@
     };
 
     // Aktualizácia prekladu pre novú verziu
-    translations.sk.updateReady = "Nová verzia (v1.46) je pripravená:";
-    translations.sk.updateChanges = "• Zväčšené okno pre kartu liekov pre lepšiu prehľadnosť";
-    translations.de.updateReady = "Neue Version (v1.46) ist bereit:";
-    translations.de.updateChanges = "• Größeres Fenster für die Medikamentenkarte für bessere Übersichtlichkeit";
+    translations.sk.updateReady = "Nová verzia (v1.47) je pripravená:";
+    translations.sk.updateChanges = "• Optimalizované zobrazenie úpravy liekov pre malé obrazovky";
+    translations.de.updateReady = "Neue Version (v1.47) ist bereit:";
+    translations.de.updateChanges = "• Optimierte Anzeige der Medikamentenbearbeitung für kleine Bildschirme";
 
     const UPDATE_ACKNOWLEDGED_KEY = 'bp_inr_update_acknowledged';
 
@@ -1246,7 +1246,7 @@
       const container = document.getElementById('medListContainer');
       const row = document.createElement('div');
       row.className = 'med-row';
-      row.style.cssText = 'display: flex; flex-wrap: wrap; gap: 5px; align-items: center; background: rgba(128,128,128,0.05); padding: 0.4rem; border-radius: 0.5rem; border: 1px solid rgba(128,128,128,0.2); width: 100%; max-width: 100%; box-sizing: border-box;';
+      row.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; background: rgba(128,128,128,0.05); padding: 0.5rem; border-radius: 0.5rem; border: 1px solid rgba(128,128,128,0.2); width: 100%; box-sizing: border-box;';
       
       let val = mg, unit = 'mg';
       const match = mg.match(/^([\d.,]+)\s*(mg|g|ml|ks)$/i);
@@ -1272,20 +1272,18 @@
       }
 
       row.innerHTML = `
-        <div style="display: flex; gap: 0.3rem; flex: 1 1 100%; width: 100%; box-sizing: border-box;">
-          <input type="text" class="med-tab" placeholder="Názov lieku" value="${tab.replace(/"/g, '&quot;')}" style="flex: 1 1 100%; min-width: 0; padding: 0.3rem; font-size: 16px !important; border-radius: 0.4rem; border: 1px solid #ccc; background: var(--card); color: var(--text); box-sizing: border-box;">
+        <div style="grid-column: 1 / -1;">
+          <input type="text" class="med-tab" placeholder="Názov lieku" value="${tab.replace(/"/g, '&quot;')}" style="width: 100%; min-width: 0; padding: 0.4rem; font-size: 16px !important; border-radius: 0.4rem; border: 1px solid #ccc; background: var(--card); color: var(--text); box-sizing: border-box;">
         </div>
-        <div style="display: flex; gap: 0.3rem; flex: 1 1 100%; width: 100%; box-sizing: border-box; flex-wrap: wrap;">
-          <div style="display: flex; flex: 1 1 130px; min-width: 0; border: 1px solid #ccc; border-radius: 0.4rem; overflow: hidden; background: var(--card); box-sizing: border-box;">
-            <input type="tel" class="med-mg-val" placeholder="Množstvo" value="${val.replace(/"/g, '&quot;')}" inputmode="decimal" style="flex: 1 1 50%; min-width: 0; border: none; border-radius: 0; padding: 0.3rem; font-size: 16px !important; color: var(--text); background: transparent; box-sizing: border-box;">
-            <select class="med-mg-unit" style="flex: 1 1 50%; min-width: 0; border: none; border-left: 1px solid #ccc; background: transparent; padding: 0.3rem; color: var(--text); font-size: 16px !important; outline: none; -webkit-appearance: none; box-sizing: border-box;">
-              <option value="mg" ${unit==='mg'?'selected':''}>mg</option><option value="g" ${unit==='g'?'selected':''}>g</option><option value="ml" ${unit==='ml'?'selected':''}>ml</option><option value="ks" ${unit==='ks'?'selected':''}>ks</option>
-            </select>
-          </div>
-          <select class="med-kedy" style="flex: 1 1 130px; min-width: 0; padding: 0.3rem; border: 1px solid #ccc; border-radius: 0.4rem; background: var(--card); color: var(--text); font-size: 16px !important; outline: none; -webkit-appearance: none; box-sizing: border-box;">
-            ${kedyHtml}
+        <div style="display: flex; min-width: 0; border: 1px solid #ccc; border-radius: 0.4rem; overflow: hidden; background: var(--card); box-sizing: border-box;">
+          <input type="tel" class="med-mg-val" placeholder="Dávka" value="${val.replace(/"/g, '&quot;')}" inputmode="decimal" style="flex: 1 1 50%; width: 100%; min-width: 0; border: none; border-radius: 0; padding: 0.4rem; font-size: 16px !important; color: var(--text); background: transparent; box-sizing: border-box; text-align: center;">
+          <select class="med-mg-unit" style="flex: 1 1 50%; width: 100%; min-width: 0; border: none; border-left: 1px solid #ccc; background: transparent; padding: 0.4rem 0.1rem; color: var(--text); font-size: 16px !important; outline: none; -webkit-appearance: none; box-sizing: border-box; text-align: center; text-align-last: center;">
+            <option value="mg" ${unit==='mg'?'selected':''}>mg</option><option value="g" ${unit==='g'?'selected':''}>g</option><option value="ml" ${unit==='ml'?'selected':''}>ml</option><option value="ks" ${unit==='ks'?'selected':''}>ks</option>
           </select>
         </div>
+        <select class="med-kedy" style="width: 100%; min-width: 0; padding: 0.4rem; border: 1px solid #ccc; border-radius: 0.4rem; background: var(--card); color: var(--text); font-size: 16px !important; outline: none; -webkit-appearance: none; box-sizing: border-box;">
+          ${kedyHtml}
+        </select>
       `;
       container.appendChild(row);
     };
