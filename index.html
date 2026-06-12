@@ -135,7 +135,7 @@
     @media (max-width: 480px) {
       html, body { font-size: 14px; }
       .app-wrapper { padding-left: 0.6rem; padding-right: 0.6rem; }
-      input { padding: 0.75rem; font-size: 16px !important; } /* Prevencia Safari zoomu */
+      input, textarea { padding: 0.75rem; font-size: 16px !important; } /* Prevencia Safari zoomu */
       button.main { min-height: 3.2rem; padding: 0.8rem; font-size: 1rem; }
       .modal-content { padding: 1.2rem; }
     }
@@ -258,7 +258,7 @@
     <div id="editMedicationModal" class="modal"><div class="modal-content" style="max-width: 19.5rem;">
       <h3 id="edit_med_title">Upraviť kartu liekov</h3>
       <div class="modal-form-grid" style="grid-template-columns: 1fr; gap: 0.4rem;">
-        <textarea id="profileKartaSolo" placeholder="Zoznam liekov a dávkovanie..." style="width: 100%; height: 30dvh; min-height: 9rem; resize: vertical; padding: 0.75rem; border-radius: 0.8rem; background: var(--card); color: var(--text); border: 1px solid #ccc; font-family: inherit; font-size: 1rem;"></textarea>
+        <textarea id="profileKartaSolo" placeholder="Zoznam liekov a dávkovanie..." style="width: 100%; height: 30dvh; min-height: 9rem; resize: vertical; padding: 0.75rem; border-radius: 0.8rem; background: var(--card); color: var(--text); border: 1px solid #ccc; font-family: inherit; font-size: 16px;"></textarea>
       </div>
       <button class="main" id="edit_med_save" onclick="window.ulozitKartu()">Uložiť kartu</button>
       <button class="main" id="edit_med_close" onclick="window.zavrietEditKartu()" style="background-color: #777;">Zatvoriť</button>
