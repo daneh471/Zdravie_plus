@@ -239,7 +239,8 @@
       </div>
       <button class="main" id="profile_edit_btn" onclick="window.otvoritEditProfil()">Upraviť profil</button>
       <div style="display: flex; gap: 0.4rem; width: 100%;">
-        <button class="main" id="edit_med_btn" onclick="window.otvoritEditKartu()" style="background-color: #f39c12; margin: 0; flex: 1; font-size: 0.85rem; padding: 0.5rem; line-height: 1.1;">Upraviť kartu</button>
+        <button class="main" id="edit_med_btn" onclick="window.otvoritEditKartu()" style="background-color: #f39c12; margin: 0; flex: 1; font-size: 0.85rem; padding: 0.5rem; line-height: 1.1;">Pridať liek</button>
+        <button class="main" onclick="window.vymazatKartu()" style="background-color: #e74c3c; margin: 0; flex: 0.8; font-size: 0.85rem; padding: 0.5rem; line-height: 1.1;">Vymazať</button>
         <button class="main" id="view_profile_close" onclick="window.zavrietViewProfil()" style="background-color: #777; margin: 0; flex: 1;">Zatvoriť</button>
       </div>
       <p style="font-size: 0.7rem; opacity: 0.6; text-align: center; margin-top: 1rem; margin-bottom: 0;">Tieto dáta sú lokálne uložené, nedajú sa vrátiť späť.</p>
@@ -260,12 +261,15 @@
     </div></div>
 
     <div id="editMedicationModal" class="modal"><div class="modal-content" style="max-width: 19.5rem;">
-      <h3 id="edit_med_title">Upraviť kartu liekov</h3>
-      <div class="modal-form-grid" style="grid-template-columns: 1fr; gap: 0.4rem;">
-        <textarea id="profileKartaSolo" placeholder="Zoznam liekov a dávkovanie..." style="width: 100%; height: 30dvh; min-height: 9rem; resize: vertical; padding: 0.75rem; border-radius: 0.8rem; background: var(--card); color: var(--text); border: 1px solid #ccc; font-family: inherit; font-size: 16px;"></textarea>
+      <h3 id="edit_med_title">Pridať liek</h3>
+      <!-- Rozdelenie na 50% (2fr) pre Názov, 25% (1fr) pre Množstvo a 25% (1fr) pre mg -->
+      <div class="modal-form-grid" style="grid-template-columns: 2fr 1fr 1fr; gap: 0.4rem;">
+        <input type="text" id="medName" placeholder="Názov lieku" autocomplete="off">
+        <input type="tel" id="medQty" placeholder="Množ." autocomplete="off">
+        <input type="tel" id="medMg" placeholder="mg" autocomplete="off">
       </div>
-      <div style="display: flex; gap: 0.4rem; width: 100%; margin-top: 0.4rem;">
-        <button class="main" id="edit_med_save" onclick="window.ulozitKartu()" style="margin: 0; flex: 1;">Uložiť kartu</button>
+      <div style="display: flex; gap: 0.4rem; width: 100%; margin-top: 0.6rem;">
+        <button class="main" id="edit_med_save" onclick="window.ulozitKartu()" style="margin: 0; flex: 1;">Uložiť</button>
         <button class="main" id="edit_med_close" onclick="window.zavrietEditKartu()" style="background-color: #777; margin: 0; flex: 1;">Zatvoriť</button>
       </div>
     </div></div>
@@ -410,7 +414,7 @@
         titleViewProfile: "Môj Profil",
         titleEditProfile: "Upraviť Profil",
         editBtnProfile: "Upraviť profil",
-        titleEditMed: "Upraviť kartu liekov",
+        titleEditMed: "Pridať liek",
         surnamePhProfile: "Priezvisko",
         weightPhProfile: "Váha (kg)",
         legPurple: "Fialová – neutrálne (cieľové hodnoty stanovuje lekár)",
@@ -446,7 +450,7 @@
         titleViewProfile: "Mein Profil",
         titleEditProfile: "Profil bearbeiten",
         editBtnProfile: "Profil bearbeiten",
-        titleEditMed: "Medikamentenkarte bearbeiten",
+        titleEditMed: "Medikament hinzufügen",
         surnamePhProfile: "Nachname",
         weightPhProfile: "Gewicht (kg)",
         legYellow: "Gelb – neutral (Werte werden vom Arzt festgelegt)",
@@ -522,7 +526,6 @@
 
       // Edit Med Modal
       document.getElementById('edit_med_title').innerText = t.titleEditMed;
-      document.getElementById('profileKartaSolo').placeholder = t.medicationCardPh;
       document.getElementById('edit_med_save').innerText = t.saveBtn;
       document.getElementById('edit_med_close').innerText = t.closeBtn;
 
@@ -1134,7 +1137,9 @@
 
     // Medication card specific functions
     window.otvoritEditKartu = () => {
-      document.getElementById('profileKartaSolo').value = localStorage.getItem('userProfile_karta') || '';
+      document.getElementById('medName').value = '';
+      document.getElementById('medQty').value = '';
+      document.getElementById('medMg').value = '';
       document.getElementById('viewProfileModal').style.display = 'none';
       document.getElementById('editMedicationModal').style.display = 'flex';
     };
@@ -1145,10 +1150,28 @@
     };
 
     window.ulozitKartu = () => {
+      const name = document.getElementById('medName').value.trim();
+      const qty = document.getElementById('medQty').value.trim();
+      const mg = document.getElementById('medMg').value.trim();
+      if (!name) return window.showAlert("Zadajte aspoň názov lieku!");
+      
+      let novyLiek = name;
+      if (qty) novyLiek += ` (${qty})`;
+      if (mg) novyLiek += ` - ${mg} mg`;
+      
+      let staraKarta = localStorage.getItem('userProfile_karta') || '';
+      let novaKarta = staraKarta ? staraKarta + '\n• ' + novyLiek : '• ' + novyLiek;
+      localStorage.setItem('userProfile_karta', novaKarta);
       if (window.user) localStorage.setItem('userProfile_uid', window.user.uid);
-      localStorage.setItem('userProfile_karta', document.getElementById('profileKartaSolo').value.trim());
       window.showToast(translations[window.currentLang].saved || 'Uložené');
       window.zavrietEditKartu();
+    };
+
+    window.vymazatKartu = () => {
+      window.showConfirm(window.currentLang === 'de' ? "Gesamte Karte löschen?" : "Naozaj chcete vymazať celú kartu liekov?", () => {
+        localStorage.removeItem('userProfile_karta');
+        window.otvoritProfil();
+      });
     };
 
     window.zavrietViewProfil = () => document.getElementById('viewProfileModal').style.display = 'none';
@@ -1234,4 +1257,3 @@
   </script>
 </body>
 </html>
-
