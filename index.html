@@ -521,8 +521,8 @@
         legGreen: "Zelená – hodnoty sú v poriadku",
         legRed: "Červená – vysoké hodnoty",
         legBlue: "Modrá – nízke hodnoty",
-        updateReady: "Nová verzia (v1.52) je pripravená:",
-        updateChanges: "• Vynútená aktualizácia rozhrania pre mobily\n• Vylepšené zobrazenie profilu a liekov",
+        updateReady: "Nová verzia (v1.53) je pripravená:",
+        updateChanges: "• Skrytie inštalačného tlačidla priamo v aplikácii",
         btnMonthlyArchive: "Mesačný archív",
         confirmModeChange: "Ste si istý, že chcete prepnúť režim?",
         menuForceUpdate: "🔄 Vynútiť aktualizáciu",
@@ -564,8 +564,8 @@
         legBlue: "Blau – niedrige Werte",
         confirmDel: "Diesen Eintrag wirklich löschen?", confirmLogout: "Möchten Sie sich wirklich abmelden?",
         confirmDelMed: "Dieses Medikament wirklich löschen?",
-        updateReady: "Neue Version (v1.52) ist bereit:",
-        updateChanges: "• Erzwungenes UI-Update für mobile Geräte\n• Verbesserte Profil- und Medikamentenansicht",
+        updateReady: "Neue Version (v1.53) ist bereit:",
+        updateChanges: "• Ausblenden der Schaltfläche in der installierten App",
         btnMonthlyArchive: "Monatsarchiv",
         confirmModeChange: "Sind Sie sicher, dass Sie den Modus wechseln möchten?",
         menuForceUpdate: "🔄 Update erzwingen",
@@ -609,8 +609,8 @@
       if (document.getElementById('toggleBtn')) document.getElementById('toggleBtn').innerText = window.isBpOnly ? t.menuToggleFull : t.menuToggleBp;
       if (document.getElementById('installBtn')) document.getElementById('installBtn').innerText = t.menuInstall || "⬇️ Inštalovať aplikáciu";
 
-      // Vynútené zobrazenie inštalačného tlačidla pre istotu
-      if (document.getElementById('installBtn')) document.getElementById('installBtn').style.display = 'block';
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      if (document.getElementById('installBtn')) document.getElementById('installBtn').style.display = isStandalone ? 'none' : 'block';
 
       // View Profile Modal
       document.querySelector('#viewProfileModal h2').innerText = t.titleViewProfile;
@@ -1412,7 +1412,7 @@
       });
 
       // Registrácia Service Workera - s aktuálnou verziou
-      navigator.serviceWorker.register('sw.js?v=1.52').then(reg => {
+      navigator.serviceWorker.register('sw.js?v=1.53').then(reg => {
         // Pravidelná kontrola aktualizácií každú hodinu
         setInterval(() => { reg.update(); }, 1000 * 60 * 60);
         
@@ -1472,6 +1472,7 @@
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
+        if (outcome === 'accepted' && document.getElementById('installBtn')) document.getElementById('installBtn').style.display = 'none';
       } else {
         const t = translations[window.currentLang];
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -1485,6 +1486,7 @@
 
     window.addEventListener('appinstalled', () => {
       deferredPrompt = null;
+      if (document.getElementById('installBtn')) document.getElementById('installBtn').style.display = 'none';
     });
   </script>
 </body>
