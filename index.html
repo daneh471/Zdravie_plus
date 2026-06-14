@@ -216,6 +216,7 @@
         <button onclick="window.otvoritInfo(); window.toggleDropdown();">ℹ️ Informácie</button>
         <button style="display: none;" onclick="window.otvoritNastavenia(); window.toggleDropdown();">⚙️ Nastavenia</button>
         <button id="toggleBtn" onclick="window.toggleViewMode(); window.toggleDropdown();"></button>
+        <button id="installBtn" style="display: none;" onclick="window.installPWA(); window.toggleDropdown();">⬇️ Inštalovať aplikáciu</button>
         <button onclick="window.logout(); window.toggleDropdown();">🚪 Odhlásiť sa</button>
       </div>
     </header>
@@ -526,7 +527,8 @@
         confirmModeChange: "Ste si istý, že chcete prepnúť režim?",
         menuForceUpdate: "🔄 Vynútiť aktualizáciu",
         msgCheckUpdate: "Vymazávam cache a aktualizujem...",
-        pdfMedTitle: "Môj prehľad liekov"
+        pdfMedTitle: "Môj prehľad liekov",
+        menuInstall: "⬇️ Inštalovať aplikáciu"
       },
       de: {
         login: "Anmelden", register: "Registrierung", titleLogin: "Login", titleReg: "Neues Konto", namePh: "Dein Name", pinPh: "PIN (6 Stellen)",
@@ -566,7 +568,8 @@
         confirmModeChange: "Sind Sie sicher, dass Sie den Modus wechseln möchten?",
         menuForceUpdate: "🔄 Update erzwingen",
         msgCheckUpdate: "Cache leeren und aktualisieren...",
-        pdfMedTitle: "Meine Medikamentenübersicht"
+        pdfMedTitle: "Meine Medikamentenübersicht",
+        menuInstall: "⬇️ App installieren"
       }
     };
 
@@ -600,8 +603,10 @@
         if (menuBtns[3]) menuBtns[3].innerText = t.menuInfo;    // ℹ️ Informácie
         if (menuBtns[4]) menuBtns[4].innerText = t.menuSettings; // ⚙️ Nastavenia
         if (menuBtns[6]) menuBtns[6].innerText = t.menuLogout;  // 🚪 Odhlásiť sa
+        if (menuBtns[7]) menuBtns[7].innerText = t.menuLogout;  // 🚪 Odhlásiť sa
       }
       if (document.getElementById('toggleBtn')) document.getElementById('toggleBtn').innerText = window.isBpOnly ? t.menuToggleFull : t.menuToggleBp;
+      if (document.getElementById('installBtn')) document.getElementById('installBtn').innerText = t.menuInstall || "⬇️ Inštalovať aplikáciu";
 
       // View Profile Modal
       document.querySelector('#viewProfileModal h2').innerText = t.titleViewProfile;
@@ -1451,6 +1456,28 @@
       };
       dialog.style.display = 'flex';
     };
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('installBtn');
+      if (installBtn) installBtn.style.display = 'block';
+    });
+
+    window.installPWA = async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        document.getElementById('installBtn').style.display = 'none';
+      }
+    };
+
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('installBtn').style.display = 'none';
+      deferredPrompt = null;
+    });
   </script>
 </body>
 </html>
