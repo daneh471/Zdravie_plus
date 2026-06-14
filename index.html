@@ -216,7 +216,7 @@
         <button onclick="window.otvoritInfo(); window.toggleDropdown();">ℹ️ Informácie</button>
         <button style="display: none;" onclick="window.otvoritNastavenia(); window.toggleDropdown();">⚙️ Nastavenia</button>
         <button id="toggleBtn" onclick="window.toggleViewMode(); window.toggleDropdown();"></button>
-        <button id="installBtn" style="display: none;" onclick="window.installPWA(); window.toggleDropdown();">⬇️ Inštalovať aplikáciu</button>
+        <button id="installBtn" onclick="window.installPWA(); window.toggleDropdown();">⬇️ Inštalovať aplikáciu</button>
         <button onclick="window.logout(); window.toggleDropdown();">🚪 Odhlásiť sa</button>
       </div>
     </header>
@@ -528,7 +528,9 @@
         menuForceUpdate: "🔄 Vynútiť aktualizáciu",
         msgCheckUpdate: "Vymazávam cache a aktualizujem...",
         pdfMedTitle: "Môj prehľad liekov",
-        menuInstall: "⬇️ Inštalovať aplikáciu"
+        menuInstall: "⬇️ Inštalovať aplikáciu",
+        installIOS: "Pre inštaláciu na iPhone/iPad:\n1. Klepnite na ikonu Zdieľať (štvorec so šípkou dole).\n2. Vyberte 'Pridať na plochu'.",
+        installOther: "Váš prehliadač nepodporuje automatickú inštaláciu.\nOtvorte menu prehliadača (3 bodky) a zvoľte 'Pridať na plochu' alebo 'Inštalovať aplikáciu'."
       },
       de: {
         login: "Anmelden", register: "Registrierung", titleLogin: "Login", titleReg: "Neues Konto", namePh: "Dein Name", pinPh: "PIN (6 Stellen)",
@@ -607,6 +609,9 @@
       }
       if (document.getElementById('toggleBtn')) document.getElementById('toggleBtn').innerText = window.isBpOnly ? t.menuToggleFull : t.menuToggleBp;
       if (document.getElementById('installBtn')) document.getElementById('installBtn').innerText = t.menuInstall || "⬇️ Inštalovať aplikáciu";
+
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      if (document.getElementById('installBtn')) document.getElementById('installBtn').style.display = isStandalone ? 'none' : 'block';
 
       // View Profile Modal
       document.querySelector('#viewProfileModal h2').innerText = t.titleViewProfile;
@@ -1461,8 +1466,6 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      const installBtn = document.getElementById('installBtn');
-      if (installBtn) installBtn.style.display = 'block';
     });
 
     window.installPWA = async () => {
@@ -1471,6 +1474,14 @@
         const { outcome } = await deferredPrompt.userChoice;
         deferredPrompt = null;
         document.getElementById('installBtn').style.display = 'none';
+      } else {
+        const t = translations[window.currentLang];
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          window.showAlert(t.installIOS);
+        } else {
+          window.showAlert(t.installOther);
+        }
       }
     };
 
