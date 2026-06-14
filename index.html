@@ -11,7 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="BP & INR" />
   <title>BP & INR</title>
-  <link rel="manifest" href="manifest.json?v=1.52" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -604,14 +604,13 @@
         if (menuBtns[2]) menuBtns[2].innerText = t.menuManual;  // ➕ Manuálny záznam
         if (menuBtns[3]) menuBtns[3].innerText = t.menuInfo;    // ℹ️ Informácie
         if (menuBtns[4]) menuBtns[4].innerText = t.menuSettings; // ⚙️ Nastavenia
-        if (menuBtns[6]) menuBtns[6].innerText = t.menuLogout;  // 🚪 Odhlásiť sa
         if (menuBtns[7]) menuBtns[7].innerText = t.menuLogout;  // 🚪 Odhlásiť sa
       }
       if (document.getElementById('toggleBtn')) document.getElementById('toggleBtn').innerText = window.isBpOnly ? t.menuToggleFull : t.menuToggleBp;
       if (document.getElementById('installBtn')) document.getElementById('installBtn').innerText = t.menuInstall || "⬇️ Inštalovať aplikáciu";
 
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (document.getElementById('installBtn')) document.getElementById('installBtn').style.display = isStandalone ? 'none' : 'block';
+      // Vynútené zobrazenie inštalačného tlačidla pre istotu
+      if (document.getElementById('installBtn')) document.getElementById('installBtn').style.display = 'block';
 
       // View Profile Modal
       document.querySelector('#viewProfileModal h2').innerText = t.titleViewProfile;
